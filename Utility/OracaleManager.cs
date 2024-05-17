@@ -318,13 +318,13 @@ namespace EApproval.Utility
                     var Session_ROLENAME = HttpContext.Current.Session["ROLENAME"] = dt.Rows[0]["ROLENAME"].ToString();
                     var Session_USERROLEID = HttpContext.Current.Session["USERROLEID"] = Convert.ToInt32(dt.Rows[0]["USERROLEID"]);
                     var Session_USERID = HttpContext.Current.Session["USERID"] = Convert.ToInt32(dt.Rows[0]["USERID"]);
-                    
+                    var Session_PROJECTID = HttpContext.Current.Session["PROJECTID"] = Convert.ToInt32(model.PROJECTID);
                     if (Convert.ToInt32(Session_USERID) != 41) // Other than admins
                     {
                         var Session_USERTYPEID = HttpContext.Current.Session["USERTYPEID"] = Convert.ToInt32(dt.Rows[0]["USERTYPEID"]);
-                        var Session_PROJECTID = HttpContext.Current.Session["PROJECTID"] = Convert.ToInt32(model.PROJECTID);
+                        //var Session_PROJECTID = HttpContext.Current.Session["PROJECTID"] = Convert.ToInt32(model.PROJECTID);
                     }
-                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { Session_Name, Session_Email, Session_LoginName, Session_ROLENAME, Session_USERROLEID, Session_USERID } });
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { Session_Name, Session_Email, Session_LoginName, Session_ROLENAME, Session_USERROLEID, Session_USERID, Session_PROJECTID } });
                 }
                 else
                 {
@@ -686,11 +686,19 @@ namespace EApproval.Utility
             try
             {
                 DataTable dt = new DataTable();
+                string URL = "";
                 using (var client = new WebClient())
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    string URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetADMProject";
+                    if (ProjectName == "WIMS-ADMIN")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetADMProject";
+                    }
+                    else if (ProjectName == "WIMS-WORKSHOP")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWSProject";
+                    }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
                     var Items = parsed["CSubTypes"];
@@ -727,6 +735,7 @@ namespace EApproval.Utility
         {
             try
             {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
                 DataTable dt = new DataTable();
                 DataTable dtStatus = new DataTable();
                 DataTable dtLimit = new DataTable();
@@ -735,763 +744,1350 @@ namespace EApproval.Utility
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
                     string URL = "https://eapproval.daewoo.net.pk:7867/api/wims";
-                    if (Mode == 41) // WIMS-ADMIN => Requests
+                    //WIMS-ADMIN
+                    if (project_id == "26")
                     {
-                        var ReqNos = string.Empty;
-                        URL += "/adm/GetTakeInRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
+                        if (Mode == 41) // WIMS-ADMIN => Requests
                         {
-                            dt.Columns.Add("Req_No", typeof(string));
-                            dt.Columns.Add("Req_Date", typeof(string));
-                            dt.Columns.Add("LOIM", typeof(string));
-                            dt.Columns.Add("TYPE", typeof(string));
-                            dt.Columns.Add("INREQ_ORDER", typeof(string));
-                            dt.Columns.Add("Status", typeof(string));
-                            dt.Columns.Add("Item", typeof(decimal));
-                            dt.Columns.Add("Req_Qty", typeof(decimal));
-                            dt.Columns.Add("Rem_Qty", typeof(decimal));
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
-                            dtStatus = GetStatus();
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // Initiator 1,2
+                            var ReqNos = string.Empty;
+                            URL += "/adm/GetTakeInRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
                             {
-                                foreach (var list in Items)
+                                dt.Columns.Add("Req_No", typeof(string));
+                                dt.Columns.Add("Req_Date", typeof(string));
+                                dt.Columns.Add("LOIM", typeof(string));
+                                dt.Columns.Add("TYPE", typeof(string));
+                                dt.Columns.Add("INREQ_ORDER", typeof(string));
+                                dt.Columns.Add("Status", typeof(string));
+                                dt.Columns.Add("Item", typeof(decimal));
+                                dt.Columns.Add("Req_Qty", typeof(decimal));
+                                dt.Columns.Add("Rem_Qty", typeof(decimal));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // Initiator 1,2
                                 {
-                                    dt.Rows.Add(list["INREQ_NO"], list["INREQ_DATE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_ORDER"], list["INREQ_STATUS"], list["ITEM"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], "PENDING", "0");
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["INREQ_NO"], list["INREQ_DATE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_ORDER"], list["INREQ_STATUS"], list["ITEM"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
                                             }
                                         }
                                     }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                //Fetch DT for selected Status
-                                if (status == -1)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
-                                    status = 0;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["INREQ_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["INREQ_NO"], ItemsArray[i]["INREQ_DATE"], ItemsArray[i]["INREQ_LOIM"], ItemsArray[i]["INREQ_TYPE"], ItemsArray[i]["INREQ_ORDER"], ItemsArray[i]["INREQ_STATUS"], ItemsArray[i]["ITEM"], ItemsArray[i]["INREQ_REQ_QTY"], ItemsArray[i]["INREQ_REM_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for HOD
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                        }
+                        else if (Mode == 43) // WIMS-ADMIN => POs
+                        {
+                            URL += "/adm/GetPoRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
                             {
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
+                                dt.Columns.Add("PO_WS", typeof(string));
+                                dt.Columns.Add("PO_NO", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("Amount", typeof(decimal));
+
+                                dt.Columns.Add("PO_LOIM", typeof(string));
+                                dt.Columns.Add("PO_TYPE", typeof(string));
+                                dt.Columns.Add("PO_SUPPLIER", typeof(int));
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+                                dt.Columns.Add("PO_RUSER", typeof(string));
+                                dt.Columns.Add("PO_RNAME", typeof(string));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtStatus = GetStatus();
+                                dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["PO_WS"], list["PO_NO"], list["PO_DATE"], list["PO_ITEM"], list["PO_IN_QTY"], list["PO_AMOUNT"], list["PO_LOIM"], list["PO_TYPE"], list["PO_SUPPLIER"], list["SUPP_NAME"], list["PO_RUSER"], list["PO_RNAME"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if ((ItemsArray[i]["INREQ_NO"].ToString() == dr["REQNO"].ToString()))
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                dt.Rows.Add(ItemsArray[i]["INREQ_NO"], ItemsArray[i]["INREQ_DATE"], ItemsArray[i]["INREQ_LOIM"], ItemsArray[i]["INREQ_TYPE"], ItemsArray[i]["INREQ_ORDER"], ItemsArray[i]["INREQ_STATUS"], ItemsArray[i]["ITEM"], ItemsArray[i]["INREQ_REQ_QTY"], ItemsArray[i]["INREQ_REM_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                if (rows["PO_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
                                             }
                                         }
                                     }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
-                                    status = 1; //Default for HOD
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) < limit))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for HOD
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
                                 {
-                                    dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for Authorizers
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Mode == 44) // WIMS-ADMIN => GRN
+                        {
+                            URL += "/adm/GetGRN?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("GRN_WS", typeof(string));
+                                dt.Columns.Add("GRN_NO", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("GRN_LOIM", typeof(string));
+                                dt.Columns.Add("GRN_TYPE", typeof(string));
+                                dt.Columns.Add("GRN_ORDER", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
+                                {
+                                    foreach (var list in Items)
+                                    {
+                                        dt.Rows.Add(list["GRN_WS"], list["GRN_NO"], list["GRN_DATE"], list["GRN_LOIM"], list["GRN_TYPE"], list["GRN_ORDER"], list["ITEM"], list["GRN_IN_QTY"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (rows["GRN_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
+                                {
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["GRN_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["GRN_WS"], ItemsArray[i]["GRN_NO"], ItemsArray[i]["GRN_DATE"], ItemsArray[i]["GRN_LOIM"], ItemsArray[i]["GRN_TYPE"], ItemsArray[i]["GRN_ORDER"], ItemsArray[i]["ITEM"], ItemsArray[i]["GRN_IN_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Mode == 45) // WIMS-ADMIN => TakeIn
+                        {
+                            URL += "/adm/GetTakeIn?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("INPUT_WS", typeof(string));
+                                dt.Columns.Add("Req_No", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+
+                                dt.Columns.Add("INPUT_LOIM", typeof(string));
+                                dt.Columns.Add("INPUT_TYPE", typeof(string));
+                                dt.Columns.Add("INPUT_SUPPLIER", typeof(int));
+                                dt.Columns.Add("INPUT_PLACE", typeof(string));
+                                dt.Columns.Add("INPUT_ORDER", typeof(string));
+                                dt.Columns.Add("INPUT_USD", typeof(string));
+                                dt.Columns.Add("INPUT_INVOICE", typeof(string));
+                                dt.Columns.Add("INPUT_PK_AMOUNT", typeof(int));
+                                dt.Columns.Add("INPUT_REM_QTY", typeof(int));
+                                dt.Columns.Add("INPUT_REM_AMOUNT", typeof(int));
+                                dt.Columns.Add("INPUT_SUPPLIER1", typeof(int));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
+                                {
+                                    foreach (var list in Items)
+                                    {
+                                        dt.Rows.Add(list["INPUT_WS"], list["INPUT_NO"], list["INPUT_DATE"], list["INPUT_ITEM"], list["INPUT_IN_QTY"], list["INPUT_LOIM"], list["INPUT_TYPE"], list["INPUT_SUPPLIER"], list["INPUT_PLACE"],
+                                                    list["INPUT_ORDER"], list["INPUT_USD"], list["INPUT_INVOICE"], list["INPUT_PK_AMOUNT"], list["INPUT_REM_QTY"], list["INPUT_REM_AMOUNT"], list["INPUT_SUPPLIER1"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
+                                {
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["INPUT_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["INPUT_WS"], ItemsArray[i]["INPUT_NO"], ItemsArray[i]["INPUT_DATE"], ItemsArray[i]["INPUT_ITEM"], ItemsArray[i]["INPUT_IN_QTY"], ItemsArray[i]["INPUT_LOIM"], ItemsArray[i]["INPUT_TYPE"], ItemsArray[i]["INPUT_SUPPLIER"], ItemsArray[i]["INPUT_PLACE"],
+                                                                ItemsArray[i]["INPUT_ORDER"], ItemsArray[i]["INPUT_USD"], ItemsArray[i]["INPUT_INVOICE"], ItemsArray[i]["INPUT_PK_AMOUNT"], ItemsArray[i]["INPUT_REM_QTY"], ItemsArray[i]["INPUT_REM_AMOUNT"], ItemsArray[i]["INPUT_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Mode == 46) // WIMS-ADMIN => Payment Vouchers (PV)
+                        {
+                            URL += "/adm/GetPV?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("PV_WS", typeof(string));
+                                dt.Columns.Add("Payment_Voucher", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Type", typeof(string));
+                                dt.Columns.Add("Amount", typeof(decimal));
+                                dt.Columns.Add("Status", typeof(string));
+
+                                dt.Columns.Add("PV_SYSCODE", typeof(string));
+                                dt.Columns.Add("PV_LOIM", typeof(string));
+                                dt.Columns.Add("PV_SUPPLIER", typeof(string));
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+
+                                dt.Columns.Add("PV_ORDER", typeof(string));
+                                dt.Columns.Add("PV_ITEM", typeof(string));
+                                dt.Columns.Add("PV_RUSER", typeof(string));
+                                dt.Columns.Add("PV_RNAME", typeof(string));
+                                dt.Columns.Add("PV_DEP", typeof(string));
+
+                                dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
+                                dt.Columns.Add("PV_CAN_STATUS", typeof(string));
+                                dt.Columns.Add("PV_SUPPLIER1", typeof(string));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
+                                {
+                                    foreach (var list in Items)
+                                    {
+                                        dt.Rows.Add(list["PV_WS"], list["PV_NO"], list["PV_DATE"], list["PV_TYPE"], list["PV_AMOUNT"], list["PV_PSTATUS"],
+                                             list["PV_SYSCODE"], list["PV_LOIM"], list["PV_SUPPLIER"], list["SUPP_NAME"],
+                                            list["PV_ORDER"], list["PV_ITEM"], list["PV_RUSER"], list["PV_RNAME"], list["PV_DEP"],
+                                            list["PV_CREATE_DESIG"], list["PV_CAN_STATUS"], list["PV_SUPPLIER1"], "PENDING", "0"
+                                            );
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (rows["Payment_Voucher"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                                {
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) < limit))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
+                                {
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
                         }
                     }
-                    else if (Mode == 43) // WIMS-ADMIN => POs
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
                     {
-                        URL += "/adm/GetPoRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
+                        if (Mode == 100) // WIMS-WORKSHOP => Requests
                         {
-                            dt.Columns.Add("PO_WS", typeof(string));
-                            dt.Columns.Add("PO_NO", typeof(string));
-                            dt.Columns.Add("Date", typeof(string));
-                            dt.Columns.Add("Item", typeof(int));
-                            dt.Columns.Add("Qty", typeof(int));
-                            dt.Columns.Add("Amount", typeof(decimal));
+                            var ReqNos = string.Empty;
+                            URL += "/ws/GetTakeInRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("Req_No", typeof(string));
+                                dt.Columns.Add("Req_Date", typeof(string));
+                                dt.Columns.Add("LOIM", typeof(string));
+                                dt.Columns.Add("TYPE", typeof(string));
+                                dt.Columns.Add("INREQ_ORDER", typeof(string));
+                                dt.Columns.Add("Status", typeof(string));
+                                dt.Columns.Add("Item", typeof(decimal));
+                                dt.Columns.Add("Req_Qty", typeof(decimal));
+                                dt.Columns.Add("Rem_Qty", typeof(decimal));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // Initiator 1,2
+                                {
+                                    foreach (var list in Items)
+                                    {
+                                        dt.Rows.Add(list["INREQ_NO"], list["INREQ_DATE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_ORDER"], list["INREQ_STATUS"], list["ITEM"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                                {
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["INREQ_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["INREQ_NO"], ItemsArray[i]["INREQ_DATE"], ItemsArray[i]["INREQ_LOIM"], ItemsArray[i]["INREQ_TYPE"], ItemsArray[i]["INREQ_ORDER"], ItemsArray[i]["INREQ_STATUS"], ItemsArray[i]["ITEM"], ItemsArray[i]["INREQ_REQ_QTY"], ItemsArray[i]["INREQ_REM_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for Authorizers
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Mode == 101) // WIMS-WORKSHOP => POs
+                        {
+                            URL += "/ws/GetPoRequest?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("PO_WS", typeof(string));
+                                dt.Columns.Add("PO_NO", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("Amount", typeof(decimal));
 
-                            dt.Columns.Add("PO_LOIM", typeof(string));
-                            dt.Columns.Add("PO_TYPE", typeof(string));
-                            dt.Columns.Add("PO_SUPPLIER", typeof(int));
-                            dt.Columns.Add("SUPP_NAME", typeof(string));
-                            dt.Columns.Add("PO_RUSER", typeof(string));
-                            dt.Columns.Add("PO_RNAME", typeof(string));
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
-                            dtStatus = GetStatus();
-                            dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
-                            {
-                                foreach (var list in Items)
+                                dt.Columns.Add("PO_LOIM", typeof(string));
+                                dt.Columns.Add("PO_TYPE", typeof(string));
+                                dt.Columns.Add("PO_SUPPLIER", typeof(int));
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+                                dt.Columns.Add("PO_RUSER", typeof(string));
+                                dt.Columns.Add("PO_RNAME", typeof(string));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtStatus = GetStatus();
+                                dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    dt.Rows.Add(list["PO_WS"], list["PO_NO"], list["PO_DATE"], list["PO_ITEM"], list["PO_IN_QTY"], list["PO_AMOUNT"], list["PO_LOIM"], list["PO_TYPE"], list["PO_SUPPLIER"], list["SUPP_NAME"], list["PO_RUSER"], list["PO_RNAME"], "PENDING", "0");
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["PO_WS"], list["PO_NO"], list["PO_DATE"], list["PO_ITEM"], list["PO_IN_QTY"], list["PO_AMOUNT"], list["PO_LOIM"], list["PO_TYPE"], list["PO_SUPPLIER"], list["SUPP_NAME"], list["PO_RUSER"], list["PO_RNAME"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if (rows["PO_NO"].ToString() == dr["REQNO"].ToString())
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                if (rows["PO_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
                                             }
                                         }
                                     }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                //Fetch DT for selected Status
-                                if (status == -1)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
-                                    status = 0;
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) < limit))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for HOD
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
                                 {
-                                    dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1; //Default for Authorizers
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                        }
+                        else if (Mode == 102) // WIMS-WORKSHOP => GRN
+                        {
+                            URL += "/ws/GetGRN?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
                             {
-                                decimal limit = 0.00m;
-                                DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
-                                if (LimitRow.Length != 0)
+                                dt.Columns.Add("GRN_WS", typeof(string));
+                                dt.Columns.Add("GRN_NO", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("GRN_LOIM", typeof(string));
+                                dt.Columns.Add("GRN_TYPE", typeof(string));
+                                dt.Columns.Add("GRN_ORDER", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
-                                }
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["GRN_WS"], list["GRN_NO"], list["GRN_DATE"], list["GRN_LOIM"], list["GRN_TYPE"], list["GRN_ORDER"], list["ITEM"], list["GRN_IN_QTY"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) < limit))
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                if (rows["GRN_NO"].ToString() == dr["REQNO"].ToString())
                                                 {
-                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
                                                 }
                                             }
                                         }
                                     }
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
                                 {
-                                    status = 1; //Default for HOD
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["GRN_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["GRN_WS"], ItemsArray[i]["GRN_NO"], ItemsArray[i]["GRN_DATE"], ItemsArray[i]["GRN_LOIM"], ItemsArray[i]["GRN_TYPE"], ItemsArray[i]["GRN_ORDER"], ItemsArray[i]["ITEM"], ItemsArray[i]["GRN_IN_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
+                        }
+                        else if (Mode == 103) // WIMS-WORKSHOP => TakeIn
+                        {
+                            URL += "/ws/GetTakeIn?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
                             {
-                                decimal limit = 0.00m;
-                                DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
-                                if (LimitRow.Length != 0)
+                                dt.Columns.Add("INPUT_WS", typeof(string));
+                                dt.Columns.Add("Req_No", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Item", typeof(int));
+                                dt.Columns.Add("Qty", typeof(int));
+
+                                dt.Columns.Add("INPUT_LOIM", typeof(string));
+                                dt.Columns.Add("INPUT_TYPE", typeof(string));
+                                dt.Columns.Add("INPUT_SUPPLIER", typeof(int));
+                                dt.Columns.Add("INPUT_PLACE", typeof(string));
+                                dt.Columns.Add("INPUT_ORDER", typeof(string));
+                                dt.Columns.Add("INPUT_USD", typeof(string));
+                                dt.Columns.Add("INPUT_INVOICE", typeof(string));
+                                dt.Columns.Add("INPUT_PK_AMOUNT", typeof(int));
+                                dt.Columns.Add("INPUT_REM_QTY", typeof(int));
+                                dt.Columns.Add("INPUT_REM_AMOUNT", typeof(int));
+                                dt.Columns.Add("INPUT_SUPPLIER1", typeof(int));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
-                                }
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["INPUT_WS"], list["INPUT_NO"], list["INPUT_DATE"], list["INPUT_ITEM"], list["INPUT_IN_QTY"], list["INPUT_LOIM"], list["INPUT_TYPE"], list["INPUT_SUPPLIER"], list["INPUT_PLACE"],
+                                                    list["INPUT_ORDER"], list["INPUT_USD"], list["INPUT_INVOICE"], list["INPUT_PK_AMOUNT"], list["INPUT_REM_QTY"], list["INPUT_REM_AMOUNT"], list["INPUT_SUPPLIER1"], "PENDING", "0");
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
                                                 {
-                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
                                                 }
                                             }
                                         }
                                     }
+                                    //Fetch DT for selected Status
+                                    if (status == -1)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
                                 {
-                                    status = 1; //Default for Authorizers
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["INPUT_NO"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    dt.Rows.Add(ItemsArray[i]["INPUT_WS"], ItemsArray[i]["INPUT_NO"], ItemsArray[i]["INPUT_DATE"], ItemsArray[i]["INPUT_ITEM"], ItemsArray[i]["INPUT_IN_QTY"], ItemsArray[i]["INPUT_LOIM"], ItemsArray[i]["INPUT_TYPE"], ItemsArray[i]["INPUT_SUPPLIER"], ItemsArray[i]["INPUT_PLACE"],
+                                                                ItemsArray[i]["INPUT_ORDER"], ItemsArray[i]["INPUT_USD"], ItemsArray[i]["INPUT_INVOICE"], ItemsArray[i]["INPUT_PK_AMOUNT"], ItemsArray[i]["INPUT_REM_QTY"], ItemsArray[i]["INPUT_REM_AMOUNT"], ItemsArray[i]["INPUT_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
+                            }
+                        }
+                        else if (Mode == 104) // WIMS-WORKSHOP => Payment Vouchers (PV)
+                        {
+                            URL += "/ws/GetPV?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("PV_WS", typeof(string));
+                                dt.Columns.Add("Payment_Voucher", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("Type", typeof(string));
+                                dt.Columns.Add("Amount", typeof(decimal));
+                                dt.Columns.Add("Status", typeof(string));
+
+                                dt.Columns.Add("PV_SYSCODE", typeof(string));
+                                dt.Columns.Add("PV_LOIM", typeof(string));
+                                dt.Columns.Add("PV_SUPPLIER", typeof(string));
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+
+                                dt.Columns.Add("PV_ORDER", typeof(string));
+                                dt.Columns.Add("PV_ITEM", typeof(string));
+                                dt.Columns.Add("PV_RUSER", typeof(string));
+                                dt.Columns.Add("PV_RNAME", typeof(string));
+                                dt.Columns.Add("PV_DEP", typeof(string));
+
+                                dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
+                                dt.Columns.Add("PV_CAN_STATUS", typeof(string));
+                                dt.Columns.Add("PV_SUPPLIER1", typeof(string));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+                                dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                    foreach (var list in Items)
+                                    {
+                                        dt.Rows.Add(list["PV_WS"], list["PV_NO"], list["PV_DATE"], list["PV_TYPE"], list["PV_AMOUNT"], list["PV_PSTATUS"],
+                                             list["PV_SYSCODE"], list["PV_LOIM"], list["PV_SUPPLIER"], list["SUPP_NAME"],
+                                            list["PV_ORDER"], list["PV_ITEM"], list["PV_RUSER"], list["PV_RNAME"], list["PV_DEP"],
+                                            list["PV_CREATE_DESIG"], list["PV_CAN_STATUS"], list["PV_SUPPLIER1"], "PENDING", "0"
+                                            );
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (rows["Payment_Voucher"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                                {
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) < limit))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
+                                {
+                                    decimal limit = 0.00m;
+                                    DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    if (LimitRow.Length != 0)
+                                    {
+                                        limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    }
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
                         }
                     }
-                    else if (Mode == 44) // WIMS-ADMIN => GRN
+                    //ECS
+                    else if (project_id == "81")
                     {
-                        URL += "/adm/GetGRN?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
+                        if (Mode == 121) // ECS => Payment Approval
                         {
-                            dt.Columns.Add("GRN_WS", typeof(string));
-                            dt.Columns.Add("GRN_NO", typeof(string));
-                            dt.Columns.Add("Date", typeof(string));
-                            dt.Columns.Add("GRN_LOIM", typeof(string));
-                            dt.Columns.Add("GRN_TYPE", typeof(string));
-                            dt.Columns.Add("GRN_ORDER", typeof(string));
-                            dt.Columns.Add("Item", typeof(int));
-                            dt.Columns.Add("Qty", typeof(int));
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
+                            URL = string.Empty;
+                            URL = "https://ecsapi.daewoo.net.pk/api/ecs/v1/getPAFList";
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("PaymentApprovalId", typeof(long));
+                                dt.Columns.Add("RefNo", typeof(string));
+                                dt.Columns.Add("GLCode", typeof(string));
+                                dt.Columns.Add("CompanyName", typeof(string));
+                                dt.Columns.Add("Department", typeof(string));
+                                dt.Columns.Add("TypeName", typeof(string));
+                                dt.Columns.Add("Amount", typeof(decimal));
 
-                            dtStatus = GetStatus();
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
-                            {
-                                foreach (var list in Items)
+                                dt.Columns.Add("Description", typeof(string));
+                                dt.Columns.Add("AddedBy", typeof(string));
+                                dt.Columns.Add("CreatedDate", typeof(string));
+
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(int));
+
+                                dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
+                                dtStatus = GetStatus();
+                                if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
                                 {
-                                    dt.Rows.Add(list["GRN_WS"], list["GRN_NO"], list["GRN_DATE"], list["GRN_LOIM"], list["GRN_TYPE"], list["GRN_ORDER"], list["ITEM"], list["GRN_IN_QTY"], "PENDING", "0");
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
+                                    foreach (var list in Items)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(list["PaymentApprovalId"], list["RefNo"], list["GLCode"], list["CompanyName"], list["DEPARTMENT"], list["TypeName"], list["Amount"], list["Description"], list["AddedBy"],
+                                                    list["CreatedDate"], "PENDING", "0"
+                                            );
+                                    }
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        foreach (DataRow rows in dt.Rows)
                                         {
-                                            if (rows["GRN_NO"].ToString() == dr["REQNO"].ToString())
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                if (rows["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    rows["ApprovalStatus"] = dr["STATUS"].ToString();
+                                                    rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                if (status == -1)
-                                {
-                                    status = 0;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
-                            {
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
+                                    //Fetch DT for selected Status
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 0;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
                                     dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
+                                    foreach (DataRow r in rslt)
                                     {
-                                        foreach (DataRow dr in dtStatus.Rows)
+                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
+                                }
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
+                                {
+                                    //decimal limit = 0.00m;
+                                    //DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
+                                    //if (LimitRow.Length != 0)
+                                    //{
+                                    //    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
+                                    //}
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
                                         {
-                                            if (ItemsArray[i]["GRN_NO"].ToString() == dr["REQNO"].ToString())
+                                            foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                dt.Rows.Add(ItemsArray[i]["GRN_WS"], ItemsArray[i]["GRN_NO"], ItemsArray[i]["GRN_DATE"], ItemsArray[i]["GRN_LOIM"], ItemsArray[i]["GRN_TYPE"], ItemsArray[i]["GRN_ORDER"], ItemsArray[i]["ITEM"], ItemsArray[i]["GRN_IN_QTY"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
                                             }
                                         }
                                     }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 1;
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                if (status == -1 || status == 0)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1) // Approver-1
                                 {
-                                    status = 1;
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 2)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 2; // Approved by Authorizer
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
+                                else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-2
                                 {
-                                    dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                    var ItemsArray = Items.ToArray();
+                                    if (dtStatus.Rows.Count > 0)
+                                    {
+                                        dt = dt.Clone();
+                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        {
+                                            foreach (DataRow dr in dtStatus.Rows)
+                                            {
+                                                if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                {
+                                                    if (Convert.ToInt32(dr["STATUSID"]) == 4)
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                    else
+                                                    {
+                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                                    ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (status == -1 || status == 0)
+                                    {
+                                        status = 4; // Approved by Approver 1
+                                    }
+                                    DataRow[] rslt = dt.Select("StatusId=" + status);
+                                    dt = dt.Clone();
+                                    foreach (DataRow r in rslt)
+                                    {
+                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                    }
                                 }
                             }
                         }
                     }
-                    else if (Mode == 45) // WIMS-ADMIN => TakeIn
-                    {
-                        URL += "/adm/GetTakeIn?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("INPUT_WS", typeof(string));
-                            dt.Columns.Add("Req_No", typeof(string));
-                            dt.Columns.Add("Date", typeof(string));
-                            dt.Columns.Add("Item", typeof(int));
-                            dt.Columns.Add("Qty", typeof(int));
-
-                            dt.Columns.Add("INPUT_LOIM", typeof(string));
-                            dt.Columns.Add("INPUT_TYPE", typeof(string));
-                            dt.Columns.Add("INPUT_SUPPLIER", typeof(int));
-                            dt.Columns.Add("INPUT_PLACE", typeof(string));
-                            dt.Columns.Add("INPUT_ORDER", typeof(string));
-                            dt.Columns.Add("INPUT_USD", typeof(string));
-                            dt.Columns.Add("INPUT_INVOICE", typeof(string));
-                            dt.Columns.Add("INPUT_PK_AMOUNT", typeof(int));
-                            dt.Columns.Add("INPUT_REM_QTY", typeof(int));
-                            dt.Columns.Add("INPUT_REM_AMOUNT", typeof(int));
-                            dt.Columns.Add("INPUT_SUPPLIER1", typeof(int));
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
-
-                            dtStatus = GetStatus();
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
-                            {
-                                foreach (var list in Items)
-                                {
-                                    dt.Rows.Add(list["INPUT_WS"], list["INPUT_NO"], list["INPUT_DATE"], list["INPUT_ITEM"], list["INPUT_IN_QTY"], list["INPUT_LOIM"], list["INPUT_TYPE"], list["INPUT_SUPPLIER"], list["INPUT_PLACE"],
-                                                list["INPUT_ORDER"], list["INPUT_USD"], list["INPUT_INVOICE"], list["INPUT_PK_AMOUNT"], list["INPUT_REM_QTY"], list["INPUT_REM_AMOUNT"], list["INPUT_SUPPLIER1"], "PENDING", "0");
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (rows["Req_No"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
-                                            }
-                                        }
-                                    }
-                                }
-                                //Fetch DT for selected Status
-                                if (status == -1)
-                                {
-                                    status = 0;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
-                            {
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (ItemsArray[i]["INPUT_NO"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                dt.Rows.Add(ItemsArray[i]["INPUT_WS"], ItemsArray[i]["INPUT_NO"], ItemsArray[i]["INPUT_DATE"], ItemsArray[i]["INPUT_ITEM"], ItemsArray[i]["INPUT_IN_QTY"], ItemsArray[i]["INPUT_LOIM"], ItemsArray[i]["INPUT_TYPE"], ItemsArray[i]["INPUT_SUPPLIER"], ItemsArray[i]["INPUT_PLACE"],
-                                                            ItemsArray[i]["INPUT_ORDER"], ItemsArray[i]["INPUT_USD"], ItemsArray[i]["INPUT_INVOICE"], ItemsArray[i]["INPUT_PK_AMOUNT"], ItemsArray[i]["INPUT_REM_QTY"], ItemsArray[i]["INPUT_REM_AMOUNT"], ItemsArray[i]["INPUT_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                            }
-                                        }
-                                    }
-                                }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 1;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                        }
-                    }
-                    else if (Mode == 46) // WIMS-ADMIN => Payment Vouchers (PV)
-                    {
-                        URL += "/adm/GetPV?from_date=" + from_Date + "&to_date=" + to_Date + "&project=" + project;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("PV_WS", typeof(string));
-                            dt.Columns.Add("Payment_Voucher", typeof(string));
-                            dt.Columns.Add("Date", typeof(string));
-                            dt.Columns.Add("Type", typeof(string));
-                            dt.Columns.Add("Amount", typeof(decimal));
-                            dt.Columns.Add("Status", typeof(string));
-
-                            dt.Columns.Add("PV_SYSCODE", typeof(string));
-                            dt.Columns.Add("PV_LOIM", typeof(string));
-                            dt.Columns.Add("PV_SUPPLIER", typeof(string));
-                            dt.Columns.Add("SUPP_NAME", typeof(string));
-
-                            dt.Columns.Add("PV_ORDER", typeof(string));
-                            dt.Columns.Add("PV_ITEM", typeof(string));
-                            dt.Columns.Add("PV_RUSER", typeof(string));
-                            dt.Columns.Add("PV_RNAME", typeof(string));
-                            dt.Columns.Add("PV_DEP", typeof(string));
-
-                            dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
-                            dt.Columns.Add("PV_CAN_STATUS", typeof(string));
-                            dt.Columns.Add("PV_SUPPLIER1", typeof(string));
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
-                            dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
-                            dtStatus = GetStatus();
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
-                            {
-                                foreach (var list in Items)
-                                {
-                                    dt.Rows.Add(list["PV_WS"], list["PV_NO"], list["PV_DATE"], list["PV_TYPE"], list["PV_AMOUNT"], list["PV_PSTATUS"],
-                                         list["PV_SYSCODE"], list["PV_LOIM"], list["PV_SUPPLIER"], list["SUPP_NAME"],
-                                        list["PV_ORDER"], list["PV_ITEM"], list["PV_RUSER"], list["PV_RNAME"], list["PV_DEP"],
-                                        list["PV_CREATE_DESIG"], list["PV_CAN_STATUS"], list["PV_SUPPLIER1"], "PENDING", "0"
-                                        );
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (rows["Payment_Voucher"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
-                                            }
-                                        }
-                                    }
-                                }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 0;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
-                            {
-                                decimal limit = 0.00m;
-                                DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
-                                if (LimitRow.Length != 0)
-                                {
-                                    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
-                                }
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) < limit))
-                                            {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                            ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                            ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                            ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                            ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 1;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
-                            {
-                                decimal limit = 0.00m;
-                                DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
-                                if (LimitRow.Length != 0)
-                                {
-                                    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
-                                }
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
-                                            {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                            ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                            ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                            ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                            ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 1;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                        }
-                    }
-                    else if (Mode == 121) // ECS => Payment Approval
-                    {
-                        URL = string.Empty;      
-                        URL = "https://ecsapi.daewoo.net.pk/api/ecs/v1/getPAFList";
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("PaymentApprovalId", typeof(long));
-                            dt.Columns.Add("RefNo", typeof(string));
-                            dt.Columns.Add("GLCode", typeof(string));
-                            dt.Columns.Add("CompanyName", typeof(string));
-                            dt.Columns.Add("Department", typeof(string));
-                            dt.Columns.Add("TypeName", typeof(string));
-                            dt.Columns.Add("Amount", typeof(decimal));
-
-                            dt.Columns.Add("Description", typeof(string));
-                            dt.Columns.Add("AddedBy", typeof(string));
-                            dt.Columns.Add("CreatedDate", typeof(string));
-
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(int));
-
-                            dtLimit = HttpContext.Current.Session["dtObjects"] as DataTable;
-                            dtStatus = GetStatus();
-                            if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) //Initiator-1,2
-                            {
-                                foreach (var list in Items)
-                                {
-                                    dt.Rows.Add(list["PaymentApprovalId"], list["RefNo"], list["GLCode"], list["CompanyName"], list["DEPARTMENT"], list["TypeName"], list["Amount"], list["Description"], list["AddedBy"],
-                                                list["CreatedDate"], "PENDING", "0"
-                                        );
-                                }
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    foreach (DataRow rows in dt.Rows)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (rows["RefNo"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                rows["ApprovalStatus"] = dr["STATUS"].ToString();
-                                                rows["StatusId"] = Convert.ToInt32(dr["STATUSID"]);
-                                            }
-                                        }
-                                    }
-                                }
-                                //Fetch DT for selected Status
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 0;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
-                            {
-                                //decimal limit = 0.00m;
-                                //DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
-                                //if (LimitRow.Length != 0)
-                                //{
-                                //    limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
-                                //}
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 1;
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1) // Approver-1
-                            {
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 2)
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 2; // Approved by Authorizer
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                            else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-2
-                            {
-                                var ItemsArray = Items.ToArray();
-                                if (dtStatus.Rows.Count > 0)
-                                {
-                                    dt = dt.Clone();
-                                    for (int i = 0; i < ItemsArray.Length; i++)
-                                    {
-                                        foreach (DataRow dr in dtStatus.Rows)
-                                        {
-                                            if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
-                                            {
-                                                if (Convert.ToInt32(dr["STATUSID"]) == 4)
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                                else
-                                                {
-                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (status == -1 || status == 0)
-                                {
-                                    status = 4; // Approved by Approver 1
-                                }
-                                DataRow[] rslt = dt.Select("StatusId=" + status);
-                                dt = dt.Clone();
-                                foreach (DataRow r in rslt)
-                                {
-                                    dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
-                                }
-                            }
-                        }
-                    }
+                    
                 }
                 if (dt.Rows.Count > 0)
                 {
@@ -1516,6 +2112,7 @@ namespace EApproval.Utility
         {
             try
             {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
                 DataTable dt = new DataTable();
                 DataTable dtApprovalAuth = FetchStatus(Mode, Req_No);
                 using (var client = new WebClient())
@@ -1523,264 +2120,505 @@ namespace EApproval.Utility
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
                     string URL = "https://eapproval.daewoo.net.pk:7867/api/wims";
-                    if (Mode == 41) // WIMS-ADMIN => Requests
+                    //WIMS-ADMIN
+                    if (project_id == "26")
                     {
-                        URL += "/adm/GetTakeInRequestWise?req_no=" + Req_No;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
+                        if (Mode == 41) // WIMS-ADMIN => Requests
                         {
-                            dt.Columns.Add("WS_NAME", typeof(string));
-                            dt.Columns.Add("REQ_NO", typeof(string));
-                            dt.Columns.Add("INREQ_SEQ", typeof(string));
-                            dt.Columns.Add("Date", typeof(string));
-                            dt.Columns.Add("INREQ_SYSCODE", typeof(string));
-                            dt.Columns.Add("INREQ_LOIM", typeof(string));
-                            dt.Columns.Add("INREQ_TYPE", typeof(string));
-                            dt.Columns.Add("INREQ_PART_SEQ", typeof(string));
-                            dt.Columns.Add("PART_NO", typeof(string));
-                            dt.Columns.Add("PART_NAME", typeof(string));
-                            dt.Columns.Add("PART_UOM", typeof(string));
-                            dt.Columns.Add("PART_MAKER", typeof(string));
-                            dt.Columns.Add("PART_MODEL", typeof(string));
-
-                            dt.Columns.Add("PART_LOCATION", typeof(string));
-                            dt.Columns.Add("INREQ_ORDER", typeof(string));
-                            dt.Columns.Add("INREQ_STOCK", typeof(decimal));
-                            dt.Columns.Add("Qty", typeof(int));
-                            dt.Columns.Add("INREQ_REM_QTY", typeof(decimal));
-                            dt.Columns.Add("INREQ_REM_RT", typeof(string));
-                            dt.Columns.Add("INREQ_REM_PO", typeof(string));
-                            dt.Columns.Add("INREQ_RATE", typeof(string));
-                            dt.Columns.Add("INREQ_AMOUNT", typeof(decimal));
-                            dt.Columns.Add("UFOR", typeof(string));
-                            dt.Columns.Add("INREQ_REMARK", typeof(string));
-
-                            dt.Columns.Add("INREQ_STATUS", typeof(string));
-                            dt.Columns.Add("INREQ_RDATE", typeof(string));
-                            dt.Columns.Add("INREQ_RUSER", typeof(string));
-                            dt.Columns.Add("INREQ_SYNC", typeof(string));
-                            dt.Columns.Add("INREQ_PROJECT", typeof(string));
-
-                            dt.Columns.Add("ApprovalStatus", typeof(string));
-                            dt.Columns.Add("StatusId", typeof(string));
-
-                            foreach (var list in Items)
-                            {
-                                dt.Rows.Add(list["INREQ_WS"], list["INREQ_NO"], list["INREQ_SEQ"], list["INREQ_DATE"], list["INREQ_SYSCODE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_PART_SEQ"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"], list["PART_MODEL"],
-                                            list["PART_LOCATION"], list["INREQ_ORDER"], list["INREQ_STOCK"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], list["INREQ_REM_RT"], list["INREQ_REM_PO"], list["INREQ_RATE"], list["INREQ_AMOUNT"], list["INREQ_UFOR"], list["INREQ_REMARK"],
-                                            list["INREQ_STATUS"], list["INREQ_RDATE"], list["INREQ_RUSER"], list["INREQ_SYNC"], list["INREQ_PROJECT"], "", "");
-                            }
-                        }
-                    }
-                    else if (Mode == 43) // WIMS_AMD_PO
-                    {
-                        URL += "/adm/GetPoRequestPrint?req_no=" + Req_No;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("SUPP_NAME", typeof(string));
-                            dt.Columns.Add("SUPP_ADDRESS", typeof(string));
-                            dt.Columns.Add("SUPP_CITY", typeof(string));
-                            dt.Columns.Add("SUPP_PHONE", typeof(string));
-                            dt.Columns.Add("SUPP_MOBILE_NO", typeof(string));
-                            dt.Columns.Add("SUPP_FAX", typeof(string));
-                            dt.Columns.Add("SUPP_EMAIL", typeof(string));
-                            dt.Columns.Add("PO_NO", typeof(string));
-                            dt.Columns.Add("PO_DATE", typeof(string));
-                            dt.Columns.Add("PO_VENDOR_STATUS", typeof(string));
-
-                            dt.Columns.Add("PO_DEL_TERM", typeof(string));
-                            dt.Columns.Add("PO_PAY_TERM", typeof(string));
-                            dt.Columns.Add("PO_EXP_ARRIVAL", typeof(string));
-                            dt.Columns.Add("PO_REQ_NO", typeof(string));
-                            dt.Columns.Add("PART_NO", typeof(string));
-                            dt.Columns.Add("PART_NAME", typeof(string));
-                            dt.Columns.Add("PO_DESC", typeof(string));
-                            dt.Columns.Add("PO_IN_QTY", typeof(string));
-                            dt.Columns.Add("PART_UOM", typeof(string));
-                            dt.Columns.Add("PO_RATE", typeof(string));
-
-                            dt.Columns.Add("TOTAL_AMOUNT", typeof(decimal));
-                            dt.Columns.Add("DISCOUNT_AMOUNT", typeof(decimal));
-                            dt.Columns.Add("AFTER_DISCOUNT_AMOUNT", typeof(string));
-                            dt.Columns.Add("GST_AMOUNT", typeof(string));
-                            dt.Columns.Add("TAX_AMOUNT", typeof(string));
-                            dt.Columns.Add("PO_G_TOTAL_AMOUNT", typeof(string));
-
-                            dt.Columns.Add("PO_GST_RATE", typeof(string));
-                            dt.Columns.Add("PO_TAX_RATE", typeof(string));
-
-                        }
-                        foreach (var list in Items)
-                        {
-                            dt.Rows.Add(list["SUPP_NAME"], list["SUPP_ADDRESS"], list["SUPP_CITY"], list["SUPP_PHONE"], list["SUPP_MOBILE_NO"], list["SUPP_FAX"], list["SUPP_EMAIL"], list["PO_NO"], list["PO_DATE"], list["PO_VENDOR_STATUS"],
-                                        list["PO_DEL_TERM"], list["PO_PAY_TERM"], list["PO_EXP_ARRIVAL"], list["PO_REQ_NO"], list["PART_NO"], list["PART_NAME"], list["PO_DESC"], list["PO_IN_QTY"], list["PART_UOM"], list["PO_RATE"],
-                                        list["TOTAL_AMOUNT"], list["DISCOUNT_AMOUNT"], list["AFTER_DISCOUNT_AMOUNT"], list["GST_AMOUNT"], list["TAX_AMOUNT"], list["PO_G_TOTAL_AMOUNT"], list["PO_GST_RATE"], list["PO_TAX_RATE"]);
-                        }
-                    }
-                    else if (Mode == 44) // WIMS_ADM_GRN
-                    {
-                        URL += "/adm/GetGRNWise?req_no=" + Req_No;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("GRN_WSNAME", typeof(string));
-                            dt.Columns.Add("GRN_NO", typeof(string));
-                            dt.Columns.Add("GRN_DATE", typeof(string));
-                            dt.Columns.Add("GRN_REQ_NO", typeof(string));
-                            dt.Columns.Add("GRN_REQ_DATE", typeof(string));
-                            dt.Columns.Add("GRN_PO_NO", typeof(string));
-                            dt.Columns.Add("GRN_PO_DATE", typeof(string));
-                            dt.Columns.Add("PART_NO", typeof(string));
-                            dt.Columns.Add("PART_NAME", typeof(string));
-                            dt.Columns.Add("PART_UOM", typeof(string));
-                            dt.Columns.Add("PART_MAKER", typeof(string));
-                            dt.Columns.Add("GRN_REQ_QTY", typeof(decimal));
-                            dt.Columns.Add("GRN_IN_QTY", typeof(decimal));
-                            dt.Columns.Add("GRN_BAL_QTY", typeof(decimal));
-                            dt.Columns.Add("GRN_REMARK", typeof(string));
-                        }
-                        foreach (var list in Items)
-                        {
-                            dt.Rows.Add(list["GRN_WSNAME"], list["GRN_NO"], list["GRN_DATE"], list["GRN_REQ_NO"], list["GRN_REQ_DATE"], list["GRN_PO_NO"], list["GRN_PO_DATE"], list["PART_NO"], list["PART_NAME"],
-                                        list["PART_UOM"], list["PART_MAKER"], list["GRN_REQ_QTY"], list["GRN_IN_QTY"], list["GRN_BAL_QTY"], list["GRN_REMARK"]);
-                        }
-                    }
-                    else if (Mode == 45) // WIMS_ADM_TAKEIN
-                    {
-                        URL += "/adm/GetTakeInWise?req_no=" + Req_No;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
-                        {
-                            dt.Columns.Add("INPUT_NO", typeof(string));
-                            dt.Columns.Add("INPUT_WS", typeof(string));
-                            dt.Columns.Add("INPUT_DATE", typeof(string));
-                            dt.Columns.Add("INPUT_SUPPLIER", typeof(string));
-                            dt.Columns.Add("PART_NO", typeof(string));
-                            dt.Columns.Add("PART_NAME", typeof(string));
-                            dt.Columns.Add("PART_UOM", typeof(string));
-                            dt.Columns.Add("PART_MAKER", typeof(string));
-
-                            dt.Columns.Add("INPUT_REQ_NO", typeof(string));
-                            dt.Columns.Add("INPUT_REQ_DATE", typeof(string));
-                            dt.Columns.Add("INPUT_GRN_NO", typeof(string));
-                            dt.Columns.Add("INPUT_GRN_DATE", typeof(string));
-                            dt.Columns.Add("INPUT_IN_QTY", typeof(decimal));
-                            dt.Columns.Add("INPUT_PK_RATE", typeof(decimal));
-                            dt.Columns.Add("INPUT_PK_AMOUNT", typeof(decimal));
-                            dt.Columns.Add("INPUT_REMARK", typeof(string));
-                        }
-                        foreach (var list in Items)
-                        {
-                            dt.Rows.Add(list["INPUT_NO"], list["INPUT_WS"], list["INPUT_DATE"], list["INPUT_SUPPLIER"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"],
-                                        list["INPUT_REQ_NO"], list["INPUT_REQ_DATE"], list["INPUT_GRN_NO"], list["INPUT_GRN_DATE"], list["INPUT_IN_QTY"], list["INPUT_PK_RATE"], list["INPUT_PK_AMOUNT"], list["INPUT_REMARK"]);
-                        }
-
-                    }
-                    else if (Mode == 46) // WIMS_ADM_PV
-                    {
-                        var ws_name = string.Empty;
-                        int ProjectId = 0;
-                        URL += "/adm/GetPVWise?req_no=" + Req_No; // Get Workshop and Project against Req_No
-                        var APIRes = client.DownloadString(URL);
-                        JObject APIparsed = JObject.Parse(APIRes);
-                        var APIItems = APIparsed["CSubTypes"];
-                        if (APIparsed.Root.HasValues)
-                        {
-                            foreach (var data in APIItems)
-                            {
-                                ws_name = data["PV_WS"].ToString();
-                                ProjectId = Convert.ToInt32(data["PV_PROJECT"]);
-                            }
-
-                            URL = string.Empty;
-                            URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
+                            URL += "/adm/GetTakeInRequestWise?req_no=" + Req_No;
                             var result = client.DownloadString(URL);
                             JObject parsed = JObject.Parse(result);
                             var Items = parsed["CSubTypes"];
                             if (parsed.Root.HasValues)
                             {
-                                dt.Columns.Add("PV_LOIM", typeof(string));
-                                dt.Columns.Add("PV_PROJECT", typeof(string));
-                                dt.Columns.Add("PV_DATE", typeof(string));
-                                dt.Columns.Add("PV_DEP", typeof(string));
-                                dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
-                                dt.Columns.Add("PV_CREATE_USER", typeof(string));
-                                dt.Columns.Add("PV_NO", typeof(string));
-                                dt.Columns.Add("PV_DESC1", typeof(string));
+                                dt.Columns.Add("WS_NAME", typeof(string));
+                                dt.Columns.Add("REQ_NO", typeof(string));
+                                dt.Columns.Add("INREQ_SEQ", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("INREQ_SYSCODE", typeof(string));
+                                dt.Columns.Add("INREQ_LOIM", typeof(string));
+                                dt.Columns.Add("INREQ_TYPE", typeof(string));
+                                dt.Columns.Add("INREQ_PART_SEQ", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+                                dt.Columns.Add("PART_MODEL", typeof(string));
 
-                                dt.Columns.Add("PV_AMT1", typeof(string));
-                                dt.Columns.Add("PV_DESC2", typeof(string));
-                                dt.Columns.Add("PV_RATE1", typeof(string));
-                                dt.Columns.Add("PV_AMT2", typeof(string));
-                                dt.Columns.Add("PV_DESC3", typeof(string));
-                                dt.Columns.Add("PV_RATE2", typeof(string));
-                                dt.Columns.Add("PV_AMT3", typeof(string));
-                                dt.Columns.Add("TOTAL_AMOUNT", typeof(string));
+                                dt.Columns.Add("PART_LOCATION", typeof(string));
+                                dt.Columns.Add("INREQ_ORDER", typeof(string));
+                                dt.Columns.Add("INREQ_STOCK", typeof(decimal));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("INREQ_REM_QTY", typeof(decimal));
+                                dt.Columns.Add("INREQ_REM_RT", typeof(string));
+                                dt.Columns.Add("INREQ_REM_PO", typeof(string));
+                                dt.Columns.Add("INREQ_RATE", typeof(string));
+                                dt.Columns.Add("INREQ_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("UFOR", typeof(string));
+                                dt.Columns.Add("INREQ_REMARK", typeof(string));
 
-                                dt.Columns.Add("PV_DESC4", typeof(string));
-                                dt.Columns.Add("PV_RATE3", typeof(string));
-                                dt.Columns.Add("PV_AMT4", typeof(string));
-                                dt.Columns.Add("PV_DESC5", typeof(string));
-                                dt.Columns.Add("PV_RATE4", typeof(string));
-                                dt.Columns.Add("PV_AMT5", typeof(string));
-                                dt.Columns.Add("PV_DESC6", typeof(string));
-                                dt.Columns.Add("PV_RATE5", typeof(string));
-                                dt.Columns.Add("PV_AMT6", typeof(string));
+                                dt.Columns.Add("INREQ_STATUS", typeof(string));
+                                dt.Columns.Add("INREQ_RDATE", typeof(string));
+                                dt.Columns.Add("INREQ_RUSER", typeof(string));
+                                dt.Columns.Add("INREQ_SYNC", typeof(string));
+                                dt.Columns.Add("INREQ_PROJECT", typeof(string));
 
-                                dt.Columns.Add("PV_DESC7", typeof(string));
-                                dt.Columns.Add("PV_RATE6", typeof(string));
-                                dt.Columns.Add("PV_AMT7", typeof(string));
-                                dt.Columns.Add("PV_SUPPLIER", typeof(string));
-                                dt.Columns.Add("PV_INVOICE_NO", typeof(string));
-                                dt.Columns.Add("TOTAL_AFTER_TAX_AMOUNT", typeof(string));
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(string));
+
+                                foreach (var list in Items)
+                                {
+                                    dt.Rows.Add(list["INREQ_WS"], list["INREQ_NO"], list["INREQ_SEQ"], list["INREQ_DATE"], list["INREQ_SYSCODE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_PART_SEQ"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"], list["PART_MODEL"],
+                                                list["PART_LOCATION"], list["INREQ_ORDER"], list["INREQ_STOCK"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], list["INREQ_REM_RT"], list["INREQ_REM_PO"], list["INREQ_RATE"], list["INREQ_AMOUNT"], list["INREQ_UFOR"], list["INREQ_REMARK"],
+                                                list["INREQ_STATUS"], list["INREQ_RDATE"], list["INREQ_RUSER"], list["INREQ_SYNC"], list["INREQ_PROJECT"], "", "");
+                                }
+                            }
+                        }
+                        else if (Mode == 43) // WIMS_AMD_PO
+                        {
+                            URL += "/adm/GetPoRequestPrint?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+                                dt.Columns.Add("SUPP_ADDRESS", typeof(string));
+                                dt.Columns.Add("SUPP_CITY", typeof(string));
+                                dt.Columns.Add("SUPP_PHONE", typeof(string));
+                                dt.Columns.Add("SUPP_MOBILE_NO", typeof(string));
+                                dt.Columns.Add("SUPP_FAX", typeof(string));
+                                dt.Columns.Add("SUPP_EMAIL", typeof(string));
+                                dt.Columns.Add("PO_NO", typeof(string));
+                                dt.Columns.Add("PO_DATE", typeof(string));
+                                dt.Columns.Add("PO_VENDOR_STATUS", typeof(string));
+
+                                dt.Columns.Add("PO_DEL_TERM", typeof(string));
+                                dt.Columns.Add("PO_PAY_TERM", typeof(string));
+                                dt.Columns.Add("PO_EXP_ARRIVAL", typeof(string));
+                                dt.Columns.Add("PO_REQ_NO", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PO_DESC", typeof(string));
+                                dt.Columns.Add("PO_IN_QTY", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PO_RATE", typeof(string));
+
+                                dt.Columns.Add("TOTAL_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("DISCOUNT_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("AFTER_DISCOUNT_AMOUNT", typeof(string));
+                                dt.Columns.Add("GST_AMOUNT", typeof(string));
+                                dt.Columns.Add("TAX_AMOUNT", typeof(string));
+                                dt.Columns.Add("PO_G_TOTAL_AMOUNT", typeof(string));
+
+                                dt.Columns.Add("PO_GST_RATE", typeof(string));
+                                dt.Columns.Add("PO_TAX_RATE", typeof(string));
+
                             }
                             foreach (var list in Items)
                             {
-                                dt.Rows.Add(list["PV_LOIM"], list["PV_PROJECT"], list["PV_DATE"], list["PV_DEP"], list["PV_CREATE_DESIG"], list["PV_CREATE_USER"], list["PV_NO"], list["PV_DESC1"],
-                                            list["PV_AMT1"], list["PV_DESC2"], list["PV_RATE1"], list["PV_AMT2"], list["PV_DESC3"], list["PV_RATE2"], list["PV_AMT3"], list["TOTAL_AMOUNT"],
-                                            list["PV_DESC4"], list["PV_RATE3"], list["PV_AMT4"], list["PV_DESC5"], list["PV_RATE4"], list["PV_AMT5"], list["PV_DESC6"], list["PV_RATE5"], list["PV_AMT6"],
-                                            list["PV_DESC7"], list["PV_RATE6"], list["PV_AMT7"], list["PV_SUPPLIER"], list["PV_INVOICE_NO"], list["TOTAL_AFTER_TAX_AMOUNT"]);
+                                dt.Rows.Add(list["SUPP_NAME"], list["SUPP_ADDRESS"], list["SUPP_CITY"], list["SUPP_PHONE"], list["SUPP_MOBILE_NO"], list["SUPP_FAX"], list["SUPP_EMAIL"], list["PO_NO"], list["PO_DATE"], list["PO_VENDOR_STATUS"],
+                                            list["PO_DEL_TERM"], list["PO_PAY_TERM"], list["PO_EXP_ARRIVAL"], list["PO_REQ_NO"], list["PART_NO"], list["PART_NAME"], list["PO_DESC"], list["PO_IN_QTY"], list["PART_UOM"], list["PO_RATE"],
+                                            list["TOTAL_AMOUNT"], list["DISCOUNT_AMOUNT"], list["AFTER_DISCOUNT_AMOUNT"], list["GST_AMOUNT"], list["TAX_AMOUNT"], list["PO_G_TOTAL_AMOUNT"], list["PO_GST_RATE"], list["PO_TAX_RATE"]);
+                            }
+                        }
+                        else if (Mode == 44) // WIMS_ADM_GRN
+                        {
+                            URL += "/adm/GetGRNWise?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("GRN_WSNAME", typeof(string));
+                                dt.Columns.Add("GRN_NO", typeof(string));
+                                dt.Columns.Add("GRN_DATE", typeof(string));
+                                dt.Columns.Add("GRN_REQ_NO", typeof(string));
+                                dt.Columns.Add("GRN_REQ_DATE", typeof(string));
+                                dt.Columns.Add("GRN_PO_NO", typeof(string));
+                                dt.Columns.Add("GRN_PO_DATE", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+                                dt.Columns.Add("GRN_REQ_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_IN_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_BAL_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_REMARK", typeof(string));
+                            }
+                            foreach (var list in Items)
+                            {
+                                dt.Rows.Add(list["GRN_WSNAME"], list["GRN_NO"], list["GRN_DATE"], list["GRN_REQ_NO"], list["GRN_REQ_DATE"], list["GRN_PO_NO"], list["GRN_PO_DATE"], list["PART_NO"], list["PART_NAME"],
+                                            list["PART_UOM"], list["PART_MAKER"], list["GRN_REQ_QTY"], list["GRN_IN_QTY"], list["GRN_BAL_QTY"], list["GRN_REMARK"]);
+                            }
+                        }
+                        else if (Mode == 45) // WIMS_ADM_TAKEIN
+                        {
+                            URL += "/adm/GetTakeInWise?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("INPUT_NO", typeof(string));
+                                dt.Columns.Add("INPUT_WS", typeof(string));
+                                dt.Columns.Add("INPUT_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_SUPPLIER", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+
+                                dt.Columns.Add("INPUT_REQ_NO", typeof(string));
+                                dt.Columns.Add("INPUT_REQ_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_GRN_NO", typeof(string));
+                                dt.Columns.Add("INPUT_GRN_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_IN_QTY", typeof(decimal));
+                                dt.Columns.Add("INPUT_PK_RATE", typeof(decimal));
+                                dt.Columns.Add("INPUT_PK_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("INPUT_REMARK", typeof(string));
+                            }
+                            foreach (var list in Items)
+                            {
+                                dt.Rows.Add(list["INPUT_NO"], list["INPUT_WS"], list["INPUT_DATE"], list["INPUT_SUPPLIER"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"],
+                                            list["INPUT_REQ_NO"], list["INPUT_REQ_DATE"], list["INPUT_GRN_NO"], list["INPUT_GRN_DATE"], list["INPUT_IN_QTY"], list["INPUT_PK_RATE"], list["INPUT_PK_AMOUNT"], list["INPUT_REMARK"]);
+                            }
+
+                        }
+                        else if (Mode == 46) // WIMS_ADM_PV
+                        {
+                            var ws_name = string.Empty;
+                            int ProjectId = 0;
+                            URL += "/adm/GetPVWise?req_no=" + Req_No; // Get Workshop and Project against Req_No
+                            var APIRes = client.DownloadString(URL);
+                            JObject APIparsed = JObject.Parse(APIRes);
+                            var APIItems = APIparsed["CSubTypes"];
+                            if (APIparsed.Root.HasValues)
+                            {
+                                foreach (var data in APIItems)
+                                {
+                                    ws_name = data["PV_WS"].ToString();
+                                    ProjectId = Convert.ToInt32(data["PV_PROJECT"]);
+                                }
+
+                                URL = string.Empty;
+                                URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
+                                var result = client.DownloadString(URL);
+                                JObject parsed = JObject.Parse(result);
+                                var Items = parsed["CSubTypes"];
+                                if (parsed.Root.HasValues)
+                                {
+                                    dt.Columns.Add("PV_LOIM", typeof(string));
+                                    dt.Columns.Add("PV_PROJECT", typeof(string));
+                                    dt.Columns.Add("PV_DATE", typeof(string));
+                                    dt.Columns.Add("PV_DEP", typeof(string));
+                                    dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
+                                    dt.Columns.Add("PV_CREATE_USER", typeof(string));
+                                    dt.Columns.Add("PV_NO", typeof(string));
+                                    dt.Columns.Add("PV_DESC1", typeof(string));
+
+                                    dt.Columns.Add("PV_AMT1", typeof(string));
+                                    dt.Columns.Add("PV_DESC2", typeof(string));
+                                    dt.Columns.Add("PV_RATE1", typeof(string));
+                                    dt.Columns.Add("PV_AMT2", typeof(string));
+                                    dt.Columns.Add("PV_DESC3", typeof(string));
+                                    dt.Columns.Add("PV_RATE2", typeof(string));
+                                    dt.Columns.Add("PV_AMT3", typeof(string));
+                                    dt.Columns.Add("TOTAL_AMOUNT", typeof(string));
+
+                                    dt.Columns.Add("PV_DESC4", typeof(string));
+                                    dt.Columns.Add("PV_RATE3", typeof(string));
+                                    dt.Columns.Add("PV_AMT4", typeof(string));
+                                    dt.Columns.Add("PV_DESC5", typeof(string));
+                                    dt.Columns.Add("PV_RATE4", typeof(string));
+                                    dt.Columns.Add("PV_AMT5", typeof(string));
+                                    dt.Columns.Add("PV_DESC6", typeof(string));
+                                    dt.Columns.Add("PV_RATE5", typeof(string));
+                                    dt.Columns.Add("PV_AMT6", typeof(string));
+
+                                    dt.Columns.Add("PV_DESC7", typeof(string));
+                                    dt.Columns.Add("PV_RATE6", typeof(string));
+                                    dt.Columns.Add("PV_AMT7", typeof(string));
+                                    dt.Columns.Add("PV_SUPPLIER", typeof(string));
+                                    dt.Columns.Add("PV_INVOICE_NO", typeof(string));
+                                    dt.Columns.Add("TOTAL_AFTER_TAX_AMOUNT", typeof(string));
+                                }
+                                foreach (var list in Items)
+                                {
+                                    dt.Rows.Add(list["PV_LOIM"], list["PV_PROJECT"], list["PV_DATE"], list["PV_DEP"], list["PV_CREATE_DESIG"], list["PV_CREATE_USER"], list["PV_NO"], list["PV_DESC1"],
+                                                list["PV_AMT1"], list["PV_DESC2"], list["PV_RATE1"], list["PV_AMT2"], list["PV_DESC3"], list["PV_RATE2"], list["PV_AMT3"], list["TOTAL_AMOUNT"],
+                                                list["PV_DESC4"], list["PV_RATE3"], list["PV_AMT4"], list["PV_DESC5"], list["PV_RATE4"], list["PV_AMT5"], list["PV_DESC6"], list["PV_RATE5"], list["PV_AMT6"],
+                                                list["PV_DESC7"], list["PV_RATE6"], list["PV_AMT7"], list["PV_SUPPLIER"], list["PV_INVOICE_NO"], list["TOTAL_AFTER_TAX_AMOUNT"]);
+                                }
                             }
                         }
                     }
-                    else if (Mode == 121) // ECS => PAF
+                    //WIMS-WORKSHOP
+                    if (project_id == "61")
                     {
-                        URL = "https://ecsapi.daewoo.net.pk/api/ecs/v1/getPAFListById?PaymentApprovalId=" + Req_No;
-                        var RefNo = string.Empty;
-                        var result = client.DownloadString(URL);
-                        JObject parsed = JObject.Parse(result);
-                        var Items = parsed["CSubTypes"];
-                        if (parsed.Root.HasValues)
+                        if (Mode == 100) // WIMS-WORKSHOP => Requests
                         {
-                            dt.Columns.Add("PaymentApprovalId", typeof(long));
-                            dt.Columns.Add("RefNo", typeof(string));
-                            dt.Columns.Add("GLCode", typeof(string));
-                            dt.Columns.Add("CompanyName", typeof(string));
-                            dt.Columns.Add("Division", typeof(string));
-                            dt.Columns.Add("Department", typeof(string));
-                            dt.Columns.Add("TypeName", typeof(string));
-                            dt.Columns.Add("Amount", typeof(decimal));
+                            URL += "/ws/GetTakeInRequestWise?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("WS_NAME", typeof(string));
+                                dt.Columns.Add("REQ_NO", typeof(string));
+                                dt.Columns.Add("INREQ_SEQ", typeof(string));
+                                dt.Columns.Add("Date", typeof(string));
+                                dt.Columns.Add("INREQ_SYSCODE", typeof(string));
+                                dt.Columns.Add("INREQ_LOIM", typeof(string));
+                                dt.Columns.Add("INREQ_TYPE", typeof(string));
+                                dt.Columns.Add("INREQ_PART_SEQ", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+                                dt.Columns.Add("PART_MODEL", typeof(string));
 
-                            dt.Columns.Add("Description", typeof(string));
-                            dt.Columns.Add("AddedBy", typeof(string));
-                            dt.Columns.Add("CreatedDate", typeof(string));
+                                dt.Columns.Add("PART_LOCATION", typeof(string));
+                                dt.Columns.Add("INREQ_ORDER", typeof(string));
+                                dt.Columns.Add("INREQ_STOCK", typeof(decimal));
+                                dt.Columns.Add("Qty", typeof(int));
+                                dt.Columns.Add("INREQ_REM_QTY", typeof(decimal));
+                                dt.Columns.Add("INREQ_REM_RT", typeof(string));
+                                dt.Columns.Add("INREQ_REM_PO", typeof(string));
+                                dt.Columns.Add("INREQ_RATE", typeof(string));
+                                dt.Columns.Add("INREQ_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("UFOR", typeof(string));
+                                dt.Columns.Add("INREQ_REMARK", typeof(string));
 
+                                dt.Columns.Add("INREQ_STATUS", typeof(string));
+                                dt.Columns.Add("INREQ_RDATE", typeof(string));
+                                dt.Columns.Add("INREQ_RUSER", typeof(string));
+                                dt.Columns.Add("INREQ_SYNC", typeof(string));
+                                dt.Columns.Add("INREQ_PROJECT", typeof(string));
+
+                                dt.Columns.Add("ApprovalStatus", typeof(string));
+                                dt.Columns.Add("StatusId", typeof(string));
+
+                                foreach (var list in Items)
+                                {
+                                    dt.Rows.Add(list["INREQ_WS"], list["INREQ_NO"], list["INREQ_SEQ"], list["INREQ_DATE"], list["INREQ_SYSCODE"], list["INREQ_LOIM"], list["INREQ_TYPE"], list["INREQ_PART_SEQ"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"], list["PART_MODEL"],
+                                                list["PART_LOCATION"], list["INREQ_ORDER"], list["INREQ_STOCK"], list["INREQ_REQ_QTY"], list["INREQ_REM_QTY"], list["INREQ_REM_RT"], list["INREQ_REM_PO"], list["INREQ_RATE"], list["INREQ_AMOUNT"], list["INREQ_UFOR"], list["INREQ_REMARK"],
+                                                list["INREQ_STATUS"], list["INREQ_RDATE"], list["INREQ_RUSER"], list["INREQ_SYNC"], list["INREQ_PROJECT"], "", "");
+                                }
+                            }
+                        }
+                        else if (Mode == 101) // WIMS-WORKSHOP => PO
+                        {
+                            URL += "/ws/GetPoRequestPrint?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("SUPP_NAME", typeof(string));
+                                dt.Columns.Add("SUPP_ADDRESS", typeof(string));
+                                dt.Columns.Add("SUPP_CITY", typeof(string));
+                                dt.Columns.Add("SUPP_PHONE", typeof(string));
+                                dt.Columns.Add("SUPP_MOBILE_NO", typeof(string));
+                                dt.Columns.Add("SUPP_FAX", typeof(string));
+                                dt.Columns.Add("SUPP_EMAIL", typeof(string));
+                                dt.Columns.Add("PO_NO", typeof(string));
+                                dt.Columns.Add("PO_DATE", typeof(string));
+                                dt.Columns.Add("PO_VENDOR_STATUS", typeof(string));
+
+                                dt.Columns.Add("PO_DEL_TERM", typeof(string));
+                                dt.Columns.Add("PO_PAY_TERM", typeof(string));
+                                dt.Columns.Add("PO_EXP_ARRIVAL", typeof(string));
+                                dt.Columns.Add("PO_REQ_NO", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PO_DESC", typeof(string));
+                                dt.Columns.Add("PO_IN_QTY", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PO_RATE", typeof(string));
+
+                                dt.Columns.Add("TOTAL_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("DISCOUNT_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("AFTER_DISCOUNT_AMOUNT", typeof(string));
+                                dt.Columns.Add("GST_AMOUNT", typeof(string));
+                                dt.Columns.Add("TAX_AMOUNT", typeof(string));
+                                dt.Columns.Add("PO_G_TOTAL_AMOUNT", typeof(string));
+
+                                dt.Columns.Add("PO_GST_RATE", typeof(string));
+                                dt.Columns.Add("PO_TAX_RATE", typeof(string));
+
+                            }
                             foreach (var list in Items)
                             {
-                                dt.Rows.Add(list["PaymentApprovalId"], list["RefNo"], list["GLCode"], list["CompanyName"], list["Division"], list["DEPARTMENT"], list["TypeName"], list["Amount"], list["Description"], list["AddedBy"],
-                                            list["CreatedDate"]);
-                                RefNo = list["RefNo"].ToString();
+                                dt.Rows.Add(list["SUPP_NAME"], list["SUPP_ADDRESS"], list["SUPP_CITY"], list["SUPP_PHONE"], list["SUPP_MOBILE_NO"], list["SUPP_FAX"], list["SUPP_EMAIL"], list["PO_NO"], list["PO_DATE"], list["PO_VENDOR_STATUS"],
+                                            list["PO_DEL_TERM"], list["PO_PAY_TERM"], list["PO_EXP_ARRIVAL"], list["PO_REQ_NO"], list["PART_NO"], list["PART_NAME"], list["PO_DESC"], list["PO_IN_QTY"], list["PART_UOM"], list["PO_RATE"],
+                                            list["TOTAL_AMOUNT"], list["DISCOUNT_AMOUNT"], list["AFTER_DISCOUNT_AMOUNT"], list["GST_AMOUNT"], list["TAX_AMOUNT"], list["PO_G_TOTAL_AMOUNT"], list["PO_GST_RATE"], list["PO_TAX_RATE"]);
                             }
-                            dtApprovalAuth = FetchStatus(Mode, RefNo);
+                        }
+                        else if (Mode == 102) // WIMS-WORKSHOP => GRN
+                        {
+                            URL += "/ws/GetGRNWise?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("GRN_WSNAME", typeof(string));
+                                dt.Columns.Add("GRN_NO", typeof(string));
+                                dt.Columns.Add("GRN_DATE", typeof(string));
+                                dt.Columns.Add("GRN_REQ_NO", typeof(string));
+                                dt.Columns.Add("GRN_REQ_DATE", typeof(string));
+                                dt.Columns.Add("GRN_RTI_NO", typeof(string));
+                                dt.Columns.Add("GRN_PO_NO", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+                                dt.Columns.Add("GRN_REQ_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_IN_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_BAL_QTY", typeof(decimal));
+                                dt.Columns.Add("GRN_REMARK", typeof(string));
+                            }
+                            foreach (var list in Items)
+                            {
+                                dt.Rows.Add(list["GRN_WSNAME"], list["GRN_NO"], list["GRN_DATE"], list["GRN_REQ_NO"], list["GRN_REQ_DATE"], list["GRN_RTI_NO"], list["GRN_PO_NO"], list["PART_NO"], list["PART_NAME"],
+                                            list["PART_UOM"], list["PART_MAKER"], list["GRN_REQ_QTY"], list["GRN_IN_QTY"], list["GRN_BAL_QTY"], list["GRN_REMARK"]);
+                            }
+                        }
+                        else if (Mode == 103) // WIMS-WORKSHOP TAKE-IN
+                        {
+                            URL += "/ws/GetTakeInWise?req_no=" + Req_No;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("INPUT_NO", typeof(string));
+                                dt.Columns.Add("INPUT_WS", typeof(string));
+                                dt.Columns.Add("INPUT_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_SUPPLIER", typeof(string));
+                                dt.Columns.Add("PART_NO", typeof(string));
+                                dt.Columns.Add("PART_NAME", typeof(string));
+                                dt.Columns.Add("PART_UOM", typeof(string));
+                                dt.Columns.Add("PART_MAKER", typeof(string));
+
+                                dt.Columns.Add("INPUT_REQ_NO", typeof(string));
+                                dt.Columns.Add("INPUT_REQ_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_GRN_NO", typeof(string));
+                                dt.Columns.Add("INPUT_GRN_DATE", typeof(string));
+                                dt.Columns.Add("INPUT_IN_QTY", typeof(decimal));
+                                dt.Columns.Add("INPUT_PK_RATE", typeof(decimal));
+                                dt.Columns.Add("INPUT_PK_AMOUNT", typeof(decimal));
+                                dt.Columns.Add("INPUT_REMARK", typeof(string));
+                            }
+                            foreach (var list in Items)
+                            {
+                                dt.Rows.Add(list["INPUT_NO"], list["INPUT_WS"], list["INPUT_DATE"], list["INPUT_SUPPLIER"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"],
+                                            list["INPUT_REQ_NO"], list["INPUT_REQ_DATE"], list["INPUT_GRN_NO"], list["INPUT_GRN_DATE"], list["INPUT_IN_QTY"], list["INPUT_PK_RATE"], list["INPUT_PK_AMOUNT"], list["INPUT_REMARK"]);
+                            }
+
+                        }
+                        else if (Mode == 104) // WIMS-WORKSHOP => PV
+                        {
+                            var ws_name = string.Empty;
+                            int ProjectId = 0;
+                            URL += "/ws/GetPVWise?req_no=" + Req_No; // Get Workshop and Project against Req_No
+                            var APIRes = client.DownloadString(URL);
+                            JObject APIparsed = JObject.Parse(APIRes);
+                            var APIItems = APIparsed["CSubTypes"];
+                            if (APIparsed.Root.HasValues)
+                            {
+                                foreach (var data in APIItems)
+                                {
+                                    ws_name = data["PV_WS"].ToString();
+                                    ProjectId = Convert.ToInt32(data["PV_PROJECT"]);
+                                }
+
+                                URL = string.Empty;
+                                URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
+                                var result = client.DownloadString(URL);
+                                JObject parsed = JObject.Parse(result);
+                                var Items = parsed["CSubTypes"];
+                                if (parsed.Root.HasValues)
+                                {
+                                    dt.Columns.Add("PV_LOIM", typeof(string));
+                                    dt.Columns.Add("PV_PROJECT", typeof(string));
+                                    dt.Columns.Add("PV_DATE", typeof(string));
+                                    dt.Columns.Add("PV_DEP", typeof(string));
+                                    dt.Columns.Add("PV_CREATE_DESIG", typeof(string));
+                                    dt.Columns.Add("PV_CREATE_USER", typeof(string));
+                                    dt.Columns.Add("PV_NO", typeof(string));
+                                    dt.Columns.Add("PV_DESC1", typeof(string));
+
+                                    dt.Columns.Add("PV_AMT1", typeof(string));
+                                    dt.Columns.Add("PV_DESC2", typeof(string));
+                                    dt.Columns.Add("PV_RATE1", typeof(string));
+                                    dt.Columns.Add("PV_AMT2", typeof(string));
+                                    dt.Columns.Add("PV_DESC3", typeof(string));
+                                    dt.Columns.Add("PV_RATE2", typeof(string));
+                                    dt.Columns.Add("PV_AMT3", typeof(string));
+                                    dt.Columns.Add("TOTAL_AMOUNT", typeof(string));
+
+                                    dt.Columns.Add("PV_DESC4", typeof(string));
+                                    dt.Columns.Add("PV_RATE3", typeof(string));
+                                    dt.Columns.Add("PV_AMT4", typeof(string));
+                                    dt.Columns.Add("PV_DESC5", typeof(string));
+                                    dt.Columns.Add("PV_RATE4", typeof(string));
+                                    dt.Columns.Add("PV_AMT5", typeof(string));
+                                    dt.Columns.Add("PV_DESC6", typeof(string));
+                                    dt.Columns.Add("PV_RATE5", typeof(string));
+                                    dt.Columns.Add("PV_AMT6", typeof(string));
+
+                                    dt.Columns.Add("PV_DESC7", typeof(string));
+                                    dt.Columns.Add("PV_RATE6", typeof(string));
+                                    dt.Columns.Add("PV_AMT7", typeof(string));
+                                    dt.Columns.Add("PV_SUPPLIER", typeof(string));
+                                    dt.Columns.Add("PV_INVOICE_NO", typeof(string));
+                                    dt.Columns.Add("TOTAL_AFTER_TAX_AMOUNT", typeof(string));
+                                }
+                                foreach (var list in Items)
+                                {
+                                    dt.Rows.Add(list["PV_LOIM"], list["PV_PROJECT"], list["PV_DATE"], list["PV_DEP"], list["PV_CREATE_DESIG"], list["PV_CREATE_USER"], list["PV_NO"], list["PV_DESC1"],
+                                                list["PV_AMT1"], list["PV_DESC2"], list["PV_RATE1"], list["PV_AMT2"], list["PV_DESC3"], list["PV_RATE2"], list["PV_AMT3"], list["TOTAL_AMOUNT"],
+                                                list["PV_DESC4"], list["PV_RATE3"], list["PV_AMT4"], list["PV_DESC5"], list["PV_RATE4"], list["PV_AMT5"], list["PV_DESC6"], list["PV_RATE5"], list["PV_AMT6"],
+                                                list["PV_DESC7"], list["PV_RATE6"], list["PV_AMT7"], list["PV_SUPPLIER"], list["PV_INVOICE_NO"], list["TOTAL_AFTER_TAX_AMOUNT"]);
+                                }
+                            }
+                        }
+                    }
+                    //ECS
+                    else if (project_id == "81")
+                    {
+                        if (Mode == 121) // ECS => PAF
+                        {
+                            URL = "https://ecsapi.daewoo.net.pk/api/ecs/v1/getPAFListById?PaymentApprovalId=" + Req_No;
+                            var RefNo = string.Empty;
+                            var result = client.DownloadString(URL);
+                            JObject parsed = JObject.Parse(result);
+                            var Items = parsed["CSubTypes"];
+                            if (parsed.Root.HasValues)
+                            {
+                                dt.Columns.Add("PaymentApprovalId", typeof(long));
+                                dt.Columns.Add("RefNo", typeof(string));
+                                dt.Columns.Add("GLCode", typeof(string));
+                                dt.Columns.Add("CompanyName", typeof(string));
+                                dt.Columns.Add("Division", typeof(string));
+                                dt.Columns.Add("Department", typeof(string));
+                                dt.Columns.Add("TypeName", typeof(string));
+                                dt.Columns.Add("Amount", typeof(decimal));
+
+                                dt.Columns.Add("Description", typeof(string));
+                                dt.Columns.Add("AddedBy", typeof(string));
+                                dt.Columns.Add("CreatedDate", typeof(string));
+
+                                foreach (var list in Items)
+                                {
+                                    dt.Rows.Add(list["PaymentApprovalId"], list["RefNo"], list["GLCode"], list["CompanyName"], list["Division"], list["DEPARTMENT"], list["TypeName"], list["Amount"], list["Description"], list["AddedBy"],
+                                                list["CreatedDate"]);
+                                    RefNo = list["RefNo"].ToString();
+                                }
+                                dtApprovalAuth = FetchStatus(Mode, RefNo);
+                            }
                         }
                     }
                 }
@@ -1898,7 +2736,7 @@ namespace EApproval.Utility
         {
             Oracle.ManagedDataAccess.Client.OracleCommand oracleCommand = new Oracle.ManagedDataAccess.Client.OracleCommand();
             OracleDataAdapter adapter = new OracleDataAdapter();
-            if (project_id == 26) //WIMS-ADMIN
+            if (project_id == 26 || project_id == 61) //WIMS-ADMIN, WIMS-WORKSHOP
             {
                 string @sql = "SP_APPROVAL_IU";
                 oracleCommand.CommandType = System.Data.CommandType.StoredProcedure;
@@ -1928,9 +2766,9 @@ namespace EApproval.Utility
                     oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_STATUS", OracleDbType = OracleDbType.Int32, Direction = ParameterDirection.Input, Value = Convert.ToInt32(dtStatus.Rows[0]["STATUSID"]) });
                 }
                 oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_REASON", OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input, Value = model.REASON });
-                if (model.FLOWDETAILID == 43 || model.FLOWDETAILID == 46) //WIMS_ADM_PO AND PVs
+                if (model.FLOWDETAILID == 43 || model.FLOWDETAILID == 46 || model.FLOWDETAILID == 101 || model.FLOWDETAILID == 104) //WIMS_ADM, WIMS_WS PO's AND PV's
                 {
-                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // WIMS_ADM => INITIATORS 
+                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // WIMS_ADM, WIMS_WS => INITIATORS 
                     {
                         oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_ISFINALAPPROVAL", OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input, Value = "N" });
                     }
@@ -1941,7 +2779,7 @@ namespace EApproval.Utility
                 }
                 else
                 {
-                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // WIMS_ADM => INITIATORS 
+                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // WIMS_ADM, WIMS_WS => INITIATORS
                     {
                         oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_ISFINALAPPROVAL", OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input, Value = "N" });
                     }
@@ -2006,11 +2844,19 @@ namespace EApproval.Utility
             {
                 HttpResponseMessage response = new HttpResponseMessage();
                 int projectId = Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]);
-                if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26) //WIMS-ADMIN
+                if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26 || Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61) //WIMS-ADMIN, WIMS-WORKSHOP
                 {
-                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 4 && Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 21) // WIMS_ADM => INITIATORS
+                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 4 && Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 21) // WIMS_ADM, WIMS_WS => INITIATORS
                     {
-                        string apiUrl = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
+                        string apiUrl = "";
+                        if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
+                        {
+                             apiUrl = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
+                        }
+                        else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
+                        {
+                             apiUrl = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                        }
                         string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                         using (HttpClient client = new HttpClient())
                         {
@@ -2022,7 +2868,6 @@ namespace EApproval.Utility
                                 if (responseContent == "Record updated successfully")
                                 {
                                     updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
-
                                 }
                                 else
                                 {
@@ -2209,6 +3054,64 @@ namespace EApproval.Utility
                 oracleConnection.Close();
             }
         }
+        [Obsolete]
+        public async Task<Object> LoadWIMS_Dashboard_Status()
+        {
+            try
+            {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
+                DataTable dt = new DataTable();
+                string URL = "";
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //WIMS-ADMIN
+                    if (project_id == "26")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetAdmDbStatus";
+                        //URL = "https://localhost:44360/api/wims/adm/GetAdmDbStatus";
+                    }
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
+                    {
+                        // URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWsDbStatus";
+                        URL = "https://localhost:44360/api/wims/ws/GetWsDbStatus";
+                    }
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("REQ_NO", typeof(string));
+                        dt.Columns.Add("REQ_DESC", typeof(string));
+                        dt.Columns.Add("APPROVED", typeof(int));
+                        dt.Columns.Add("REJECTED", typeof(int));
+                        dt.Columns.Add("PENDING", typeof(int));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["REQ_NO"], list["REQ_DESC"], list["APPROVED"], list["REJECTED"], list["PENDING"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = dt });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
 
         [Obsolete]
         public async Task<Object> GetAssignedProjectByUserId(int UserId)
@@ -2257,6 +3160,235 @@ namespace EApproval.Utility
                 oracleConnection.Close();
             }
         }
+
+        [Obsolete]
+        public async Task<Object> LoadWIMS_Dashboard_PO_AMT(string tenor)
+        {
+            try
+            {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
+                DataTable dt = new DataTable();
+                string URL = "";
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //WIMS-ADMIN
+                    if (project_id == "26")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetAdmDbPoAmt?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/adm/GetAdmDbPoAmt?tenor=" + tenor + "";
+                    }
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
+                    {
+                        //URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + "";
+                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + ""; ;
+                    }
+
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("PO_AMOUNT", typeof(int));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["PO_AMOUNT"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = dt });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
+        [Obsolete]
+        public async Task<Object> LoadWIMS_Dashboard_PV_STATUS_DT(string tenor)
+        {
+            try
+            {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
+                DataTable dt = new DataTable();
+                string URL = "";
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //WIMS-ADMIN
+                    if (project_id == "26")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetAdmDbPVStatusDT?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/adm/GetAdmDbPVStatusDT?tenor=" + tenor + "";
+                    }
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
+                    {
+                        //URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";";
+                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";
+                    }
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("APPROVED", typeof(int));
+                        dt.Columns.Add("REJECTED", typeof(int));
+                        dt.Columns.Add("PENDING", typeof(int));
+                        dt.Columns.Add("TOTAL_PV_NUM", typeof(int));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["APPROVED"], list["REJECTED"], list["PENDING"], list["TOTAL_PV_NUM"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = dt });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
+        [Obsolete]
+        public async Task<Object> LoadWIMS_Dashboard_PV_GRAPH(string tenor)
+        {
+            try
+            {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
+                DataTable dt = new DataTable();
+                string URL = "";
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //WIMS-ADMIN
+                    if (project_id == "26")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetAdmDbPVGraph?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/adm/GetAdmDbPVGraph?tenor=" + tenor + "";
+                    }
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
+                    {
+                        //URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
+                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
+                    }
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("APPROVED", typeof(string));
+                        dt.Columns.Add("REJECTED", typeof(string));
+                        dt.Columns.Add("PENDING", typeof(string));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["APPROVED"], list["REJECTED"], list["PENDING"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = dt });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
+        [Obsolete]
+        public async Task<Object> LoadWIMS_Dashboard_PO_PENDING()
+        {
+            try
+            {
+                string project_id = HttpContext.Current.Session["PROJECTID"].ToString();
+                DataTable dt = new DataTable();
+                string URL = "";
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //WIMS-ADMIN
+                    if (project_id == "26")
+                    {
+                        URL = "https://eapproval.daewoo.net.pk:7867/api/wims/adm/GetAdmDbPoPending";
+                        //URL = "https://localhost:44360/api/wims/adm/GetAdmDbPoPending";
+                    }
+                    //WIMS-WORKSHOP
+                    else if (project_id == "61")
+                    {
+                        //URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoPending";
+                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPoPending";
+                    }
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("PO_NO", typeof(string));
+                        dt.Columns.Add("PO_DATE", typeof(string));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["PO_NO"], list["PO_DATE"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = dt });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
+
         [Obsolete]
         public async Task<Object> LoadWIMS_ADMIN_Dashboard_PO_AMT(string tenor)
         {

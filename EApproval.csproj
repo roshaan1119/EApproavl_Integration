@@ -729,6 +729,7 @@
     <Content Include="css\perfect-scrollbar.css" />
     <Content Include="css\style.css" />
     <Content Include="Details.aspx" />
+    <Content Include="ECS_Dashboard.aspx" />
     <Content Include="Global.asax" />
     <Content Include="icons\avasta\css\style.css" />
     <Content Include="icons\avasta\fonts\avasta.svg" />
@@ -9754,7 +9755,7 @@
     <Content Include="js\plugins-init\widgets-script-init.js" />
     <Content Include="js\settings.js" />
     <Content Include="js\user.js" />
-    <Content Include="WIMSDashboard.aspx" />
+    <Content Include="WIMS_Admin_Dashboard.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Modes.aspx" />
     <Content Include="ProjectDetails.aspx" />
@@ -10564,6 +10565,7 @@
     <Content Include="vendor\webticker\jquery.webticker.min.js" />
     <Content Include="vendor\wnumb\wNumb.js" />
     <Content Include="Web.config" />
+    <Content Include="WIMS_Workshop_Dashboard.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -10590,6 +10592,13 @@
     <Compile Include="Details.aspx.designer.cs">
       <DependentUpon>Details.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ECS_Dashboard.aspx.cs">
+      <DependentUpon>ECS_Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ECS_Dashboard.aspx.designer.cs">
+      <DependentUpon>ECS_Dashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -10599,12 +10608,12 @@
       <DependentUpon>PaymentApprovalReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WIMSDashboard.aspx.cs">
-      <DependentUpon>WIMSDashboard.aspx</DependentUpon>
+    <Compile Include="WIMS_Admin_Dashboard.aspx.cs">
+      <DependentUpon>WIMS_Admin_Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WIMSDashboard.aspx.designer.cs">
-      <DependentUpon>WIMSDashboard.aspx</DependentUpon>
+    <Compile Include="WIMS_Admin_Dashboard.aspx.designer.cs">
+      <DependentUpon>WIMS_Admin_Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -10700,6 +10709,13 @@
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
     <Compile Include="Utility\OracaleManager.cs" />
+    <Compile Include="WIMS_Workshop_Dashboard.aspx.cs">
+      <DependentUpon>WIMS_Workshop_Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WIMS_Workshop_Dashboard.aspx.designer.cs">
+      <DependentUpon>WIMS_Workshop_Dashboard.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\style.css.map" />

@@ -12,7 +12,7 @@
 		 $.ajax({
 			 type: "GET",
 			 contentType: 'application/json; charset=utf-8',
-			 url: "api/dashboard/LoadWIMS_ADMIN_Dashboard_Status",
+			 url: "api/dashboard/LoadWIMS_Dashboard_Status",
 			 dataType: 'json',
 			 success: function (data) {
 				 let Success = data.Success;
@@ -47,7 +47,7 @@
 		 $.ajax({
 			 type: "GET",
 			 contentType: 'application/json; charset=utf-8',
-			 url: "api/dashboard/LoadWIMS_ADMIN_Dashboard_PO_PENDING",
+			 url: "api/dashboard/LoadWIMS_Dashboard_PO_PENDING",
 			 dataType: 'json',
 			 success: function (data) {
 				 let Success = data.Success;
@@ -155,7 +155,7 @@
 		 $.ajax({
 			 type: "GET",
 			 contentType: 'application/json; charset=utf-8',
-			 url: "api/dashboard/LoadWIMS_ADMIN_Dashboard_PV_GRAPH",
+			 url: "api/dashboard/LoadWIMS_Dashboard_PV_GRAPH",
 			 data: { tenor: tenor },
 			 dataType: 'json',
 			 success: function (data) {
@@ -371,7 +371,7 @@
 		 $.ajax({
 			 type: "GET",
 			 contentType: 'application/json; charset=utf-8',
-			 url: "api/dashboard/LoadWIMS_ADMIN_Dashboard_PV_STATUS_DT",
+			 url: "api/dashboard/LoadWIMS_Dashboard_PV_STATUS_DT",
 			 data: { tenor: tenor },
 			 dataType: 'json',
 			 success: function (data) {
@@ -562,7 +562,7 @@
 		$.ajax({
 			type: "GET",
 			contentType: 'application/json; charset=utf-8',
-			url: "api/dashboard/LoadWIMS_ADMIN_Dashboard_PO_AMT",
+			url: "api/dashboard/LoadWIMS_Dashboard_PO_AMT",
 			data: { tenor: tenor },
 			dataType: 'json',
 			success: function (data) {

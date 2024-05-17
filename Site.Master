@@ -266,7 +266,6 @@
             });
         }
         function GetClickedId(ClickedId, FlowDetailId) {
-            debugger;
             if (ClickedId == 'WIMS-ADMIN') {
                 window.location.href = 'Modes.aspx?ProjectType=' + ClickedId + "&Mode=" + FlowDetailId;
             }

@@ -12,49 +12,49 @@ namespace EApproval.Controller
     [RoutePrefix("api/dashboard")]
     public class DashboardController : ApiController
     {
-        [Route("LoadWIMS_ADMIN_Dashboard_Status")]
+        [Route("LoadWIMS_Dashboard_Status")]
         [HttpGet]
         [Obsolete]
-        public async Task<Object> LoadWIMS_ADMIN_Dashboard_Status()
+        public async Task<Object> LoadWIMS_Dashboard_Status()
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.LoadWIMS_ADMIN_Dashboard_Status()).Result;
+            return await Task.FromResult(serviceController.LoadWIMS_Dashboard_Status()).Result;
         }
 
-        [Route("LoadWIMS_ADMIN_Dashboard_PO_AMT")]
+        [Route("LoadWIMS_Dashboard_PO_AMT")]
         [HttpGet]
         [Obsolete]
-        public async Task<Object> LoadWIMS_ADMIN_Dashboard_PO_AMT(string tenor)
+        public async Task<Object> LoadWIMS_Dashboard_PO_AMT(string tenor)
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.LoadWIMS_ADMIN_Dashboard_PO_AMT(tenor)).Result;
+            return await Task.FromResult(serviceController.LoadWIMS_Dashboard_PO_AMT(tenor)).Result;
         }
 
-        [Route("LoadWIMS_ADMIN_Dashboard_PV_STATUS_DT")]
+        [Route("LoadWIMS_Dashboard_PV_STATUS_DT")]
         [HttpGet]
         [Obsolete]
-        public async Task<Object> LoadWIMS_ADMIN_Dashboard_PV_STATUS_DT(string tenor)
+        public async Task<Object> LoadWIMS_Dashboard_PV_STATUS_DT(string tenor)
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.LoadWIMS_ADMIN_Dashboard_PV_STATUS_DT(tenor)).Result;
+            return await Task.FromResult(serviceController.LoadWIMS_Dashboard_PV_STATUS_DT(tenor)).Result;
         }
 
-        [Route("LoadWIMS_ADMIN_Dashboard_PV_GRAPH")]
+        [Route("LoadWIMS_Dashboard_PV_GRAPH")]
         [HttpGet]
         [Obsolete]
-        public async Task<Object> LoadWIMS_ADMIN_Dashboard_PV_GRAPH(string tenor)
+        public async Task<Object> LoadWIMS_Dashboard_PV_GRAPH(string tenor)
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.LoadWIMS_ADMIN_Dashboard_PV_GRAPH(tenor)).Result;
+            return await Task.FromResult(serviceController.LoadWIMS_Dashboard_PV_GRAPH(tenor)).Result;
         }
 
-        [Route("LoadWIMS_ADMIN_Dashboard_PO_PENDING")]
+        [Route("LoadWIMS_Dashboard_PO_PENDING")]
         [HttpGet]
         [Obsolete]
-        public async Task<Object> LoadWIMS_ADMIN_Dashboard_PO_PENDING()
+        public async Task<Object> LoadWIMS_Dashboard_PO_PENDING()
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.LoadWIMS_ADMIN_Dashboard_PO_PENDING()).Result;
+            return await Task.FromResult(serviceController.LoadWIMS_Dashboard_PO_PENDING()).Result;
         }
     }
 }

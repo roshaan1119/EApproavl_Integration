@@ -173,6 +173,46 @@ namespace EApproval.Controller
             OracaleManager serviceController = new OracaleManager();
             return await Task.FromResult(serviceController.GetImagesByRequestId(PaymentApprovalId)).Result;
         }
+        [Route("LoadWIMS_WS_Request")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_Request(int ProjectId, string fromDate, string toDate, int Mode, int status)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
+        }
+        [Route("LoadWIMS_WS_PO")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_PO(int ProjectId, string fromDate, string toDate, int Mode, int status)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
+        }
+        [Route("LoadWIMS_WS_GRN")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_GRN(int ProjectId, string fromDate, string toDate, int Mode, int status)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
+        }
+        [Route("LoadWIMS_WS_TakeIn")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_TakeIn(int ProjectId, string fromDate, string toDate, int Mode, int status)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
+        }
+        [Route("LoadWIMS_WS_PV")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_PV(int ProjectId, string fromDate, string toDate, int Mode, int status)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
+        }
         //[Route("ExporttoPDF")]
         //[HttpGet]
         //[Obsolete]

@@ -531,7 +531,7 @@
                     success: function (data) {
                         let list = data.Data;
                         if (data.Success) {
-                            LoadUserPermissions(list.Session_USERROLEID, list.Session_USERID);
+                            LoadUserPermissions(list.Session_USERROLEID, list.Session_USERID, list.Session_PROJECTID);
                         }
                         else {
                             sweetAlert("", "Invalid Credentials", "error");
@@ -553,7 +553,7 @@
                         success: function (data) {
                             let list = data.Data;
                             if (data.Success) {
-                                LoadUserPermissions(list.Session_USERROLEID, list.Session_USERID);
+                                LoadUserPermissions(list.Session_USERROLEID, list.Session_USERID, list.Session_PROJECTID);
                             }
                             else {
                                 sweetAlert("", "Invalid Credentials", "error");
@@ -563,22 +563,24 @@
                 }
             }
         }
-        function LoadUserPermissions(UserRoleId) {
+        function LoadUserPermissions(UserRoleId, user_id, project_id) {
             $.ajax({
                 type: "GET",
                 contentType: 'application/json; charset=utf-8',
                 url: "api/users/LoadUserPermissions",
                 dataType: 'json',
                 success: function (data) {
-                    if (UserRoleId == 40) { // admin
+                    if (project_id == 61) { //WIMS-WORKSHOP
+                        window.location.href = 'WIMS_Workshop_Dashboard.aspx?ProjectType=' + '' + '&Mode=' + '';
+                    }
+                    else if (project_id == 26) { //WIMS-ADMIN
+                        window.location.href = 'WIMS_Admin_Dashboard.aspx?ProjectType=' + '' + '&Mode=' + '';
+                    }
+                    else if (project_id == 81) { //ECS
+                        window.location.href = 'ECS_Dashboard.aspx?ProjectType=' + '' + '&Mode=' + '';
+                    }
+                    else { //Admin 
                         window.location.href = 'Projects.aspx';
-                        //window.location.href = 'WIMSDashboard.aspx?ProjectType=' + '' + '&Mode=' + ''; //'Modes.aspx?ProjectType=' + '' + '&Mode=' + '';
-                    }
-                    else if (UserRoleId == 40) {
-
-                    }
-                    else {
-                        window.location.href = 'WIMSDashboard.aspx?ProjectType=' + '' + '&Mode=' + ''; //'Modes.aspx?ProjectType=' + '' + '&Mode=' + '';
                     }
                 }
             });
