@@ -730,6 +730,67 @@ namespace EApproval.Utility
                 oracleConnection.Close();
             }
         }
+
+        [Obsolete]
+        public async Task<Object> LoadWIMSWSPOTakeIn(string req_No, string ws, int project, string from_Date, string to_Date)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataTable dtApprovalAuth = new DataTable();
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //string URL = "https://eapproval.daewoo.net.pk:7867/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
+                    string URL = "https://localhost:44360/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("INPUT_DATE", typeof(string));
+                        dt.Columns.Add("PO_NO", typeof(string));
+                        dt.Columns.Add("PART_NO", typeof(string));
+                        dt.Columns.Add("PART_NAME", typeof(string));
+                        dt.Columns.Add("INPUT_SUPPLIER", typeof(string));
+                        dt.Columns.Add("PART_UOM", typeof(string));
+                        dt.Columns.Add("PART_MAKER", typeof(string));
+                        dt.Columns.Add("PART_MODEL", typeof(string));
+                        dt.Columns.Add("INPUT_IN_QTY", typeof(int));
+                        dt.Columns.Add("INPUT_PK_RATE", typeof(decimal));
+                        dt.Columns.Add("INPUT_PK_AMOUNT", typeof(decimal));
+                        dt.Columns.Add("INPUT_NO", typeof(string));
+                        dt.Columns.Add("INPUT_REQ_NO", typeof(string));
+                        dt.Columns.Add("INPUT_GRN_NO", typeof(string));
+                        dt.Columns.Add("INPUT_BRAND", typeof(string));
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["INPUT_DATE"], list["PO_NO"], list["PART_NO"], list["PART_NAME"], list["INPUT_SUPPLIER"], list["PART_UOM"], list["PART_MAKER"],
+                                        list["PART_MODEL"], list["INPUT_IN_QTY"], list["INPUT_PK_RATE"], list["INPUT_PK_AMOUNT"], list["INPUT_NO"], list["INPUT_REQ_NO"], 
+                                        list["INPUT_GRN_NO"], list["INPUT_BRAND"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { dt, dtApprovalAuth } });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
         [Obsolete]
         public async Task<Object> LoadContentByProjectId(string from_Date, string to_Date, int project, int Mode, int status = 0)
         {
@@ -2407,7 +2468,7 @@ namespace EApproval.Utility
                                 }
                             }
                         }
-                        else if (Mode == 101) // WIMS-WORKSHOP => PO
+                        else if (Mode == 101 || Mode == 0) // WIMS-WORKSHOP => PO
                         {
                             URL += "/ws/GetPoRequestPrint?req_no=" + Req_No;
                             var result = client.DownloadString(URL);
@@ -2415,6 +2476,7 @@ namespace EApproval.Utility
                             var Items = parsed["CSubTypes"];
                             if (parsed.Root.HasValues)
                             {
+                                dt.Columns.Add("PO_WS", typeof(string));
                                 dt.Columns.Add("SUPP_NAME", typeof(string));
                                 dt.Columns.Add("SUPP_ADDRESS", typeof(string));
                                 dt.Columns.Add("SUPP_CITY", typeof(string));
@@ -2446,13 +2508,14 @@ namespace EApproval.Utility
 
                                 dt.Columns.Add("PO_GST_RATE", typeof(string));
                                 dt.Columns.Add("PO_TAX_RATE", typeof(string));
+                                dt.Columns.Add("PO_PROJECT", typeof(int));
 
                             }
                             foreach (var list in Items)
                             {
-                                dt.Rows.Add(list["SUPP_NAME"], list["SUPP_ADDRESS"], list["SUPP_CITY"], list["SUPP_PHONE"], list["SUPP_MOBILE_NO"], list["SUPP_FAX"], list["SUPP_EMAIL"], list["PO_NO"], list["PO_DATE"], list["PO_VENDOR_STATUS"],
+                                dt.Rows.Add(list["PO_WS"], list["SUPP_NAME"], list["SUPP_ADDRESS"], list["SUPP_CITY"], list["SUPP_PHONE"], list["SUPP_MOBILE_NO"], list["SUPP_FAX"], list["SUPP_EMAIL"], list["PO_NO"], list["PO_DATE"], list["PO_VENDOR_STATUS"],
                                             list["PO_DEL_TERM"], list["PO_PAY_TERM"], list["PO_EXP_ARRIVAL"], list["PO_REQ_NO"], list["PART_NO"], list["PART_NAME"], list["PO_DESC"], list["PO_IN_QTY"], list["PART_UOM"], list["PO_RATE"],
-                                            list["TOTAL_AMOUNT"], list["DISCOUNT_AMOUNT"], list["AFTER_DISCOUNT_AMOUNT"], list["GST_AMOUNT"], list["TAX_AMOUNT"], list["PO_G_TOTAL_AMOUNT"], list["PO_GST_RATE"], list["PO_TAX_RATE"]);
+                                            list["TOTAL_AMOUNT"], list["DISCOUNT_AMOUNT"], list["AFTER_DISCOUNT_AMOUNT"], list["GST_AMOUNT"], list["TAX_AMOUNT"], list["PO_G_TOTAL_AMOUNT"], list["PO_GST_RATE"], list["PO_TAX_RATE"], list["PO_PROJECT"]);
                             }
                         }
                         else if (Mode == 102) // WIMS-WORKSHOP => GRN

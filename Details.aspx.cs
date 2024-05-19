@@ -24,8 +24,9 @@ namespace EApproval
         {
             if (!IsPostBack)
             {
-                BindReport();
+                
             }
+            BindReport();
         }
 
         [Obsolete]
@@ -35,12 +36,18 @@ namespace EApproval
             var Req_No = Request.QueryString["Req_No"].ToString();
             string Project_Id = HttpContext.Current.Session["PROJECTID"].ToString();
             int SecreenId = Convert.ToInt32(Request.QueryString["SecreenId"]);
+            
             DataTable dt = new DataTable();
             DataTable dtApprovalAuth = new DataTable();
             ReportDataSet ds = new ReportDataSet();
             var taskResult = await oracle.GetDetailByRequestNo(SecreenId, Req_No);
             dt = ((dynamic)taskResult).Data.dt as DataTable;
             dtApprovalAuth = ((dynamic)taskResult).Data.dtApprovalAuth as DataTable;
+            if (SecreenId == 0) //PO Take-In Report
+            {
+                var result = await oracle.LoadWIMSWSPOTakeIn(Req_No, dt.Rows[0]["PO_WS"].ToString(), Convert.ToInt32(dt.Rows[0]["PO_PROJECT"]), "20230101", DateTime.Today.ToString("yyyyMMdd"));
+                dt = ((dynamic)result).Data.dt as DataTable;
+            }
             rptViewer.DisplayGroupTree = false;
             //WIMS-ADMIN, WIMS-WORKSHOP
             if (Project_Id == "26" || Project_Id == "61")
@@ -97,6 +104,15 @@ namespace EApproval
                         Reports.WIMS_ADM_SIGNATURE_SUBREPORT sigRpt = new Reports.WIMS_ADM_SIGNATURE_SUBREPORT();
                         rpt.Database.Tables["tbl_WIMS_ADM_PV"].SetDataSource(dt);
                         rpt.Subreports["WIMS_ADM_SIGNATURE_SUBREPORT.rpt"].SetDataSource(dtApprovalAuth);
+                        rptViewer.ReportSource = rpt;
+                    }
+                }
+                else if (SecreenId == 0) //WIMS_WS_PO_TAKEIN
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        Reports.WIMS_PO_TAKEIN_REPORT rpt = new Reports.WIMS_PO_TAKEIN_REPORT();
+                        rpt.Database.Tables["tbl_WIMS_PO_TAKEIN"].SetDataSource(dt);
                         rptViewer.ReportSource = rpt;
                     }
                 }

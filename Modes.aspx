@@ -562,6 +562,7 @@
         </div>
     </div>
 
+    
     <script type="text/javascript">
         var QueryString_PT = '<%= Request.QueryString["ProjectType"].ToString() %>';
         var QueryString_Mode = '<%= Request.QueryString["Mode"].ToString() %>';
@@ -1142,7 +1143,8 @@
                                                 }
                                             }
                                             actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.PO_NO + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
-                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.PO_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
+                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.PO_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
+                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetTakeInByPO(' + "'" + item.PO_NO + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
                                             lst = lst + '<tr><td>' + cbList + '</td><td style=' + rowStyle + '>' + iRowNum + '</td><td style=' + rowStyle + '>' + item.PO_WS + '</td><td style=' + rowStyle + '>' + item.PO_NO + '</td><td style=' + rowStyle + '>' + item.Date + '</td><td style=' + rowStyle + '>' + item.Item + '</td><td style=' + rowStyle + '>' + item.Qty + '</td><td style=' + rowStyle + '>' + item.Amount + '</td><td style=' + rowStyle + '>' + item.ApprovalStatus + '</td><td style=' + rowStyle + '>' + actionLink + '</td></tr>';
                                         });
                                         $("#tblList_PO_WS tbody").append(lst);
@@ -1507,6 +1509,11 @@
         function GetDetailsByRequestId(Req_No) {
             window.open("Details.aspx?Req_No=" + Req_No + "&SecreenId=" + QueryString_Mode, '_blank');
         }
+        function GetTakeInByPO(Req_No, ws) {
+             //+ "&ws=" + ws + "&project=" + ddlProject + "&fromDate=" + fromDate + "&toDate=" + toDate +
+            window.open("Details.aspx?Req_No=" + Req_No + "&SecreenId=" + 0, '_blank');
+        }
+
         function GetSelectedValues(Req_No, RowNo) {
             //WIMS-ADMIN
             if (Project_Id == 26) {

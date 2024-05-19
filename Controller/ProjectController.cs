@@ -213,6 +213,14 @@ namespace EApproval.Controller
             OracaleManager serviceController = new OracaleManager();
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
+        [Route("LoadWIMS_WS_PO_TakeIn")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> LoadWIMS_WS_PO_TakeIn(string Req_No, string Ws, int ProjectId, string fromDate, string toDate)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.LoadWIMSWSPOTakeIn(Req_No, Ws, ProjectId, fromDate, toDate)).Result;
+        }
         //[Route("ExporttoPDF")]
         //[HttpGet]
         //[Obsolete]

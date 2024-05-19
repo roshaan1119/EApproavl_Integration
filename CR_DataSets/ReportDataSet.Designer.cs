@@ -38,6 +38,8 @@ namespace EApproval.CR_DataSets {
         
         private _sp_ReprtViewers_1DataTable _tablesp_ReprtViewers_1;
         
+        private tbl_WIMS_PO_TAKEINDataTable tabletbl_WIMS_PO_TAKEIN;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -86,6 +88,9 @@ namespace EApproval.CR_DataSets {
                 }
                 if ((ds.Tables["sp_ReprtViewers;1"] != null)) {
                     base.Tables.Add(new _sp_ReprtViewers_1DataTable(ds.Tables["sp_ReprtViewers;1"]));
+                }
+                if ((ds.Tables["tbl_WIMS_PO_TAKEIN"] != null)) {
+                    base.Tables.Add(new tbl_WIMS_PO_TAKEINDataTable(ds.Tables["tbl_WIMS_PO_TAKEIN"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -177,6 +182,16 @@ namespace EApproval.CR_DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public tbl_WIMS_PO_TAKEINDataTable tbl_WIMS_PO_TAKEIN {
+            get {
+                return this.tabletbl_WIMS_PO_TAKEIN;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -263,6 +278,9 @@ namespace EApproval.CR_DataSets {
                 if ((ds.Tables["sp_ReprtViewers;1"] != null)) {
                     base.Tables.Add(new _sp_ReprtViewers_1DataTable(ds.Tables["sp_ReprtViewers;1"]));
                 }
+                if ((ds.Tables["tbl_WIMS_PO_TAKEIN"] != null)) {
+                    base.Tables.Add(new tbl_WIMS_PO_TAKEINDataTable(ds.Tables["tbl_WIMS_PO_TAKEIN"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -338,6 +356,12 @@ namespace EApproval.CR_DataSets {
                     this._tablesp_ReprtViewers_1.InitVars();
                 }
             }
+            this.tabletbl_WIMS_PO_TAKEIN = ((tbl_WIMS_PO_TAKEINDataTable)(base.Tables["tbl_WIMS_PO_TAKEIN"]));
+            if ((initTable == true)) {
+                if ((this.tabletbl_WIMS_PO_TAKEIN != null)) {
+                    this.tabletbl_WIMS_PO_TAKEIN.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -362,6 +386,8 @@ namespace EApproval.CR_DataSets {
             base.Tables.Add(this.tabletbl_Signatures);
             this._tablesp_ReprtViewers_1 = new _sp_ReprtViewers_1DataTable();
             base.Tables.Add(this._tablesp_ReprtViewers_1);
+            this.tabletbl_WIMS_PO_TAKEIN = new tbl_WIMS_PO_TAKEINDataTable();
+            base.Tables.Add(this.tabletbl_WIMS_PO_TAKEIN);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -403,6 +429,12 @@ namespace EApproval.CR_DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private bool ShouldSerialize_sp_ReprtViewers_1() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        private bool ShouldSerializetbl_WIMS_PO_TAKEIN() {
             return false;
         }
         
@@ -481,6 +513,9 @@ namespace EApproval.CR_DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public delegate void _sp_ReprtViewers_1RowChangeEventHandler(object sender, _sp_ReprtViewers_1RowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public delegate void tbl_WIMS_PO_TAKEINRowChangeEventHandler(object sender, tbl_WIMS_PO_TAKEINRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -3844,6 +3879,458 @@ namespace EApproval.CR_DataSets {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "_sp_ReprtViewers_1DataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class tbl_WIMS_PO_TAKEINDataTable : global::System.Data.TypedTableBase<tbl_WIMS_PO_TAKEINRow> {
+            
+            private global::System.Data.DataColumn columnINPUT_DATE;
+            
+            private global::System.Data.DataColumn columnPO_NO;
+            
+            private global::System.Data.DataColumn columnPART_NO;
+            
+            private global::System.Data.DataColumn columnPART_NAME;
+            
+            private global::System.Data.DataColumn columnINPUT_SUPPLIER;
+            
+            private global::System.Data.DataColumn columnPART_UOM;
+            
+            private global::System.Data.DataColumn columnPART_MAKER;
+            
+            private global::System.Data.DataColumn columnPART_MODEL;
+            
+            private global::System.Data.DataColumn columnINPUT_IN_QTY;
+            
+            private global::System.Data.DataColumn columnINPUT_PK_RATE;
+            
+            private global::System.Data.DataColumn columnINPUT_PK_AMOUNT;
+            
+            private global::System.Data.DataColumn columnINPUT_NO;
+            
+            private global::System.Data.DataColumn columnINPUT_REQ_NO;
+            
+            private global::System.Data.DataColumn columnINPUT_GRN_NO;
+            
+            private global::System.Data.DataColumn columnINPUT_BRAND;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINDataTable() {
+                this.TableName = "tbl_WIMS_PO_TAKEIN";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal tbl_WIMS_PO_TAKEINDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected tbl_WIMS_PO_TAKEINDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_DATEColumn {
+                get {
+                    return this.columnINPUT_DATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_NOColumn {
+                get {
+                    return this.columnPO_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_NOColumn {
+                get {
+                    return this.columnPART_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_NAMEColumn {
+                get {
+                    return this.columnPART_NAME;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_SUPPLIERColumn {
+                get {
+                    return this.columnINPUT_SUPPLIER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_UOMColumn {
+                get {
+                    return this.columnPART_UOM;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_MAKERColumn {
+                get {
+                    return this.columnPART_MAKER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_MODELColumn {
+                get {
+                    return this.columnPART_MODEL;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_IN_QTYColumn {
+                get {
+                    return this.columnINPUT_IN_QTY;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_PK_RATEColumn {
+                get {
+                    return this.columnINPUT_PK_RATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_PK_AMOUNTColumn {
+                get {
+                    return this.columnINPUT_PK_AMOUNT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_NOColumn {
+                get {
+                    return this.columnINPUT_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_REQ_NOColumn {
+                get {
+                    return this.columnINPUT_REQ_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_GRN_NOColumn {
+                get {
+                    return this.columnINPUT_GRN_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn INPUT_BRANDColumn {
+                get {
+                    return this.columnINPUT_BRAND;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINRow this[int index] {
+                get {
+                    return ((tbl_WIMS_PO_TAKEINRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PO_TAKEINRowChangeEventHandler tbl_WIMS_PO_TAKEINRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PO_TAKEINRowChangeEventHandler tbl_WIMS_PO_TAKEINRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PO_TAKEINRowChangeEventHandler tbl_WIMS_PO_TAKEINRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PO_TAKEINRowChangeEventHandler tbl_WIMS_PO_TAKEINRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Addtbl_WIMS_PO_TAKEINRow(tbl_WIMS_PO_TAKEINRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINRow Addtbl_WIMS_PO_TAKEINRow(string INPUT_DATE, string PO_NO, string PART_NO, string PART_NAME, string INPUT_SUPPLIER, string PART_UOM, string PART_MAKER, string PART_MODEL, int INPUT_IN_QTY, decimal INPUT_PK_RATE, decimal INPUT_PK_AMOUNT, string INPUT_NO, string INPUT_REQ_NO, string INPUT_GRN_NO, string INPUT_BRAND) {
+                tbl_WIMS_PO_TAKEINRow rowtbl_WIMS_PO_TAKEINRow = ((tbl_WIMS_PO_TAKEINRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        INPUT_DATE,
+                        PO_NO,
+                        PART_NO,
+                        PART_NAME,
+                        INPUT_SUPPLIER,
+                        PART_UOM,
+                        PART_MAKER,
+                        PART_MODEL,
+                        INPUT_IN_QTY,
+                        INPUT_PK_RATE,
+                        INPUT_PK_AMOUNT,
+                        INPUT_NO,
+                        INPUT_REQ_NO,
+                        INPUT_GRN_NO,
+                        INPUT_BRAND};
+                rowtbl_WIMS_PO_TAKEINRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowtbl_WIMS_PO_TAKEINRow);
+                return rowtbl_WIMS_PO_TAKEINRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                tbl_WIMS_PO_TAKEINDataTable cln = ((tbl_WIMS_PO_TAKEINDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new tbl_WIMS_PO_TAKEINDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal void InitVars() {
+                this.columnINPUT_DATE = base.Columns["INPUT_DATE"];
+                this.columnPO_NO = base.Columns["PO_NO"];
+                this.columnPART_NO = base.Columns["PART_NO"];
+                this.columnPART_NAME = base.Columns["PART_NAME"];
+                this.columnINPUT_SUPPLIER = base.Columns["INPUT_SUPPLIER"];
+                this.columnPART_UOM = base.Columns["PART_UOM"];
+                this.columnPART_MAKER = base.Columns["PART_MAKER"];
+                this.columnPART_MODEL = base.Columns["PART_MODEL"];
+                this.columnINPUT_IN_QTY = base.Columns["INPUT_IN_QTY"];
+                this.columnINPUT_PK_RATE = base.Columns["INPUT_PK_RATE"];
+                this.columnINPUT_PK_AMOUNT = base.Columns["INPUT_PK_AMOUNT"];
+                this.columnINPUT_NO = base.Columns["INPUT_NO"];
+                this.columnINPUT_REQ_NO = base.Columns["INPUT_REQ_NO"];
+                this.columnINPUT_GRN_NO = base.Columns["INPUT_GRN_NO"];
+                this.columnINPUT_BRAND = base.Columns["INPUT_BRAND"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            private void InitClass() {
+                this.columnINPUT_DATE = new global::System.Data.DataColumn("INPUT_DATE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_DATE);
+                this.columnPO_NO = new global::System.Data.DataColumn("PO_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_NO);
+                this.columnPART_NO = new global::System.Data.DataColumn("PART_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_NO);
+                this.columnPART_NAME = new global::System.Data.DataColumn("PART_NAME", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_NAME);
+                this.columnINPUT_SUPPLIER = new global::System.Data.DataColumn("INPUT_SUPPLIER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_SUPPLIER);
+                this.columnPART_UOM = new global::System.Data.DataColumn("PART_UOM", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_UOM);
+                this.columnPART_MAKER = new global::System.Data.DataColumn("PART_MAKER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_MAKER);
+                this.columnPART_MODEL = new global::System.Data.DataColumn("PART_MODEL", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_MODEL);
+                this.columnINPUT_IN_QTY = new global::System.Data.DataColumn("INPUT_IN_QTY", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_IN_QTY);
+                this.columnINPUT_PK_RATE = new global::System.Data.DataColumn("INPUT_PK_RATE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_PK_RATE);
+                this.columnINPUT_PK_AMOUNT = new global::System.Data.DataColumn("INPUT_PK_AMOUNT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_PK_AMOUNT);
+                this.columnINPUT_NO = new global::System.Data.DataColumn("INPUT_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_NO);
+                this.columnINPUT_REQ_NO = new global::System.Data.DataColumn("INPUT_REQ_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_REQ_NO);
+                this.columnINPUT_GRN_NO = new global::System.Data.DataColumn("INPUT_GRN_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_GRN_NO);
+                this.columnINPUT_BRAND = new global::System.Data.DataColumn("INPUT_BRAND", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnINPUT_BRAND);
+                this.columnINPUT_DATE.Caption = "outreq_no";
+                this.columnPO_NO.Caption = "WS_NAME";
+                this.columnINPUT_SUPPLIER.Caption = "PART_UOM";
+                this.columnPART_UOM.Caption = "PART_MAKER";
+                this.columnPART_MAKER.Caption = "Qty";
+                this.columnPART_MODEL.Caption = "UFOR";
+                this.columnINPUT_IN_QTY.Caption = "INREQ_REMARK";
+                this.columnINPUT_PK_RATE.Caption = "ApprovalStatus";
+                this.columnINPUT_PK_AMOUNT.Caption = "StatusId";
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINRow Newtbl_WIMS_PO_TAKEINRow() {
+                return ((tbl_WIMS_PO_TAKEINRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new tbl_WIMS_PO_TAKEINRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(tbl_WIMS_PO_TAKEINRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.tbl_WIMS_PO_TAKEINRowChanged != null)) {
+                    this.tbl_WIMS_PO_TAKEINRowChanged(this, new tbl_WIMS_PO_TAKEINRowChangeEvent(((tbl_WIMS_PO_TAKEINRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.tbl_WIMS_PO_TAKEINRowChanging != null)) {
+                    this.tbl_WIMS_PO_TAKEINRowChanging(this, new tbl_WIMS_PO_TAKEINRowChangeEvent(((tbl_WIMS_PO_TAKEINRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.tbl_WIMS_PO_TAKEINRowDeleted != null)) {
+                    this.tbl_WIMS_PO_TAKEINRowDeleted(this, new tbl_WIMS_PO_TAKEINRowChangeEvent(((tbl_WIMS_PO_TAKEINRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.tbl_WIMS_PO_TAKEINRowDeleting != null)) {
+                    this.tbl_WIMS_PO_TAKEINRowDeleting(this, new tbl_WIMS_PO_TAKEINRowChangeEvent(((tbl_WIMS_PO_TAKEINRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Removetbl_WIMS_PO_TAKEINRow(tbl_WIMS_PO_TAKEINRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataSet ds = new ReportDataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "tbl_WIMS_PO_TAKEINDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -7380,6 +7867,441 @@ namespace EApproval.CR_DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class tbl_WIMS_PO_TAKEINRow : global::System.Data.DataRow {
+            
+            private tbl_WIMS_PO_TAKEINDataTable tabletbl_WIMS_PO_TAKEIN;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal tbl_WIMS_PO_TAKEINRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tabletbl_WIMS_PO_TAKEIN = ((tbl_WIMS_PO_TAKEINDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_DATE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_DATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_DATE\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_DATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PO_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_NO\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PO_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PART_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_NO\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PART_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_NAME {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PART_NAMEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_NAME\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PART_NAMEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_SUPPLIER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_SUPPLIERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_SUPPLIER\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_SUPPLIERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_UOM {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PART_UOMColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_UOM\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PART_UOMColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_MAKER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PART_MAKERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_MAKER\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PART_MAKERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_MODEL {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.PART_MODELColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_MODEL\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.PART_MODELColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int INPUT_IN_QTY {
+                get {
+                    try {
+                        return ((int)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_IN_QTYColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_IN_QTY\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_IN_QTYColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal INPUT_PK_RATE {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_RATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_PK_RATE\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_RATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal INPUT_PK_AMOUNT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_AMOUNTColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_PK_AMOUNT\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_AMOUNTColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_NO\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_REQ_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_REQ_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_REQ_NO\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_REQ_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_GRN_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_GRN_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_GRN_NO\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_GRN_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string INPUT_BRAND {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_BRANDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'INPUT_BRAND\' in table \'tbl_WIMS_PO_TAKEIN\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_BRANDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_DATENull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_DATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_DATENull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_DATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PO_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_NONull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PO_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PART_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_NONull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PART_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_NAMENull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PART_NAMEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_NAMENull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PART_NAMEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_SUPPLIERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_SUPPLIERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_SUPPLIERNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_SUPPLIERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_UOMNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PART_UOMColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_UOMNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PART_UOMColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_MAKERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PART_MAKERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_MAKERNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PART_MAKERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_MODELNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.PART_MODELColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_MODELNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.PART_MODELColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_IN_QTYNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_IN_QTYColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_IN_QTYNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_IN_QTYColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_PK_RATENull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_RATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_PK_RATENull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_RATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_PK_AMOUNTNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_AMOUNTColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_PK_AMOUNTNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_PK_AMOUNTColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_NONull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_REQ_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_REQ_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_REQ_NONull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_REQ_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_GRN_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_GRN_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_GRN_NONull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_GRN_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsINPUT_BRANDNull() {
+                return this.IsNull(this.tabletbl_WIMS_PO_TAKEIN.INPUT_BRANDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetINPUT_BRANDNull() {
+                this[this.tabletbl_WIMS_PO_TAKEIN.INPUT_BRANDColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -7603,6 +8525,40 @@ namespace EApproval.CR_DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public _sp_ReprtViewers_1Row Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public class tbl_WIMS_PO_TAKEINRowChangeEvent : global::System.EventArgs {
+            
+            private tbl_WIMS_PO_TAKEINRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINRowChangeEvent(tbl_WIMS_PO_TAKEINRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PO_TAKEINRow Row {
                 get {
                     return this.eventRow;
                 }
