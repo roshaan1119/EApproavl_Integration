@@ -2080,16 +2080,19 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 0;
+                                    //}
+                                    if(status != -1)
                                     {
-                                        status = 0;
-                                    }
-                                    DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
-                                    {
-                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        DataRow[] rslt = dt.Select("StatusId=" + status);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                        r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -2124,16 +2127,19 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
+                                    if(status != -1)
                                     {
-                                        status = 1;
-                                    }
-                                    DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
-                                    {
-                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        DataRow[] rslt = dt.Select("StatusId=" + status);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                        r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1) // Approver-1
@@ -2162,16 +2168,19 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 2; // Approved by Authorizer
+                                    //}
+                                    if(status != -1)
                                     {
-                                        status = 2; // Approved by Authorizer
-                                    }
-                                    DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
-                                    {
-                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        DataRow[] rslt = dt.Select("StatusId=" + status);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                        r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-2
@@ -2200,16 +2209,19 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 4; // Approved by Approver 1
+                                    //}
+                                    if(status != -1)
                                     {
-                                        status = 4; // Approved by Approver 1
-                                    }
-                                    DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
-                                    {
-                                        dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
-                                                    r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        DataRow[] rslt = dt.Select("StatusId=" + status);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PaymentApprovalId"], r["RefNo"], r["GLCode"], r["CompanyName"], r["DEPARTMENT"], r["TypeName"], r["Amount"], r["Description"], r["AddedBy"],
+                                                        r["CreatedDate"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
