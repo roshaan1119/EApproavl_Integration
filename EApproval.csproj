@@ -9495,6 +9495,7 @@
     <Content Include="images\economics.png" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\favicon.png" />
+    <Content Include="images\favicon_daewoo_express_logo.png" />
     <Content Include="images\file.png" />
     <Content Include="images\hand.png" />
     <Content Include="images\heart.png" />
@@ -9603,6 +9604,7 @@
     <Content Include="images\logi-white.png" />
     <Content Include="images\login.png" />
     <Content Include="images\logo-full.png" />
+    <Content Include="images\logo.png" />
     <Content Include="images\logo\logo-full.png" />
     <Content Include="images\logo\logofull-white.png" />
     <Content Include="images\media.jpg" />

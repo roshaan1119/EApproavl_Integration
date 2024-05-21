@@ -574,20 +574,20 @@
                 $('#searchMode').show();
                 LoadSearchFilters();
                 LoadStatusForDropDown();
-                GetContentList(0);
+                GetContentList(-1);
             }
             else if (Project_Id == 61) {
                 $('#searchMode').show();
                 LoadSearchFilters();
                 LoadStatusForDropDown();
-                GetContentList(0);
+                GetContentList(-1);
             }
             else if (Project_Id == 81) {
                 $('#searchMode').show();
                 $('#dvProject').hide();
                 LoadSearchFilters();
                 LoadStatusForDropDown();
-                GetContentList(0);
+                GetContentList(-1);
             }
         }
         function LoadStatusForDropDown() {
@@ -600,7 +600,7 @@
                     let Success = data.Success;
                     let DataList = data.Data;
                     if (Success) {
-                        $("#ddlStatus").append('<option value="-1">Select</option>')
+                        $("#ddlStatus").append('<option value="-1">All</option>')
                         $.each(DataList, function (i, ddstatus) {
                             $('#ddlStatus').append('<option value="' + ddstatus.STATUSID + '">' + ddstatus.STATUS + '</option>');
                         });
@@ -637,7 +637,7 @@
         function clearListOnProjectChange() {
             SelectedList = [];
         }
-        function GetContentList(status = 0) {
+        function GetContentList(status) {
             var ddlProject = $('#ddlProjects').val();
             if (ddlProject == null) {
                 ddlProject = 0;
@@ -1142,9 +1142,9 @@
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.PO_NO + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
-                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.PO_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
-                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetTakeInByPO(' + "'" + item.PO_NO + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
+                                            actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.PO_NO + "'" + ')" title="Reason" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
+                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.PO_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" title="Detail" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
+                                                + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetTakeInByPO(' + "'" + item.PO_NO + "'" + ')" title="PO Take-In Report" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.7379 2.76181H8.08493C6.00493 2.75381 4.29993 4.41181 4.25093 6.49081V17.2038C4.20493 19.3168 5.87993 21.0678 7.99293 21.1148C8.02393 21.1148 8.05393 21.1158 8.08493 21.1148H16.0739C18.1679 21.0298 19.8179 19.2998 19.8029 17.2038V8.03781L14.7379 2.76181Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.4751 2.75V5.659C14.4751 7.079 15.6231 8.23 17.0431 8.234H19.7981" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.2882 15.3585H8.88818" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.2432 11.606H8.88721" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
                                             lst = lst + '<tr><td>' + cbList + '</td><td style=' + rowStyle + '>' + iRowNum + '</td><td style=' + rowStyle + '>' + item.PO_WS + '</td><td style=' + rowStyle + '>' + item.PO_NO + '</td><td style=' + rowStyle + '>' + item.Date + '</td><td style=' + rowStyle + '>' + item.Item + '</td><td style=' + rowStyle + '>' + item.Qty + '</td><td style=' + rowStyle + '>' + item.Amount + '</td><td style=' + rowStyle + '>' + item.ApprovalStatus + '</td><td style=' + rowStyle + '>' + actionLink + '</td></tr>';
                                         });
                                         $("#tblList_PO_WS tbody").append(lst);
@@ -1787,12 +1787,13 @@
                             else {
                                 sweetAlert(" ", "Status rejected", "success");
                             }
+                            ClearContent();
                         }
                         else {
                             sweetAlert(" ", "Failed to access database", "error");
                         }
                         SelectedList = [];
-                        GetContentList(0);
+                        GetContentList(-1);
                     }
                 });
             }
@@ -1826,7 +1827,7 @@
                                 sweetAlert(" ", "Failed to access database", "error");
                             }
                             SelectedList = [];
-                            GetContentList(0);
+                            GetContentList(-1);
                         }
                     });
                 }

@@ -737,7 +737,7 @@ namespace EApproval.Utility
             try
             {
                 DataTable dt = new DataTable();
-                DataTable dtApprovalAuth = new DataTable();
+               
                 using (var client = new WebClient())
                 {
                     client.Headers.Add("Content-Type:application/json");
@@ -774,7 +774,7 @@ namespace EApproval.Utility
                 }
                 if (dt.Rows.Count > 0)
                 {
-                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { dt, dtApprovalAuth } });
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { dt } });
                 }
                 else
                 {
@@ -792,7 +792,7 @@ namespace EApproval.Utility
         }
 
         [Obsolete]
-        public async Task<Object> LoadContentByProjectId(string from_Date, string to_Date, int project, int Mode, int status = 0)
+        public async Task<Object> LoadContentByProjectId(string from_Date, string to_Date, int project, int Mode, int status = -1)
         {
             try
             {
@@ -850,15 +850,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -879,15 +882,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1; //Default for HOD
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1; //Default for HOD
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["Req_No"], r["Req_Date"], r["LOIM"], r["TYPE"], r["INREQ_ORDER"], r["Status"], r["Item"], r["Req_Qty"], r["Rem_Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -938,15 +944,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -980,15 +989,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1; //Default for HOD
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1; //Default for HOD
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
@@ -1022,15 +1034,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1; //Default for Authorizers
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1; //Default for Authorizers
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1075,15 +1090,18 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
@@ -1103,15 +1121,18 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1167,16 +1188,19 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                        r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
@@ -1198,16 +1222,19 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                        r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1270,18 +1297,21 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -1318,18 +1348,21 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
@@ -1366,18 +1399,21 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1516,15 +1552,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if(status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -1558,15 +1597,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1; //Default for HOD
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1; //Default for HOD
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
@@ -1600,15 +1642,18 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1; //Default for Authorizers
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1; //Default for Authorizers
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PO_WS"], r["PO_NO"], r["Date"], r["Item"], r["Qty"], r["Amount"], r["PO_LOIM"], r["PO_TYPE"], r["PO_SUPPLIER"], r["SUPP_NAME"], r["PO_RUSER"], r["PO_RNAME"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1653,16 +1698,20 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
+                                   
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
                                 {
@@ -1681,15 +1730,18 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["GRN_WS"], r["GRN_NO"], r["Date"], r["GRN_LOIM"], r["GRN_TYPE"], r["GRN_ORDER"], r["Item"], r["Qty"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1745,16 +1797,19 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                        r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) //Authorizer-1,2
@@ -1776,16 +1831,19 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
-                                                    r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["INPUT_WS"], r["Req_No"], r["Date"], r["Item"], r["Qty"], r["INPUT_LOIM"], r["INPUT_TYPE"], r["INPUT_SUPPLIER"], r["INPUT_PLACE"], r["INPUT_ORDER"], r["INPUT_USD"], r["INPUT_INVOICE"],
+                                                        r["INPUT_PK_AMOUNT"], r["INPUT_REM_QTY"], r["INPUT_REM_AMOUNT"], r["INPUT_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
@@ -1848,18 +1906,21 @@ namespace EApproval.Utility
                                         }
                                     }
                                     //Fetch DT for selected Status
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 0;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 0;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
@@ -1896,18 +1957,21 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // Approver-1,2
@@ -1944,18 +2008,21 @@ namespace EApproval.Utility
                                             }
                                         }
                                     }
-                                    if (status == -1 || status == 0)
-                                    {
-                                        status = 1;
-                                    }
+                                    //if (status == -1 || status == 0)
+                                    //{
+                                    //    status = 1;
+                                    //}
                                     DataRow[] rslt = dt.Select("StatusId=" + status);
-                                    dt = dt.Clone();
-                                    foreach (DataRow r in rslt)
+                                    if (status != -1)
                                     {
-                                        dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
-                                                    r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
-                                                    r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
-                                                    r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        dt = dt.Clone();
+                                        foreach (DataRow r in rslt)
+                                        {
+                                            dt.Rows.Add(r["PV_WS"], r["Payment_Voucher"], r["Date"], r["Type"], r["Amount"], r["Status"],
+                                                        r["PV_SYSCODE"], r["PV_LOIM"], r["PV_SUPPLIER"], r["SUPP_NAME"],
+                                                        r["PV_ORDER"], r["PV_ITEM"], r["PV_RUSER"], r["PV_RNAME"], r["PV_DEP"],
+                                                        r["PV_CREATE_DESIG"], r["PV_CAN_STATUS"], r["PV_SUPPLIER1"], r["ApprovalStatus"], r["StatusId"]);
+                                        }
                                     }
                                 }
                             }
