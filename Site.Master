@@ -19,7 +19,7 @@
     <!-- PAGE TITLE HERE -->
     <title>E-Approval Daewoo</title>
     <!-- FAVICONS ICON -->
-    <link rel="shortcut icon" type="image/png" href="images/TtitleImg.png" />
+    <link rel="shortcut icon" type="image/png" href="images/favicon_daewoo_express_logo.png" />
     <link href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
     <link href="/vendor/swiper/css/swiper-bundle.min.css" rel="stylesheet" />
