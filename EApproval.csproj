@@ -9756,6 +9756,7 @@
     <Content Include="js\plugins-init\sweetalert.init.js" />
     <Content Include="js\plugins-init\toastr-init.js" />
     <Content Include="js\plugins-init\widgets-script-init.js" />
+    <Content Include="js\project\modes.js" />
     <Content Include="js\settings.js" />
     <Content Include="js\user.js" />
     <Content Include="WIMS_Admin_Dashboard.aspx" />
