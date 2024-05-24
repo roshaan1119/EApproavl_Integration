@@ -51,7 +51,7 @@
                         <button type="button" class="btn btn-sm btn-warning" id="btnClearContent" onclick="ClearContent();"> <span class="fa fa-refresh"> </span> </button>
                         <button class="btn btn-sm btn-dark dropdown-toggle" id="btnStatus" type="button" style="display: none;" data-bs-toggle="dropdown"> <span class="fa fa-eye-slash"> </span> Action</button>
                         <div class="dropdown-menu">
-                            <% if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4)
+                            <% if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21)
                                 { %>
                             <a class="dropdown-item input-success" onclick="UpdateStatus('Approve');" href="#">Forward to Authorizer</a>
                             <%--<a class="dropdown-item input-danger" onclick="UpdateStatus('Reject');" href="#">Rejected</a>--%>
@@ -707,7 +707,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -771,12 +771,14 @@
                                     let lst = '';
                                     let rowStyle = '';
                                     let actionLink = '';
+                                    let cbList = '';
                                     let iRowNum = 0;
                                     var data = [];
                                     if (DataList != null) {
                                         $("#tblList_PO_ADM").DataTable().clear();
                                         $("#tblList_PO_ADM").DataTable().destroy();
                                         $(DataList).each(function (i, item) {
+                                            debugger;
                                             iRowNum += 1;
                                             rowStyle = "'text-align:center; font-size:small;'";
                                             if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
@@ -788,15 +790,15 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            else if (UserType == 1 || UserType == 2) { //Approver-1, Approver-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                            else if (UserType == 1 || UserType == 22) { //Approver-1, Approver-2
+                                                if ((item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -813,7 +815,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -894,7 +896,7 @@
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            else if (UserType = 2) { //Authorizer-1, Authorizer-2
+                                            else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
                                                 if (item.StatusId == 2 || item.StatusId == 4) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
@@ -912,7 +914,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1011,7 +1013,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1093,15 +1095,15 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            else if (UserType == 1 || UserType == 2) { //Approver 1, Approver 2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                            else if (UserType == 1 || UserType == 22) { //Approver 1, Approver 2
+                                                if ((item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1118,7 +1120,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1221,7 +1223,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1293,6 +1295,7 @@
                                         $(DataList).each(function (i, item) {
                                             iRowNum += 1;
                                             rowStyle = "'text-align:center; font-size:small;'";
+                                            
                                             if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
                                                 if (item.ApprovalStatus != 'PENDING') {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
@@ -1302,22 +1305,21 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            else if (UserType == 1 || UserType == 2) { //Approver-1, Approver-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                            else if (UserType == 1 || UserType == 22) { //Approver-1, Approver-2
+                                                if ((item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            
                                             actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.PO_NO + "'" + ')" title="View Report" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
                                                 + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.PO_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" title="Reason" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
                                                 + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetTakeInByPO(' + "'" + item.PO_NO + "'" + ')" title="PO Take-In Report" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.7379 2.76181H8.08493C6.00493 2.75381 4.29993 4.41181 4.25093 6.49081V17.2038C4.20493 19.3168 5.87993 21.0678 7.99293 21.1148C8.02393 21.1148 8.05393 21.1158 8.08493 21.1148H16.0739C18.1679 21.0298 19.8179 19.2998 19.8029 17.2038V8.03781L14.7379 2.76181Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.4751 2.75V5.659C14.4751 7.079 15.6231 8.23 17.0431 8.234H19.7981" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.2882 15.3585H8.88818" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.2432 11.606H8.88721" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
@@ -1329,7 +1331,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1402,22 +1404,28 @@
                                         $(DataList).each(function (i, item) {
                                             iRowNum += 1;
                                             rowStyle = "'text-align:center; font-size:small;'";
-                                            if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
-                                                if (item.ApprovalStatus != 'PENDING') {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
-                                                else {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
+                                            if (item.ApprovalStatus != 'PENDING') {
+                                                cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                             }
-                                            else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
-                                                else {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
+                                            else {
+                                                cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                             }
+                                            //if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
+                                            //    if (item.ApprovalStatus != 'PENDING') {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //    else {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //}
+                                            //else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
+                                            //    if (item.StatusId == 2 || item.StatusId == 4) {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //    else {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //}
                                             actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.GRN_NO + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
                                                 + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.GRN_NO + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
                                             //actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.GRN_NO + "'" + ')" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
@@ -1429,7 +1437,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1502,26 +1510,30 @@
                                         $(DataList).each(function (i, item) {
                                             iRowNum += 1;
                                             rowStyle = "'text-align:center; font-size:small;'";
-                                            if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
-                                                if (item.ApprovalStatus != 'PENDING') {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
-                                                else {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
+                                            if (item.ApprovalStatus != 'PENDING') {
+                                                cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                             }
-                                            else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
-                                                else {
-                                                    cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
-                                                }
+                                            else {
+                                                cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                             }
+                                            //if (UserType == 4 || UserType == 21) { //Initiator-1, Initiator-2
+                                            //    if (item.ApprovalStatus != 'PENDING') {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //    else {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //}
+                                            //else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
+                                            //    if (item.StatusId == 2 || item.StatusId == 4) {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //    else {
+                                            //        cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
+                                            //    }
+                                            //}
                                             actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.Req_No + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
                                                 + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.Req_No + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
-                                            //actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.Req_No + "'" + ')" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
-
                                             lst = lst + '<tr><td>' + cbList + '</td><td style=' + rowStyle + '>' + iRowNum + '</td><td style=' + rowStyle + '>' + item.INPUT_WS + '</td><td style=' + rowStyle + '>' + item.Req_No + '</td><td style=' + rowStyle + '>' + item.Date + '</td><td style=' + rowStyle + '>' + item.Item + '</td><td style=' + rowStyle + '>' + item.Qty + '</td><td style=' + rowStyle + '><span id=' + item.StatusId + ' class="status">' + item.ApprovalStatus + '</span></td><td style=' + rowStyle + '>' + actionLink + '</td></tr>';
                                         });
                                         $("#tblList_TakeIn_WS tbody").append(lst);
@@ -1530,7 +1542,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1611,15 +1623,15 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                             }
-                                            else if (UserType == 1 || UserType == 2) { //Approver 1, Approver 2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                            else if (UserType == 1 || UserType == 22) { //Approver 1, Approver 2
+                                                if ((item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1628,7 +1640,6 @@
                                             }
                                             actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.Payment_Voucher + "'" + ')" ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1614 12.0531C15.1614 13.7991 13.7454 15.2141 11.9994 15.2141C10.2534 15.2141 8.83838 13.7991 8.83838 12.0531C8.83838 10.3061 10.2534 8.89111 11.9994 8.89111C13.7454 8.89111 15.1614 10.3061 15.1614 12.0531Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11.998 19.3549C15.806 19.3549 19.289 16.6169 21.25 12.0529C19.289 7.48892 15.806 4.75092 11.998 4.75092H12.002C8.194 4.75092 4.711 7.48892 2.75 12.0529C4.711 16.6169 8.194 19.3549 12.002 19.3549H11.998Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>'
                                                 + '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetReasonsByRequestId(' + "'" + item.Payment_Voucher + "'" + ')" data-bs-toggle="modal" data-bs-target="#DetailModal" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
-                                            //actionLink = '<button type = "button" class="btn btn-sm text-purple content-icon" onclick="GetDetailsByRequestId(' + "'" + item.Payment_Voucher + "'" + ')" > <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.334 2.75012H7.665C4.644 2.75012 2.75 4.88912 2.75 7.91612V16.0841C2.75 19.1111 4.634 21.2501 7.665 21.2501H16.333C19.364 21.2501 21.25 19.1111 21.25 16.0841V7.91612C21.25 4.88912 19.364 2.75012 16.334 2.75012Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.9393 12.013H15.9483" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M11.9301 12.013H11.9391" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M7.92128 12.013H7.93028" stroke="#130F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> </button>';
                                             lst = lst + '<tr><td>' + cbList + '</td><td style=' + rowStyle + '>' + iRowNum + '</td><td style=' + rowStyle + '>' + item.PV_WS + '</td><td style=' + rowStyle + '>' + item.Payment_Voucher + '</td><td style=' + rowStyle + '>' + item.Date + '</td><td style=' + rowStyle + '>' + item.Type + '</td><td style=' + rowStyle + '>' + item.Amount + '</td><td style=' + rowStyle + '><span id=' + item.StatusId + ' class="status">' + item.ApprovalStatus + '</span></td><td style=' + rowStyle + '>' + actionLink + '</td></tr>';
                                         });
                                         $("#tblList_PV_WS tbody").append(lst);
@@ -1637,7 +1648,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1690,6 +1701,8 @@
                 //ECS
                 else if (Project_Id == 81) {
                     if (QueryString_Mode == 121) { // ECS => Payment Approval
+                        //var rejectRsn = $("input[name='rbReasons']:checked").val();
+                        //alert(rejectRsn);
                         $.ajax({
                             type: "GET",
                             contentType: 'application/json; charset=utf-8',
@@ -1708,12 +1721,13 @@
                                     var data = [];
                                     var statusStyle = '';
                                     if (DataList != null) {
+                                        debugger;
                                         $("#tblListPAF").DataTable().clear();
                                         $("#tblListPAF").DataTable().destroy();
                                         $(DataList).each(function (i, item) {
                                             iRowNum += 1;
                                             rowStyle = "'text-align:center; font-size:small;'";
-                                            if (UserType == 4) { //Staff/Initiator
+                                            if (UserType == 4 || UserType == 21) { //Staff/Initiator
                                                 if ((item.ApprovalStatus != 'PENDING') && (item.StatusId != 8)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.RefNo + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
@@ -1722,7 +1736,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { // Authorizer 1, 2
-                                                if (item.ApprovalStatus != 'PENDING') {/*if (item.StatusId == 2 || item.StatusId == 4 || item.STATUSID == 7) {*/
+                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 7 || item.StatusId == 8 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.RefNo + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1730,7 +1744,7 @@
                                                 }
                                             }
                                             else if (UserType == 1) { // Approver 1
-                                                if ((item.ApprovalStatus != 'PENDING')) {//if (item.StatusId == 4 || item.STATUSID == 7) {
+                                                if (((item.StatusId == 4 || item.StatusId == 7 || item.StatusId == 8 || item.StatusId == 1 || item.StatusId == 3))) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.RefNo + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1738,7 +1752,7 @@
                                                 }
                                             }
                                             else { // Approver 2
-                                                if (item.ApprovalStatus != 'PENDING') {/*if (item.StatusId == 7) {*/
+                                                if (item.StatusId == 7 || item.StatusId == 8 || item.StatusId == 1 || item.StatusId == 3) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.RefNo + "'" + ',' + iRowNum + ');" class="form-check-input" id="' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1756,7 +1770,7 @@
                                             var $value = $(this).find('span').attr("id");
                                             var $check = $(this).find('div.form-check');
                                             if ($value === "0") { //Pending
-                                                $span.addClass('badge light badge-warning');
+                                                $span.addClass('badge badge-warning');
                                                 $check.addClass('checkbox-warning');
                                             }
                                             else if ($value === "4" || $value === "7") { //Approver-1,2 Approval
@@ -1830,267 +1844,30 @@
         function GetDetailsByRequestId(Req_No) {
             window.open("Details.aspx?Req_No=" + Req_No + "&SecreenId=" + QueryString_Mode, '_blank');
         }
-        function GetTakeInByPO(Req_No, ws) {
-             //+ "&ws=" + ws + "&project=" + ddlProject + "&fromDate=" + fromDate + "&toDate=" + toDate +
+        function GetTakeInByPO(Req_No) {
             window.open("Details.aspx?Req_No=" + Req_No + "&SecreenId=" + 0, '_blank');
         }
 
         function GetSelectedValues(Req_No, RowNo) {
-            //WIMS-ADMIN
-            if (Project_Id == 26) {
-                // WIMS ADMIN Request
-                if (QueryString_Mode == 41) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-
-                // WIMS ADMIN PO
-                else if (QueryString_Mode == 43) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-
-                // WIMS ADMIN GRN
-                else if (QueryString_Mode == 44) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-
-                // WIMS ADMIN Take In
-                else if (QueryString_Mode == 45) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-
-                // WIMS ADMIN PV
-                else if (QueryString_Mode == 46) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
+            if ($("#" + RowNo).is(":checked")) {
+                SelectedList += "," + Req_No;
+            }
+            else {
+                var separator = separator || ",";
+                var values = SelectedList.split(separator);
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i] == Req_No) {
+                        values.splice(i, 1);
+                        SelectedList = values.join(separator);
                     }
                 }
             }
-            //WIMS-WORKSHOP
-            if (Project_Id == 61) {
-                // WIMS WORKSHOP Request
-                if (QueryString_Mode == 100) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-                // WIMS WORKSHOP PO
-                else if (QueryString_Mode == 101) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-                // WIMS WORKSHOP GRN
-                else if (QueryString_Mode == 102) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-                // WIMS WORKSHOP Take In
-                else if (QueryString_Mode == 103) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-                // WIMS WORKSHOP PV
-                else if (QueryString_Mode == 104) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
+            if (SelectedList.length > 0) {
+                $('#btnStatus').show();
             }
-            //ECS
-            if (Project_Id == 81) {
-                // ECS => PAF
-                if (QueryString_Mode == 121) {
-                    if ($("#" + RowNo).is(":checked")) {
-                        SelectedList += "," + Req_No;
-                    }
-                    else {
-                        var separator = separator || ",";
-                        var values = SelectedList.split(separator);
-                        for (var i = 0; i < values.length; i++) {
-                            if (values[i] == Req_No) {
-                                values.splice(i, 1);
-                                SelectedList = values.join(separator);
-                            }
-                        }
-                    }
-                    if (SelectedList.length > 0) {
-                        $('#btnStatus').show();
-                    }
-                    else {
-                        $('#btnStatus').hide();
-                    }
-                }
-            }   
+            else {
+                $('#btnStatus').hide();
+            } 
         }
         function UpdateStatus(status) {
             if (status == "Approve") {
@@ -2238,7 +2015,6 @@
                                 $("#img1").attr("src", "https://ecs.daewoo.net.pk/uploads/" + item.Image1);
                                 $("#img2").attr("src", "https://ecs.daewoo.net.pk/uploads/" + item.Image2);
                                 $("#img3").attr("src", "https://ecs.daewoo.net.pk/uploads/" + item.Image3);
-                                //$("#img3").attr("src", "http://localhost:61217/uploads/" + item.Image3);
                             });
                             $('#AttachementModel').modal('show');
                         }

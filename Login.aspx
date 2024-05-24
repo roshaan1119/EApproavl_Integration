@@ -88,7 +88,7 @@
 
                                         <div class="text-center pt-1 mb-5 pb-1">
                                             <button type="button" onclick="Login();" style="background: #0095DA" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</button>
-                                            <a class="text-muted" href="#!">Forgot password?</a>
+                                           <%-- <a class="text-muted" href="#!">Forgot password?</a>--%>
                                         </div>
 
                                        <%-- <div class="d-flex align-items-center justify-content-center pb-4">
@@ -98,9 +98,9 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="background: #0095DA">
+                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="background: #0095DA;">
                                 <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                    <h4 class="mb-4">We are more than just a company</h4>
+                                    <h4 class="mb-4">Welcome to Daewoo Express.</h4>
                                     <p class="large mb-0">
                                         Daewoo Express is the first and the biggest foreign investment company with an advanced and organized transport system in Pakistan. It is the only transport company tho have a nationwide network with various international trade links
                                     </p>

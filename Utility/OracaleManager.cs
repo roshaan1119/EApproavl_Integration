@@ -804,7 +804,7 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";        
                     //WIMS-ADMIN
                     if (project_id == "26")
                     {
@@ -960,12 +960,14 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
+                                    /*
                                     decimal limit = 0.00m;
                                     DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
                                     if (LimitRow.Length != 0)
                                     {
                                         limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
                                     }
+                                    */
                                     var ItemsArray = Items.ToArray();
                                     if (dtStatus.Rows.Count > 0)
                                     {
@@ -974,16 +976,9 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) < limit))
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
+                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                 }
                                             }
                                         }
@@ -1015,17 +1010,28 @@ namespace EApproval.Utility
                                     if (dtStatus.Rows.Count > 0)
                                     {
                                         dt = dt.Clone();
-                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1)
                                         {
-                                            foreach (DataRow dr in dtStatus.Rows)
+                                            //For Approver-1 <= 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
                                             {
-                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
+                                                foreach (DataRow dr in dtStatus.Rows)
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) <= limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
-                                                    else
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //For Approver-2 > 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
+                                            {
+                                                foreach (DataRow dr in dtStatus.Rows)
+                                                {
+                                                    if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) > limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
@@ -1279,8 +1285,7 @@ namespace EApproval.Utility
                                         dt.Rows.Add(list["PV_WS"], list["PV_NO"], list["PV_DATE"], list["PV_TYPE"], list["PV_AMOUNT"], list["PV_PSTATUS"],
                                              list["PV_SYSCODE"], list["PV_LOIM"], list["PV_SUPPLIER"], list["SUPP_NAME"],
                                             list["PV_ORDER"], list["PV_ITEM"], list["PV_RUSER"], list["PV_RNAME"], list["PV_DEP"],
-                                            list["PV_CREATE_DESIG"], list["PV_CAN_STATUS"], list["PV_SUPPLIER1"], "PENDING", "0"
-                                            );
+                                            list["PV_CREATE_DESIG"], list["PV_CAN_STATUS"], list["PV_SUPPLIER1"], "PENDING", "0");
                                     }
                                     if (dtStatus.Rows.Count > 0)
                                     {
@@ -1316,12 +1321,14 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
+                                    /*
                                     decimal limit = 0.00m;
                                     DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
                                     if (LimitRow.Length != 0)
                                     {
                                         limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
                                     }
+                                    */
                                     var ItemsArray = Items.ToArray();
                                     if (dtStatus.Rows.Count > 0)
                                     {
@@ -1330,20 +1337,11 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) < limit))
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
                                                                 ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
                                                                 ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
                                                 }
                                             }
                                         }
@@ -1377,23 +1375,34 @@ namespace EApproval.Utility
                                     if (dtStatus.Rows.Count > 0)
                                     {
                                         dt = dt.Clone();
-                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1)
                                         {
-                                            foreach (DataRow dr in dtStatus.Rows)
+                                            //For Approver-1 <= 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
                                             {
-                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
+                                                foreach (DataRow dr in dtStatus.Rows)
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) <= limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                                    ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                    ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
-                                                    else
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //For Approver-2 > 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
+                                            {
+                                                foreach (DataRow dr in dtStatus.Rows)
+                                                {
+                                                    if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) > limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                                    ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                    ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
                                                 }
                                             }
@@ -1568,12 +1577,14 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
+                                    /*
                                     decimal limit = 0.00m;
                                     DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
                                     if (LimitRow.Length != 0)
                                     {
                                         limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
                                     }
+                                    */
                                     var ItemsArray = Items.ToArray();
                                     if (dtStatus.Rows.Count > 0)
                                     {
@@ -1582,16 +1593,9 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) < limit))
+                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
+                                                    dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                 }
                                             }
                                         }
@@ -1623,17 +1627,28 @@ namespace EApproval.Utility
                                     if (dtStatus.Rows.Count > 0)
                                     {
                                         dt = dt.Clone();
-                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1) 
                                         {
-                                            foreach (DataRow dr in dtStatus.Rows)
+                                            //For Approver-1 <= 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
                                             {
-                                                if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()))
+                                                foreach (DataRow dr in dtStatus.Rows)
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) <= limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
-                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                        dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
-                                                    else
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //For Approver-2 > 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
+                                            {
+                                                foreach (DataRow dr in dtStatus.Rows)
+                                                {
+                                                    if ((ItemsArray[i]["PO_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PO_AMOUNT"]) > limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PO_WS"], ItemsArray[i]["PO_NO"], ItemsArray[i]["PO_DATE"], ItemsArray[i]["PO_ITEM"], ItemsArray[i]["PO_IN_QTY"], ItemsArray[i]["PO_AMOUNT"], ItemsArray[i]["PO_LOIM"], ItemsArray[i]["PO_TYPE"], ItemsArray[i]["PO_SUPPLIER"], ItemsArray[i]["SUPP_NAME"], ItemsArray[i]["PO_RUSER"], ItemsArray[i]["PO_RNAME"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
@@ -1925,12 +1940,14 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // Authorizer-1,2
                                 {
+                                    /*
                                     decimal limit = 0.00m;
                                     DataRow[] LimitRow = dtLimit.Select("FLOWDETAILID=" + Mode);
                                     if (LimitRow.Length != 0)
                                     {
                                         limit = Convert.ToDecimal(LimitRow[0].ItemArray[6]);
                                     }
+                                    */
                                     var ItemsArray = Items.ToArray();
                                     if (dtStatus.Rows.Count > 0)
                                     {
@@ -1939,20 +1956,11 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) < limit))
+                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
+                                                    dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
                                                                 ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
                                                                 ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
                                                 }
                                             }
                                         }
@@ -1986,23 +1994,34 @@ namespace EApproval.Utility
                                     if (dtStatus.Rows.Count > 0)
                                     {
                                         dt = dt.Clone();
-                                        for (int i = 0; i < ItemsArray.Length; i++)
+                                        if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1)
                                         {
-                                            foreach (DataRow dr in dtStatus.Rows)
+                                            //For Approver-1 <= 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
                                             {
-                                                if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()))
+                                                foreach (DataRow dr in dtStatus.Rows)
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
+                                                    if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) <= limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
+                                                                    ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                    ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
-                                                    else
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //For Approver-2 > 5-Lac
+                                            for (int i = 0; i < ItemsArray.Length; i++)
+                                            {
+                                                foreach (DataRow dr in dtStatus.Rows)
+                                                {
+                                                    if ((ItemsArray[i]["PV_NO"].ToString() == dr["REQNO"].ToString()) && (Convert.ToDecimal(ItemsArray[i]["PV_AMOUNT"]) > limit) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                     {
                                                         dt.Rows.Add(ItemsArray[i]["PV_WS"], ItemsArray[i]["PV_NO"], ItemsArray[i]["PV_DATE"], ItemsArray[i]["PV_TYPE"], ItemsArray[i]["PV_AMOUNT"], ItemsArray[i]["PV_PSTATUS"], ItemsArray[i]["PV_SYSCODE"], ItemsArray[i]["PV_LOIM"], ItemsArray[i]["PV_SUPPLIER"], ItemsArray[i]["SUPP_NAME"],
-                                                                ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
-                                                                ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
+                                                                    ItemsArray[i]["PV_ORDER"], ItemsArray[i]["PV_ITEM"], ItemsArray[i]["PV_RUSER"], ItemsArray[i]["PV_RNAME"], ItemsArray[i]["PV_DEP"],
+                                                                    ItemsArray[i]["PV_CREATE_DESIG"], ItemsArray[i]["PV_CAN_STATUS"], ItemsArray[i]["PV_SUPPLIER1"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
                                                     }
                                                 }
                                             }
@@ -2113,16 +2132,8 @@ namespace EApproval.Utility
                                             {
                                                 if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 1)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
                                                                     ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
                                                 }
                                             }
                                         }
@@ -2152,18 +2163,10 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                if ((ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString()) && (Convert.ToInt32(dr["STATUSID"]) != 1))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 2)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
                                                                     ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
                                                 }
                                             }
                                         }
@@ -2172,7 +2175,7 @@ namespace EApproval.Utility
                                     //{
                                     //    status = 2; // Approved by Authorizer
                                     //}
-                                    if(status != -1)
+                                    if (status != -1)
                                     {
                                         DataRow[] rslt = dt.Select("StatusId=" + status);
                                         dt = dt.Clone();
@@ -2193,18 +2196,10 @@ namespace EApproval.Utility
                                         {
                                             foreach (DataRow dr in dtStatus.Rows)
                                             {
-                                                if (ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString())
+                                                if ((ItemsArray[i]["RefNo"].ToString() == dr["REQNO"].ToString()) && (Convert.ToInt32(dr["STATUSID"]) != 1 || Convert.ToInt32(dr["STATUSID"]) != 2))
                                                 {
-                                                    if (Convert.ToInt32(dr["STATUSID"]) == 4)
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
-                                                                    ItemsArray[i]["CreatedDate"], "PENDING", Convert.ToInt32(dr["STATUSID"]));
-                                                    }
-                                                    else
-                                                    {
-                                                        dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
+                                                    dt.Rows.Add(ItemsArray[i]["PaymentApprovalId"], ItemsArray[i]["RefNo"], ItemsArray[i]["GLCode"], ItemsArray[i]["CompanyName"], ItemsArray[i]["DEPARTMENT"], ItemsArray[i]["TypeName"], ItemsArray[i]["Amount"], ItemsArray[i]["Description"], ItemsArray[i]["AddedBy"],
                                                                     ItemsArray[i]["CreatedDate"], dr["STATUS"].ToString(), Convert.ToInt32(dr["STATUSID"]));
-                                                    }
                                                 }
                                             }
                                         }
@@ -2985,51 +2980,121 @@ namespace EApproval.Utility
             try
             {
                 HttpResponseMessage response = new HttpResponseMessage();
-                int projectId = Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]);
+                DataTable dtLimit = new DataTable();
+                string apiUrl = "";
                 if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26 || Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61) //WIMS-ADMIN, WIMS-WORKSHOP
                 {
-                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 4 && Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) != 21) // WIMS_ADM, WIMS_WS => INITIATORS
+                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 4 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 21) // WIMS_ADM, WIMS_WS => INITIATORS - 1,2
                     {
-                        string apiUrl = "";
-                        if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
+                        updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                    }
+                    else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 2 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 3) // WIMS_ADM, WIMS_WS => AUTHORIZERS - 1,2
+                    {
+                        if (status == "Approve") //Approve
                         {
-                             apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
-                        }
-                        else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
-                        {
-                             apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                        }
-                        string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
-                        using (HttpClient client = new HttpClient())
-                        {
-                            response = await client.PostAsync(fullUrl, null);
-                            if (response.IsSuccessStatusCode)
+                            if (model.FLOWDETAILID == 44 || model.FLOWDETAILID == 45 || model.FLOWDETAILID == 102 || model.FLOWDETAILID == 103) // WIMS_ADM, WIMS_WS => GRN, Take-In
                             {
-                                string responseContent = await response.Content.ReadAsStringAsync();
-                                responseContent = responseContent.Replace("\"", string.Empty).Replace("\\", string.Empty);
-                                if (responseContent == "Record updated successfully")
+                                if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
                                 {
-                                    updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                                    apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
                                 }
-                                else
+                                else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                                 {
-                                    return await Task.FromResult(new { Success = false, Response = "Failed to save record." });
+                                    apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                }
+                                string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
+                                using (HttpClient client = new HttpClient())
+                                {
+                                    response = await client.PostAsync(fullUrl, null);
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        string responseContent = await response.Content.ReadAsStringAsync();
+                                        responseContent = responseContent.Replace("\"", string.Empty).Replace("\\", string.Empty);
+                                        if (responseContent == "Record updated successfully")
+                                        {
+                                            updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                                        }
+                                        else
+                                        {
+                                            return await Task.FromResult(new { Success = false, Response = "Failed to save record." });
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                            }
+                        }
+                        else //Reject
+                        {
+                            if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
+                            {
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
+                            }
+                            else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
+                            {
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                            }
+                            string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
+                            using (HttpClient client = new HttpClient())
+                            {
+                                response = await client.PostAsync(fullUrl, null);
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    string responseContent = await response.Content.ReadAsStringAsync();
+                                    responseContent = responseContent.Replace("\"", string.Empty).Replace("\\", string.Empty);
+                                    if (responseContent == "Record updated successfully")
+                                    {
+                                        updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                                    }
+                                    else
+                                    {
+                                        return await Task.FromResult(new { Success = false, Response = "Failed to save record." });
+                                    }
                                 }
                             }
                         }
                     }
-                    else
+                    else if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 1 || Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // WIMS_ADM, WIMS_WS => APPROVER - 1,2
                     {
-                        updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                        if (model.FLOWDETAILID == 43 || model.FLOWDETAILID == 46 || model.FLOWDETAILID == 101 || model.FLOWDETAILID == 104) // WIMS_ADM, WIMS_WS => PO, PV
+                        {
+                            if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
+                            {
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/UpdateWimsAdminStatus";
+                            }
+                            else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
+                            {
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                            }
+                            string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
+                            using (HttpClient client = new HttpClient())
+                            {
+                                response = await client.PostAsync(fullUrl, null);
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    string responseContent = await response.Content.ReadAsStringAsync();
+                                    responseContent = responseContent.Replace("\"", string.Empty).Replace("\\", string.Empty);
+                                    if (responseContent == "Record updated successfully")
+                                    {
+                                        updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                                    }
+                                    else
+                                    {
+                                        return await Task.FromResult(new { Success = false, Response = "Failed to save record." });
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-
                 else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 81) //ECS
                 {
-                    if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // ECS => PAF => Approver 2
+                    if(status == "Reject")
                     {
                         var name = HttpContext.Current.Session["NAME"].ToString();
-                        string apiUrl = "https://ecsapi.daewoo.net.pk/api/ecs/v1/PostRecord"; //Live URL
+                        apiUrl = "https://ecsapi.daewoo.net.pk/api/ecs/v1/PostRecord"; //Live URL
                         //string apiUrl = "https://localhost:44354/api/ecs/v1/PostRecord";
                         string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}&approvedBy={HttpContext.Current.Session["NAME"]}";
                         using (HttpClient client = new HttpClient())
@@ -3043,7 +3108,25 @@ namespace EApproval.Utility
                     }
                     else
                     {
-                        updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                        if (Convert.ToInt32(HttpContext.Current.Session["USERTYPEID"]) == 22) // ECS => PAF => Approver 2  
+                        {
+                            var name = HttpContext.Current.Session["NAME"].ToString();
+                            apiUrl = "https://ecsapi.daewoo.net.pk/api/ecs/v1/PostRecord"; //Live URL
+                            //string apiUrl = "https://localhost:44354/api/ecs/v1/PostRecord";
+                            string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}&approvedBy={HttpContext.Current.Session["NAME"]}";
+                            using (HttpClient client = new HttpClient())
+                            {
+                                response = await client.PostAsync(fullUrl, null);
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            updateEApproval(model, status, Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]));
+                        }
                     }
                 }
 

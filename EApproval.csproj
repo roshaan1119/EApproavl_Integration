@@ -9498,6 +9498,7 @@
     <Content Include="images\favicon.png" />
     <Content Include="images\favicon_daewoo_express_logo.png" />
     <Content Include="images\file.png" />
+    <Content Include="images\Group.png" />
     <Content Include="images\hand.png" />
     <Content Include="images\heart.png" />
     <Content Include="images\iconly\light\2-User.svg" />
@@ -9600,6 +9601,7 @@
     <Content Include="images\iconly\light\Volume-Up.svg" />
     <Content Include="images\iconly\light\Wallet.svg" />
     <Content Include="images\iconly\light\Work.svg" />
+    <Content Include="images\images.png" />
     <Content Include="images\like.png" />
     <Content Include="images\log.png" />
     <Content Include="images\logi-white.png" />
