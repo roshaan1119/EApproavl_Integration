@@ -221,6 +221,14 @@ namespace EApproval.Controller
             OracaleManager serviceController = new OracaleManager();
             return await Task.FromResult(serviceController.LoadWIMSWSPOTakeIn(Req_No, Ws, ProjectId, fromDate, toDate)).Result;
         }
+        [Route("GetWSPOAmount")]
+        [HttpGet]
+        [Obsolete]
+        public async Task<Object> GetWSPOAmount(string ReqNo)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.GetWSPOAmount(ReqNo)).Result;
+        }
         //[Route("ExporttoPDF")]
         //[HttpGet]
         //[Obsolete]

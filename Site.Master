@@ -1,5 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="EApproval.Site" %>
 
+
 <!DOCTYPE html>
 
 <html>
@@ -42,9 +43,24 @@
     <form id="form1">
         <div id="main-wrapper">
             <div class="nav-header">
-                <a  class="brand-logo">
-                    <img src="images/Group.png" style="width:150px" alt="logo">
-                </a>
+                  <% if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
+                     { %>
+                        <a href="WIMS_Workshop_Dashboard.aspx" class="brand-logo">
+                            <img class="logo-abbr" src="images/Group.png" style="width: 150px" alt="logo">
+                        </a>
+                 <% } %>
+                <% else if(Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
+                  { %>
+                         <a href="WIMS_Admin_Dashboard.aspx" class="brand-logo">
+                            <img src="images/Group.png" style="width:150px" alt="logo">
+                        </a>
+                <% } %>
+                <% else if(Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 81)
+                  { %>
+                        <a href="ECS_Dashboard.aspx" class="brand-logo">
+                            <img src="images/Group.png" style="width: 150px" alt="logo">
+                        </a>
+                <% } %>
                 <div class="nav-control">
                     <div class="hamburger">
                         <span class="line"></span>

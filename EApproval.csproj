@@ -9610,6 +9610,8 @@
     <Content Include="images\logo.png" />
     <Content Include="images\logo\logo-full.png" />
     <Content Include="images\logo\logofull-white.png" />
+    <Content Include="images\logo_Daewoo.png" />
+    <Content Include="images\Logo_name.png" />
     <Content Include="images\media.jpg" />
     <Content Include="images\metaverse.png" />
     <Content Include="images\news.png" />
