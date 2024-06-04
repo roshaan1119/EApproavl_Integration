@@ -1735,7 +1735,6 @@
                                     var data = [];
                                     var statusStyle = '';
                                     if (DataList != null) {
-                                        debugger;
                                         $("#tblListPAF").DataTable().clear();
                                         $("#tblListPAF").DataTable().destroy();
                                         $(DataList).each(function (i, item) {
@@ -1888,7 +1887,6 @@
             else {
                 $('#btnStatus').hide();
             }
-            alert(SelectedList);
         }
 
         function UpdateStatus(status) {
@@ -2027,7 +2025,6 @@
                 url: "api/projects/GetImagesByRequestId?PaymentApprovalId=" + PaymentApprovalId,
                 dataType: 'json',
                 success: function (data) {
-                    debugger;
                     let Success = data.Success;
                     let Response = data.Response;
                     let DataList = data.Data;
