@@ -62,6 +62,10 @@
               <xs:element name="PO_G_TOTAL_AMOUNT" msprop:Generator_ColumnVarNameInTable="columnPO_G_TOTAL_AMOUNT" msprop:Generator_ColumnPropNameInRow="PO_G_TOTAL_AMOUNT" msprop:Generator_ColumnPropNameInTable="PO_G_TOTAL_AMOUNTColumn" msprop:Generator_UserColumnName="PO_G_TOTAL_AMOUNT" type="xs:string" minOccurs="0" />
               <xs:element name="PO_GST_RATE" msprop:Generator_ColumnVarNameInTable="columnPO_GST_RATE" msprop:Generator_ColumnPropNameInRow="PO_GST_RATE" msprop:Generator_ColumnPropNameInTable="PO_GST_RATEColumn" msprop:Generator_UserColumnName="PO_GST_RATE" type="xs:string" minOccurs="0" />
               <xs:element name="PO_TAX_RATE" msprop:Generator_ColumnVarNameInTable="columnPO_TAX_RATE" msprop:Generator_ColumnPropNameInRow="PO_TAX_RATE" msprop:Generator_ColumnPropNameInTable="PO_TAX_RATEColumn" msprop:Generator_UserColumnName="PO_TAX_RATE" type="xs:string" minOccurs="0" />
+              <xs:element name="PO_BRAND" msprop:Generator_ColumnVarNameInTable="columnPO_BRAND" msprop:Generator_ColumnPropNameInRow="PO_BRAND" msprop:Generator_ColumnPropNameInTable="PO_BRANDColumn" msprop:Generator_UserColumnName="PO_BRAND" type="xs:string" minOccurs="0" />
+              <xs:element name="PO_REMARK" msprop:Generator_ColumnVarNameInTable="columnPO_REMARK" msprop:Generator_ColumnPropNameInRow="PO_REMARK" msprop:Generator_ColumnPropNameInTable="PO_REMARKColumn" msprop:Generator_UserColumnName="PO_REMARK" type="xs:string" minOccurs="0" />
+              <xs:element name="PO_HREMARK" msprop:Generator_ColumnVarNameInTable="columnPO_HREMARK" msprop:Generator_ColumnPropNameInRow="PO_HREMARK" msprop:Generator_ColumnPropNameInTable="PO_HREMARKColumn" msprop:Generator_UserColumnName="PO_HREMARK" type="xs:string" minOccurs="0" />
+              <xs:element name="PO_DISCOUNT_RATE" msprop:Generator_ColumnVarNameInTable="columnPO_DISCOUNT_RATE" msprop:Generator_ColumnPropNameInRow="PO_DISCOUNT_RATE" msprop:Generator_ColumnPropNameInTable="PO_DISCOUNT_RATEColumn" msprop:Generator_UserColumnName="PO_DISCOUNT_RATE" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

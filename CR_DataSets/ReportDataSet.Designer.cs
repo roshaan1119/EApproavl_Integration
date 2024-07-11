@@ -995,6 +995,14 @@ namespace EApproval.CR_DataSets {
             
             private global::System.Data.DataColumn columnPO_TAX_RATE;
             
+            private global::System.Data.DataColumn columnPO_BRAND;
+            
+            private global::System.Data.DataColumn columnPO_REMARK;
+            
+            private global::System.Data.DataColumn columnPO_HREMARK;
+            
+            private global::System.Data.DataColumn columnPO_DISCOUNT_RATE;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public tbl_WIMS_ADM_PODataTable() {
@@ -1254,6 +1262,38 @@ namespace EApproval.CR_DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_BRANDColumn {
+                get {
+                    return this.columnPO_BRAND;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_REMARKColumn {
+                get {
+                    return this.columnPO_REMARK;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_HREMARKColumn {
+                get {
+                    return this.columnPO_HREMARK;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_DISCOUNT_RATEColumn {
+                get {
+                    return this.columnPO_DISCOUNT_RATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1317,7 +1357,11 @@ namespace EApproval.CR_DataSets {
                         string TAX_AMOUNT, 
                         string PO_G_TOTAL_AMOUNT, 
                         string PO_GST_RATE, 
-                        string PO_TAX_RATE) {
+                        string PO_TAX_RATE, 
+                        string PO_BRAND, 
+                        string PO_REMARK, 
+                        string PO_HREMARK, 
+                        string PO_DISCOUNT_RATE) {
                 tbl_WIMS_ADM_PORow rowtbl_WIMS_ADM_PORow = ((tbl_WIMS_ADM_PORow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         SUPP_NAME,
@@ -1347,7 +1391,11 @@ namespace EApproval.CR_DataSets {
                         TAX_AMOUNT,
                         PO_G_TOTAL_AMOUNT,
                         PO_GST_RATE,
-                        PO_TAX_RATE};
+                        PO_TAX_RATE,
+                        PO_BRAND,
+                        PO_REMARK,
+                        PO_HREMARK,
+                        PO_DISCOUNT_RATE};
                 rowtbl_WIMS_ADM_PORow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowtbl_WIMS_ADM_PORow);
                 return rowtbl_WIMS_ADM_PORow;
@@ -1398,6 +1446,10 @@ namespace EApproval.CR_DataSets {
                 this.columnPO_G_TOTAL_AMOUNT = base.Columns["PO_G_TOTAL_AMOUNT"];
                 this.columnPO_GST_RATE = base.Columns["PO_GST_RATE"];
                 this.columnPO_TAX_RATE = base.Columns["PO_TAX_RATE"];
+                this.columnPO_BRAND = base.Columns["PO_BRAND"];
+                this.columnPO_REMARK = base.Columns["PO_REMARK"];
+                this.columnPO_HREMARK = base.Columns["PO_HREMARK"];
+                this.columnPO_DISCOUNT_RATE = base.Columns["PO_DISCOUNT_RATE"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1459,6 +1511,14 @@ namespace EApproval.CR_DataSets {
                 base.Columns.Add(this.columnPO_GST_RATE);
                 this.columnPO_TAX_RATE = new global::System.Data.DataColumn("PO_TAX_RATE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPO_TAX_RATE);
+                this.columnPO_BRAND = new global::System.Data.DataColumn("PO_BRAND", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_BRAND);
+                this.columnPO_REMARK = new global::System.Data.DataColumn("PO_REMARK", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_REMARK);
+                this.columnPO_HREMARK = new global::System.Data.DataColumn("PO_HREMARK", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_HREMARK);
+                this.columnPO_DISCOUNT_RATE = new global::System.Data.DataColumn("PO_DISCOUNT_RATE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_DISCOUNT_RATE);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5215,6 +5275,70 @@ namespace EApproval.CR_DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_BRAND {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_ADM_PO.PO_BRANDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_BRAND\' in table \'tbl_WIMS_ADM_PO\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_ADM_PO.PO_BRANDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_REMARK {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_ADM_PO.PO_REMARKColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_REMARK\' in table \'tbl_WIMS_ADM_PO\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_ADM_PO.PO_REMARKColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_HREMARK {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_ADM_PO.PO_HREMARKColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_HREMARK\' in table \'tbl_WIMS_ADM_PO\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_ADM_PO.PO_HREMARKColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_DISCOUNT_RATE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_ADM_PO.PO_DISCOUNT_RATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_DISCOUNT_RATE\' in table \'tbl_WIMS_ADM_PO\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_ADM_PO.PO_DISCOUNT_RATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsSUPP_NAMENull() {
                 return this.IsNull(this.tabletbl_WIMS_ADM_PO.SUPP_NAMEColumn);
             }
@@ -5547,6 +5671,54 @@ namespace EApproval.CR_DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetPO_TAX_RATENull() {
                 this[this.tabletbl_WIMS_ADM_PO.PO_TAX_RATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_BRANDNull() {
+                return this.IsNull(this.tabletbl_WIMS_ADM_PO.PO_BRANDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_BRANDNull() {
+                this[this.tabletbl_WIMS_ADM_PO.PO_BRANDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_REMARKNull() {
+                return this.IsNull(this.tabletbl_WIMS_ADM_PO.PO_REMARKColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_REMARKNull() {
+                this[this.tabletbl_WIMS_ADM_PO.PO_REMARKColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_HREMARKNull() {
+                return this.IsNull(this.tabletbl_WIMS_ADM_PO.PO_HREMARKColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_HREMARKNull() {
+                this[this.tabletbl_WIMS_ADM_PO.PO_HREMARKColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_DISCOUNT_RATENull() {
+                return this.IsNull(this.tabletbl_WIMS_ADM_PO.PO_DISCOUNT_RATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_DISCOUNT_RATENull() {
+                this[this.tabletbl_WIMS_ADM_PO.PO_DISCOUNT_RATEColumn] = global::System.Convert.DBNull;
             }
         }
         

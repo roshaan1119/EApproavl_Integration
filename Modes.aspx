@@ -1217,7 +1217,7 @@
                                                 }
                                             }
                                             else if (UserType = 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 4 ) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1316,7 +1316,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5 || item.StatusId == 7  || item.StatusId == 8) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1432,7 +1432,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1531,7 +1531,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1629,7 +1629,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 4 || item.StatusId == 3 || item.StatusId == 7) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5  || item.StatusId == 7 || item.StatusId == 8) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
