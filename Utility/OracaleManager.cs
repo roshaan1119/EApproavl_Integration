@@ -793,6 +793,83 @@ namespace EApproval.Utility
         }
 
         [Obsolete]
+        public async Task<Object> LoadWIMSWSPvSummary(string req_No)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                using (var client = new WebClient())
+                {
+                    client.Headers.Add("Content-Type:application/json");
+                    client.Headers.Add("Accept:application/json");
+                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetPVSummary?req_no=" + req_No;
+                    string URL = "https://localhost:44360/api/wims/ws/GetPVSummary?req_no=" + req_No;
+                    var result = client.DownloadString(URL);
+                    JObject parsed = JObject.Parse(result);
+                    var Items = parsed["CSubTypes"];
+                    if (parsed.Root.HasValues)
+                    {
+                        dt.Columns.Add("PV_WS", typeof(string));
+                        dt.Columns.Add("PV_NO", typeof(string));
+                        dt.Columns.Add("PV_DATE", typeof(string));
+                        dt.Columns.Add("PART_NO", typeof(string));
+                        dt.Columns.Add("PART_NAME", typeof(string));
+                        dt.Columns.Add("PART_UOM", typeof(string));
+                        dt.Columns.Add("PART_MAKER", typeof(string));
+                        dt.Columns.Add("PART_MODEL", typeof(string));
+                        dt.Columns.Add("PV_INVOICE_NO", typeof(string));
+                        dt.Columns.Add("PV_TAX_TYPE", typeof(string));
+                        dt.Columns.Add("PV_PO_NO", typeof(string));
+                        dt.Columns.Add("PV_SUPPLIER", typeof(string));
+                        dt.Columns.Add("PV_REQ_NO", typeof(string));
+                        dt.Columns.Add("PV_TYPE", typeof(string));
+                        dt.Columns.Add("PV_REQ_DATE", typeof(string));
+                        dt.Columns.Add("PV_RTIN_NO", typeof(string));
+                        dt.Columns.Add("PV_AMOUNT", typeof(decimal));
+                        dt.Columns.Add("PV_RATE", typeof(decimal));
+                        dt.Columns.Add("PV_RUSER", typeof(string));
+                        dt.Columns.Add("PV_CREATE_USER", typeof(string));
+                        dt.Columns.Add("PV_IN_QTY", typeof(string));
+                        dt.Columns.Add("PV_PSTATUS", typeof(string));
+                        dt.Columns.Add("PV_REQ_NO1", typeof(string));
+                        dt.Columns.Add("PO_IN_QTY", typeof(int));
+                        dt.Columns.Add("PO_AFTERTAX_AMT", typeof(decimal));
+                        dt.Columns.Add("PO_G_TOTAL_AMOUNT", typeof(decimal));
+                        dt.Columns.Add("PV_GRNNO", typeof(string));
+                        dt.Columns.Add("PV_INPUT_NO", typeof(string));
+                        dt.Columns.Add("PV_INVOICE_NO1", typeof(string));
+
+                        foreach (var list in Items)
+                        {
+                            dt.Rows.Add(list["PV_WS"], list["PV_NO"], list["PV_DATE"], list["PART_NO"], list["PART_NAME"], list["PART_UOM"], list["PART_MAKER"],
+                                        list["PART_MODEL"], list["PV_INVOICE_NO"], list["PV_TAX_TYPE"], list["PV_PO_NO"], list["PV_SUPPLIER"], list["PV_REQ_NO"],
+                                        list["PV_TYPE"], list["PV_REQ_DATE"], list["PV_RTIN_NO"], list["PV_AMOUNT"], list["PV_RATE"], list["PV_RUSER"], 
+                                        list["PV_CREATE_USER"], list["PV_IN_QTY"], list["PV_PSTATUS"], list["PV_REQ_NO1"], list["PO_IN_QTY"], list["PO_AFTERTAX_AMT"],
+                                        list["PO_G_TOTAL_AMOUNT"], list["PV_GRNNO"], list["PV_INPUT_NO"], list["PV_INVOICE_NO1"]);
+                        }
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    return await Task.FromResult(new { Success = true, Response = "Record Found", Data = new { dt } });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No record found.", Data = new { } });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
+        }
+
+        [Obsolete]
         public async Task<Object> LoadContentByProjectId(string from_Date, string to_Date, int project, int Mode, int status = -1)
         {
             try

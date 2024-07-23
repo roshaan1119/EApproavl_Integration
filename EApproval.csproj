@@ -10616,6 +10616,12 @@
       <DependentUpon>PaymentApprovalReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\WIMS_PV_SUMMARY_REPORT.cs">
+      <DependentUpon>WIMS_PV_SUMMARY_REPORT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reports\WIMS_PO_TAKEIN_REPORT.cs">
       <DependentUpon>WIMS_PO_TAKEIN_REPORT.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -11483,6 +11489,10 @@
     <EmbeddedResource Include="Reports\WIMS_ADM_SIGNATURE_SUBREPORT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>WIMS_ADM_SIGNATURE_SUBREPORT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\WIMS_PV_SUMMARY_REPORT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>WIMS_PV_SUMMARY_REPORT.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\WIMS_PO_TAKEIN_REPORT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

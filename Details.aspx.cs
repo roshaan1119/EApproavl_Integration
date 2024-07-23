@@ -36,14 +36,26 @@ namespace EApproval
             DataTable dt = new DataTable();
             DataTable dtApprovalAuth = new DataTable();
             ReportDataSet ds = new ReportDataSet();
-            var taskResult = await oracle.GetDetailByRequestNo(SecreenId, Req_No);
-            dt = ((dynamic)taskResult).Data.dt as DataTable;
-            dtApprovalAuth = ((dynamic)taskResult).Data.dtApprovalAuth as DataTable;
-            if (SecreenId == 0) //PO Take-In Report
+            if (SecreenId != 1)
             {
-                var result = await oracle.LoadWIMSWSPOTakeIn(Req_No, dt.Rows[0]["PO_WS"].ToString(), Convert.ToInt32(dt.Rows[0]["PO_PROJECT"]), "20230101", DateTime.Today.ToString("yyyyMMdd"));
-                dt = ((dynamic)result).Data.dt as DataTable;
+                var taskResult = await oracle.GetDetailByRequestNo(SecreenId, Req_No);
+                dt = ((dynamic)taskResult).Data.dt as DataTable;
+                dtApprovalAuth = ((dynamic)taskResult).Data.dtApprovalAuth as DataTable;
             }
+            if (Project_Id == "61") //For WIMS-WS
+            {
+                if (SecreenId == 0) //PO Take-In Report
+                {
+                    var result = await oracle.LoadWIMSWSPOTakeIn(Req_No, dt.Rows[0]["PO_WS"].ToString(), Convert.ToInt32(dt.Rows[0]["PO_PROJECT"]), DateTime.Today.AddYears(-2).ToString("yyyyMMdd"), DateTime.Today.ToString("yyyyMMdd"));
+                    dt = ((dynamic)result).Data.dt as DataTable;
+                }
+                else if (SecreenId == 1) //PV Summary
+                {
+                    var result = await oracle.LoadWIMSWSPvSummary(Req_No);
+                    dt = ((dynamic)result).Data.dt as DataTable;
+                }
+            }
+           
             rptViewer.DisplayGroupTree = false;
             //WIMS-ADMIN, WIMS-WORKSHOP
             if (Project_Id == "26" || Project_Id == "61")
@@ -109,6 +121,55 @@ namespace EApproval
                     {
                         Reports.WIMS_PO_TAKEIN_REPORT rpt = new Reports.WIMS_PO_TAKEIN_REPORT();
                         rpt.Database.Tables["tbl_WIMS_PO_TAKEIN"].SetDataSource(dt);
+                        rptViewer.ReportSource = rpt;
+                    }
+                }
+                else if (SecreenId == 1) //WIMS_WS_PV_SUMMARY
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        int poqtyValue = 0;
+                        int pvqtyValue = 0;
+                        int poamtValue = 0;
+                        int pvamtValue = 0;
+                        Reports.WIMS_PV_SUMMARY_REPORT rpt = new Reports.WIMS_PV_SUMMARY_REPORT();
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                           if (row["PV_TYPE"].ToString() == "1")
+                           {
+                                poqtyValue += Convert.ToInt32(row["PO_IN_QTY"]);
+                                pvqtyValue += Convert.ToInt32(row["PV_IN_QTY"]);
+                                poamtValue += Convert.ToInt32(row["PO_G_TOTAL_AMOUNT"]);
+                                pvamtValue += Convert.ToInt32(row["PV_AMOUNT"]);
+                                if (poqtyValue != pvqtyValue && poamtValue != pvamtValue)
+                                {
+                                    for (int ll_row = 0; ll_row < dt.Rows.Count - 1; ll_row++)
+                                    {
+                                        var currentRow = dt.Rows[ll_row];
+                                        var nextRow = dt.Rows[ll_row + 1];
+
+                                        var currentReqNo = currentRow["pv_req_no"].ToString();
+                                        var nextReqNo = nextRow["pv_req_no"].ToString();
+
+                                        var currentPoNo = currentRow["pv_po_no"].ToString();
+                                        var nextPoNo = nextRow["pv_po_no"].ToString();
+
+                                        var currentPartNo = currentRow["part_no"].ToString();
+                                        var nextPartNo = nextRow["part_no"].ToString();
+
+                                        if (currentReqNo == nextReqNo && currentPoNo == nextPoNo && currentPartNo == nextPartNo)
+                                        {
+                                            nextRow["po_in_qty"] = 0;
+                                            nextRow["po_g_total_amount"] = 0;
+                                            nextRow["po_aftertax_amt"] = 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        rpt.Database.Tables["tbl_WIMS_PV_SUMMARY"].SetDataSource(dt);
                         rptViewer.ReportSource = rpt;
                     }
                 }

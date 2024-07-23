@@ -40,6 +40,8 @@ namespace EApproval.CR_DataSets {
         
         private tbl_WIMS_PO_TAKEINDataTable tabletbl_WIMS_PO_TAKEIN;
         
+        private tbl_WIMS_PV_SUMMARYDataTable tabletbl_WIMS_PV_SUMMARY;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -91,6 +93,9 @@ namespace EApproval.CR_DataSets {
                 }
                 if ((ds.Tables["tbl_WIMS_PO_TAKEIN"] != null)) {
                     base.Tables.Add(new tbl_WIMS_PO_TAKEINDataTable(ds.Tables["tbl_WIMS_PO_TAKEIN"]));
+                }
+                if ((ds.Tables["tbl_WIMS_PV_SUMMARY"] != null)) {
+                    base.Tables.Add(new tbl_WIMS_PV_SUMMARYDataTable(ds.Tables["tbl_WIMS_PV_SUMMARY"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -192,6 +197,16 @@ namespace EApproval.CR_DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public tbl_WIMS_PV_SUMMARYDataTable tbl_WIMS_PV_SUMMARY {
+            get {
+                return this.tabletbl_WIMS_PV_SUMMARY;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -281,6 +296,9 @@ namespace EApproval.CR_DataSets {
                 if ((ds.Tables["tbl_WIMS_PO_TAKEIN"] != null)) {
                     base.Tables.Add(new tbl_WIMS_PO_TAKEINDataTable(ds.Tables["tbl_WIMS_PO_TAKEIN"]));
                 }
+                if ((ds.Tables["tbl_WIMS_PV_SUMMARY"] != null)) {
+                    base.Tables.Add(new tbl_WIMS_PV_SUMMARYDataTable(ds.Tables["tbl_WIMS_PV_SUMMARY"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -362,6 +380,12 @@ namespace EApproval.CR_DataSets {
                     this.tabletbl_WIMS_PO_TAKEIN.InitVars();
                 }
             }
+            this.tabletbl_WIMS_PV_SUMMARY = ((tbl_WIMS_PV_SUMMARYDataTable)(base.Tables["tbl_WIMS_PV_SUMMARY"]));
+            if ((initTable == true)) {
+                if ((this.tabletbl_WIMS_PV_SUMMARY != null)) {
+                    this.tabletbl_WIMS_PV_SUMMARY.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -388,6 +412,8 @@ namespace EApproval.CR_DataSets {
             base.Tables.Add(this._tablesp_ReprtViewers_1);
             this.tabletbl_WIMS_PO_TAKEIN = new tbl_WIMS_PO_TAKEINDataTable();
             base.Tables.Add(this.tabletbl_WIMS_PO_TAKEIN);
+            this.tabletbl_WIMS_PV_SUMMARY = new tbl_WIMS_PV_SUMMARYDataTable();
+            base.Tables.Add(this.tabletbl_WIMS_PV_SUMMARY);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -435,6 +461,12 @@ namespace EApproval.CR_DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private bool ShouldSerializetbl_WIMS_PO_TAKEIN() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        private bool ShouldSerializetbl_WIMS_PV_SUMMARY() {
             return false;
         }
         
@@ -516,6 +548,9 @@ namespace EApproval.CR_DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public delegate void tbl_WIMS_PO_TAKEINRowChangeEventHandler(object sender, tbl_WIMS_PO_TAKEINRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public delegate void tbl_WIMS_PV_SUMMARYRowChangeEventHandler(object sender, tbl_WIMS_PV_SUMMARYRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -4391,6 +4426,674 @@ namespace EApproval.CR_DataSets {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "tbl_WIMS_PO_TAKEINDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class tbl_WIMS_PV_SUMMARYDataTable : global::System.Data.TypedTableBase<tbl_WIMS_PV_SUMMARYRow> {
+            
+            private global::System.Data.DataColumn columnPV_WS;
+            
+            private global::System.Data.DataColumn columnPV_NO;
+            
+            private global::System.Data.DataColumn columnPV_DATE;
+            
+            private global::System.Data.DataColumn columnPART_NO;
+            
+            private global::System.Data.DataColumn columnPART_NAME;
+            
+            private global::System.Data.DataColumn columnPART_UOM;
+            
+            private global::System.Data.DataColumn columnPART_MAKER;
+            
+            private global::System.Data.DataColumn columnPART_MODEL;
+            
+            private global::System.Data.DataColumn columnPV_INVOICE_NO;
+            
+            private global::System.Data.DataColumn columnPV_TAX_TYPE;
+            
+            private global::System.Data.DataColumn columnPV_PO_NO;
+            
+            private global::System.Data.DataColumn columnPV_SUPPLIER;
+            
+            private global::System.Data.DataColumn columnPV_REQ_NO;
+            
+            private global::System.Data.DataColumn columnPV_TYPE;
+            
+            private global::System.Data.DataColumn columnPV_REQ_DATE;
+            
+            private global::System.Data.DataColumn columnPV_RTIN_NO;
+            
+            private global::System.Data.DataColumn columnPV_AMOUNT;
+            
+            private global::System.Data.DataColumn columnPV_RATE;
+            
+            private global::System.Data.DataColumn columnPV_RUSER;
+            
+            private global::System.Data.DataColumn columnPV_CREATE_USER;
+            
+            private global::System.Data.DataColumn columnPV_IN_QTY;
+            
+            private global::System.Data.DataColumn columnPV_PSTATUS;
+            
+            private global::System.Data.DataColumn columnPV_REQ_NO1;
+            
+            private global::System.Data.DataColumn columnPO_IN_QTY;
+            
+            private global::System.Data.DataColumn columnPO_AFTERTAX_AMT;
+            
+            private global::System.Data.DataColumn columnPO_G_TOTAL_AMOUNT;
+            
+            private global::System.Data.DataColumn columnPV_GRNNO;
+            
+            private global::System.Data.DataColumn columnPV_INPUT_NO;
+            
+            private global::System.Data.DataColumn columnPV_INVOICE_NO1;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYDataTable() {
+                this.TableName = "tbl_WIMS_PV_SUMMARY";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal tbl_WIMS_PV_SUMMARYDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected tbl_WIMS_PV_SUMMARYDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_WSColumn {
+                get {
+                    return this.columnPV_WS;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_NOColumn {
+                get {
+                    return this.columnPV_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_DATEColumn {
+                get {
+                    return this.columnPV_DATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_NOColumn {
+                get {
+                    return this.columnPART_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_NAMEColumn {
+                get {
+                    return this.columnPART_NAME;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_UOMColumn {
+                get {
+                    return this.columnPART_UOM;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_MAKERColumn {
+                get {
+                    return this.columnPART_MAKER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PART_MODELColumn {
+                get {
+                    return this.columnPART_MODEL;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_INVOICE_NOColumn {
+                get {
+                    return this.columnPV_INVOICE_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_TAX_TYPEColumn {
+                get {
+                    return this.columnPV_TAX_TYPE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_PO_NOColumn {
+                get {
+                    return this.columnPV_PO_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_SUPPLIERColumn {
+                get {
+                    return this.columnPV_SUPPLIER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_REQ_NOColumn {
+                get {
+                    return this.columnPV_REQ_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_TYPEColumn {
+                get {
+                    return this.columnPV_TYPE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_REQ_DATEColumn {
+                get {
+                    return this.columnPV_REQ_DATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_RTIN_NOColumn {
+                get {
+                    return this.columnPV_RTIN_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_AMOUNTColumn {
+                get {
+                    return this.columnPV_AMOUNT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_RATEColumn {
+                get {
+                    return this.columnPV_RATE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_RUSERColumn {
+                get {
+                    return this.columnPV_RUSER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_CREATE_USERColumn {
+                get {
+                    return this.columnPV_CREATE_USER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_IN_QTYColumn {
+                get {
+                    return this.columnPV_IN_QTY;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_PSTATUSColumn {
+                get {
+                    return this.columnPV_PSTATUS;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_REQ_NO1Column {
+                get {
+                    return this.columnPV_REQ_NO1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_IN_QTYColumn {
+                get {
+                    return this.columnPO_IN_QTY;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_AFTERTAX_AMTColumn {
+                get {
+                    return this.columnPO_AFTERTAX_AMT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PO_G_TOTAL_AMOUNTColumn {
+                get {
+                    return this.columnPO_G_TOTAL_AMOUNT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_GRNNOColumn {
+                get {
+                    return this.columnPV_GRNNO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_INPUT_NOColumn {
+                get {
+                    return this.columnPV_INPUT_NO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PV_INVOICE_NO1Column {
+                get {
+                    return this.columnPV_INVOICE_NO1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYRow this[int index] {
+                get {
+                    return ((tbl_WIMS_PV_SUMMARYRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PV_SUMMARYRowChangeEventHandler tbl_WIMS_PV_SUMMARYRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PV_SUMMARYRowChangeEventHandler tbl_WIMS_PV_SUMMARYRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PV_SUMMARYRowChangeEventHandler tbl_WIMS_PV_SUMMARYRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event tbl_WIMS_PV_SUMMARYRowChangeEventHandler tbl_WIMS_PV_SUMMARYRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Addtbl_WIMS_PV_SUMMARYRow(tbl_WIMS_PV_SUMMARYRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYRow Addtbl_WIMS_PV_SUMMARYRow(
+                        string PV_WS, 
+                        string PV_NO, 
+                        string PV_DATE, 
+                        string PART_NO, 
+                        string PART_NAME, 
+                        string PART_UOM, 
+                        string PART_MAKER, 
+                        string PART_MODEL, 
+                        string PV_INVOICE_NO, 
+                        string PV_TAX_TYPE, 
+                        string PV_PO_NO, 
+                        string PV_SUPPLIER, 
+                        string PV_REQ_NO, 
+                        string PV_TYPE, 
+                        string PV_REQ_DATE, 
+                        string PV_RTIN_NO, 
+                        string PV_AMOUNT, 
+                        string PV_RATE, 
+                        string PV_RUSER, 
+                        string PV_CREATE_USER, 
+                        string PV_IN_QTY, 
+                        string PV_PSTATUS, 
+                        string PV_REQ_NO1, 
+                        string PO_IN_QTY, 
+                        string PO_AFTERTAX_AMT, 
+                        string PO_G_TOTAL_AMOUNT, 
+                        string PV_GRNNO, 
+                        string PV_INPUT_NO, 
+                        string PV_INVOICE_NO1) {
+                tbl_WIMS_PV_SUMMARYRow rowtbl_WIMS_PV_SUMMARYRow = ((tbl_WIMS_PV_SUMMARYRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        PV_WS,
+                        PV_NO,
+                        PV_DATE,
+                        PART_NO,
+                        PART_NAME,
+                        PART_UOM,
+                        PART_MAKER,
+                        PART_MODEL,
+                        PV_INVOICE_NO,
+                        PV_TAX_TYPE,
+                        PV_PO_NO,
+                        PV_SUPPLIER,
+                        PV_REQ_NO,
+                        PV_TYPE,
+                        PV_REQ_DATE,
+                        PV_RTIN_NO,
+                        PV_AMOUNT,
+                        PV_RATE,
+                        PV_RUSER,
+                        PV_CREATE_USER,
+                        PV_IN_QTY,
+                        PV_PSTATUS,
+                        PV_REQ_NO1,
+                        PO_IN_QTY,
+                        PO_AFTERTAX_AMT,
+                        PO_G_TOTAL_AMOUNT,
+                        PV_GRNNO,
+                        PV_INPUT_NO,
+                        PV_INVOICE_NO1};
+                rowtbl_WIMS_PV_SUMMARYRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowtbl_WIMS_PV_SUMMARYRow);
+                return rowtbl_WIMS_PV_SUMMARYRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                tbl_WIMS_PV_SUMMARYDataTable cln = ((tbl_WIMS_PV_SUMMARYDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new tbl_WIMS_PV_SUMMARYDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal void InitVars() {
+                this.columnPV_WS = base.Columns["PV_WS"];
+                this.columnPV_NO = base.Columns["PV_NO"];
+                this.columnPV_DATE = base.Columns["PV_DATE"];
+                this.columnPART_NO = base.Columns["PART_NO"];
+                this.columnPART_NAME = base.Columns["PART_NAME"];
+                this.columnPART_UOM = base.Columns["PART_UOM"];
+                this.columnPART_MAKER = base.Columns["PART_MAKER"];
+                this.columnPART_MODEL = base.Columns["PART_MODEL"];
+                this.columnPV_INVOICE_NO = base.Columns["PV_INVOICE_NO"];
+                this.columnPV_TAX_TYPE = base.Columns["PV_TAX_TYPE"];
+                this.columnPV_PO_NO = base.Columns["PV_PO_NO"];
+                this.columnPV_SUPPLIER = base.Columns["PV_SUPPLIER"];
+                this.columnPV_REQ_NO = base.Columns["PV_REQ_NO"];
+                this.columnPV_TYPE = base.Columns["PV_TYPE"];
+                this.columnPV_REQ_DATE = base.Columns["PV_REQ_DATE"];
+                this.columnPV_RTIN_NO = base.Columns["PV_RTIN_NO"];
+                this.columnPV_AMOUNT = base.Columns["PV_AMOUNT"];
+                this.columnPV_RATE = base.Columns["PV_RATE"];
+                this.columnPV_RUSER = base.Columns["PV_RUSER"];
+                this.columnPV_CREATE_USER = base.Columns["PV_CREATE_USER"];
+                this.columnPV_IN_QTY = base.Columns["PV_IN_QTY"];
+                this.columnPV_PSTATUS = base.Columns["PV_PSTATUS"];
+                this.columnPV_REQ_NO1 = base.Columns["PV_REQ_NO1"];
+                this.columnPO_IN_QTY = base.Columns["PO_IN_QTY"];
+                this.columnPO_AFTERTAX_AMT = base.Columns["PO_AFTERTAX_AMT"];
+                this.columnPO_G_TOTAL_AMOUNT = base.Columns["PO_G_TOTAL_AMOUNT"];
+                this.columnPV_GRNNO = base.Columns["PV_GRNNO"];
+                this.columnPV_INPUT_NO = base.Columns["PV_INPUT_NO"];
+                this.columnPV_INVOICE_NO1 = base.Columns["PV_INVOICE_NO1"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            private void InitClass() {
+                this.columnPV_WS = new global::System.Data.DataColumn("PV_WS", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_WS);
+                this.columnPV_NO = new global::System.Data.DataColumn("PV_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_NO);
+                this.columnPV_DATE = new global::System.Data.DataColumn("PV_DATE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_DATE);
+                this.columnPART_NO = new global::System.Data.DataColumn("PART_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_NO);
+                this.columnPART_NAME = new global::System.Data.DataColumn("PART_NAME", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_NAME);
+                this.columnPART_UOM = new global::System.Data.DataColumn("PART_UOM", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_UOM);
+                this.columnPART_MAKER = new global::System.Data.DataColumn("PART_MAKER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_MAKER);
+                this.columnPART_MODEL = new global::System.Data.DataColumn("PART_MODEL", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPART_MODEL);
+                this.columnPV_INVOICE_NO = new global::System.Data.DataColumn("PV_INVOICE_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_INVOICE_NO);
+                this.columnPV_TAX_TYPE = new global::System.Data.DataColumn("PV_TAX_TYPE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_TAX_TYPE);
+                this.columnPV_PO_NO = new global::System.Data.DataColumn("PV_PO_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_PO_NO);
+                this.columnPV_SUPPLIER = new global::System.Data.DataColumn("PV_SUPPLIER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_SUPPLIER);
+                this.columnPV_REQ_NO = new global::System.Data.DataColumn("PV_REQ_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_REQ_NO);
+                this.columnPV_TYPE = new global::System.Data.DataColumn("PV_TYPE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_TYPE);
+                this.columnPV_REQ_DATE = new global::System.Data.DataColumn("PV_REQ_DATE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_REQ_DATE);
+                this.columnPV_RTIN_NO = new global::System.Data.DataColumn("PV_RTIN_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_RTIN_NO);
+                this.columnPV_AMOUNT = new global::System.Data.DataColumn("PV_AMOUNT", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_AMOUNT);
+                this.columnPV_RATE = new global::System.Data.DataColumn("PV_RATE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_RATE);
+                this.columnPV_RUSER = new global::System.Data.DataColumn("PV_RUSER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_RUSER);
+                this.columnPV_CREATE_USER = new global::System.Data.DataColumn("PV_CREATE_USER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_CREATE_USER);
+                this.columnPV_IN_QTY = new global::System.Data.DataColumn("PV_IN_QTY", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_IN_QTY);
+                this.columnPV_PSTATUS = new global::System.Data.DataColumn("PV_PSTATUS", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_PSTATUS);
+                this.columnPV_REQ_NO1 = new global::System.Data.DataColumn("PV_REQ_NO1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_REQ_NO1);
+                this.columnPO_IN_QTY = new global::System.Data.DataColumn("PO_IN_QTY", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_IN_QTY);
+                this.columnPO_AFTERTAX_AMT = new global::System.Data.DataColumn("PO_AFTERTAX_AMT", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_AFTERTAX_AMT);
+                this.columnPO_G_TOTAL_AMOUNT = new global::System.Data.DataColumn("PO_G_TOTAL_AMOUNT", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPO_G_TOTAL_AMOUNT);
+                this.columnPV_GRNNO = new global::System.Data.DataColumn("PV_GRNNO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_GRNNO);
+                this.columnPV_INPUT_NO = new global::System.Data.DataColumn("PV_INPUT_NO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_INPUT_NO);
+                this.columnPV_INVOICE_NO1 = new global::System.Data.DataColumn("PV_INVOICE_NO1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPV_INVOICE_NO1);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYRow Newtbl_WIMS_PV_SUMMARYRow() {
+                return ((tbl_WIMS_PV_SUMMARYRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new tbl_WIMS_PV_SUMMARYRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(tbl_WIMS_PV_SUMMARYRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.tbl_WIMS_PV_SUMMARYRowChanged != null)) {
+                    this.tbl_WIMS_PV_SUMMARYRowChanged(this, new tbl_WIMS_PV_SUMMARYRowChangeEvent(((tbl_WIMS_PV_SUMMARYRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.tbl_WIMS_PV_SUMMARYRowChanging != null)) {
+                    this.tbl_WIMS_PV_SUMMARYRowChanging(this, new tbl_WIMS_PV_SUMMARYRowChangeEvent(((tbl_WIMS_PV_SUMMARYRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.tbl_WIMS_PV_SUMMARYRowDeleted != null)) {
+                    this.tbl_WIMS_PV_SUMMARYRowDeleted(this, new tbl_WIMS_PV_SUMMARYRowChangeEvent(((tbl_WIMS_PV_SUMMARYRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.tbl_WIMS_PV_SUMMARYRowDeleting != null)) {
+                    this.tbl_WIMS_PV_SUMMARYRowDeleting(this, new tbl_WIMS_PV_SUMMARYRowChangeEvent(((tbl_WIMS_PV_SUMMARYRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Removetbl_WIMS_PV_SUMMARYRow(tbl_WIMS_PV_SUMMARYRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ReportDataSet ds = new ReportDataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "tbl_WIMS_PV_SUMMARYDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -8474,6 +9177,834 @@ namespace EApproval.CR_DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class tbl_WIMS_PV_SUMMARYRow : global::System.Data.DataRow {
+            
+            private tbl_WIMS_PV_SUMMARYDataTable tabletbl_WIMS_PV_SUMMARY;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal tbl_WIMS_PV_SUMMARYRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tabletbl_WIMS_PV_SUMMARY = ((tbl_WIMS_PV_SUMMARYDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_WS {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_WSColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_WS\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_WSColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_DATE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_DATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_DATE\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_DATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PART_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PART_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_NAME {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PART_NAMEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_NAME\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PART_NAMEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_UOM {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PART_UOMColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_UOM\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PART_UOMColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_MAKER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PART_MAKERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_MAKER\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PART_MAKERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PART_MODEL {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PART_MODELColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PART_MODEL\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PART_MODELColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_INVOICE_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_INVOICE_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_TAX_TYPE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_TAX_TYPEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_TAX_TYPE\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_TAX_TYPEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_PO_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_PO_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_PO_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_PO_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_SUPPLIER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_SUPPLIERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_SUPPLIER\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_SUPPLIERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_REQ_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_REQ_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_TYPE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_TYPEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_TYPE\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_TYPEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_REQ_DATE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_DATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_REQ_DATE\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_DATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_RTIN_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_RTIN_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_RTIN_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_RTIN_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_AMOUNT {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_AMOUNTColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_AMOUNT\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_AMOUNTColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_RATE {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_RATEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_RATE\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_RATEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_RUSER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_RUSERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_RUSER\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_RUSERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_CREATE_USER {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_CREATE_USERColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_CREATE_USER\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_CREATE_USERColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_IN_QTY {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_IN_QTYColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_IN_QTY\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_IN_QTYColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_PSTATUS {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_PSTATUSColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_PSTATUS\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_PSTATUSColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_REQ_NO1 {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NO1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_REQ_NO1\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NO1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_IN_QTY {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PO_IN_QTYColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_IN_QTY\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PO_IN_QTYColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_AFTERTAX_AMT {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PO_AFTERTAX_AMTColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_AFTERTAX_AMT\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PO_AFTERTAX_AMTColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PO_G_TOTAL_AMOUNT {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PO_G_TOTAL_AMOUNTColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PO_G_TOTAL_AMOUNT\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PO_G_TOTAL_AMOUNTColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_GRNNO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_GRNNOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_GRNNO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_GRNNOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_INPUT_NO {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_INPUT_NOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_INPUT_NO\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_INPUT_NOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string PV_INVOICE_NO1 {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NO1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PV_INVOICE_NO1\' in table \'tbl_WIMS_PV_SUMMARY\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NO1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_WSNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_WSColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_WSNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_WSColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_DATENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_DATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_DATENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_DATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PART_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PART_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_NAMENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PART_NAMEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_NAMENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PART_NAMEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_UOMNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PART_UOMColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_UOMNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PART_UOMColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_MAKERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PART_MAKERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_MAKERNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PART_MAKERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPART_MODELNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PART_MODELColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPART_MODELNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PART_MODELColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_INVOICE_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_INVOICE_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_TAX_TYPENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_TAX_TYPEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_TAX_TYPENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_TAX_TYPEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_PO_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_PO_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_PO_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_PO_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_SUPPLIERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_SUPPLIERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_SUPPLIERNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_SUPPLIERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_REQ_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_REQ_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_TYPENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_TYPEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_TYPENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_TYPEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_REQ_DATENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_DATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_REQ_DATENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_DATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_RTIN_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_RTIN_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_RTIN_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_RTIN_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_AMOUNTNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_AMOUNTColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_AMOUNTNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_AMOUNTColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_RATENull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_RATEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_RATENull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_RATEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_RUSERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_RUSERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_RUSERNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_RUSERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_CREATE_USERNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_CREATE_USERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_CREATE_USERNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_CREATE_USERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_IN_QTYNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_IN_QTYColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_IN_QTYNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_IN_QTYColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_PSTATUSNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_PSTATUSColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_PSTATUSNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_PSTATUSColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_REQ_NO1Null() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NO1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_REQ_NO1Null() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_REQ_NO1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_IN_QTYNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PO_IN_QTYColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_IN_QTYNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PO_IN_QTYColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_AFTERTAX_AMTNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PO_AFTERTAX_AMTColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_AFTERTAX_AMTNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PO_AFTERTAX_AMTColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPO_G_TOTAL_AMOUNTNull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PO_G_TOTAL_AMOUNTColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPO_G_TOTAL_AMOUNTNull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PO_G_TOTAL_AMOUNTColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_GRNNONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_GRNNOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_GRNNONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_GRNNOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_INPUT_NONull() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_INPUT_NOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_INPUT_NONull() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_INPUT_NOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPV_INVOICE_NO1Null() {
+                return this.IsNull(this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NO1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPV_INVOICE_NO1Null() {
+                this[this.tabletbl_WIMS_PV_SUMMARY.PV_INVOICE_NO1Column] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -8731,6 +10262,40 @@ namespace EApproval.CR_DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public tbl_WIMS_PO_TAKEINRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public class tbl_WIMS_PV_SUMMARYRowChangeEvent : global::System.EventArgs {
+            
+            private tbl_WIMS_PV_SUMMARYRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYRowChangeEvent(tbl_WIMS_PV_SUMMARYRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public tbl_WIMS_PV_SUMMARYRow Row {
                 get {
                     return this.eventRow;
                 }
