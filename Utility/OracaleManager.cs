@@ -697,8 +697,8 @@ namespace EApproval.Utility
                     }
                     else if (ProjectName == "WIMS-WORKSHOP")
                     {
-                        //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWSProject";
-                        URL = "https://localhost:44360/api/wims/ws/GetWSProject";
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWSProject";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWSProject";
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
@@ -743,8 +743,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
-                    string URL = "https://localhost:44360/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
+                    //string URL = "https://localhost:44360/api/wims/ws/GetWSPoTakeIn?req_no=" + req_No + "&ws=" + ws + "&project=" + project + "&from_date=" + from_Date + "&to_date=" + to_Date;
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
                     var Items = parsed["CSubTypes"];
@@ -803,8 +803,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetPVSummary?req_no=" + req_No;
-                    string URL = "https://localhost:44360/api/wims/ws/GetPVSummary?req_no=" + req_No;
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetPVSummary?req_no=" + req_No;
+                    //string URL = "https://localhost:44360/api/wims/ws/GetPVSummary?req_no=" + req_No;
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
                     var Items = parsed["CSubTypes"];
@@ -882,8 +882,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";        
-                    string URL = "https://localhost:44360/api/wims";
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";        
+                    //string URL = "https://localhost:44360/api/wims";
                     //WIMS-ADMIN
                     if (project_id == "26")
                     {
@@ -2246,8 +2246,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";
-                    string URL = "https://localhost:44360/api/wims";
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";
+                    //string URL = "https://localhost:44360/api/wims";
                     if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 26)
                     {
                         URL += "/adm/GetPoAmtRequest?req_no=" + Req_No;
@@ -2299,8 +2299,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";
-                    string URL = "https://localhost:44360/api/wims";
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims";
+                    //string URL = "https://localhost:44360/api/wims";
                     //WIMS-ADMIN
                     if (project_id == "26")
                     {
@@ -2722,8 +2722,8 @@ namespace EApproval.Utility
                                 }
 
                                 URL = string.Empty;
-                                //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
-                                URL = "https://localhost:44360/api/wims/ws/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
+                                URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
+                                //URL = "https://localhost:44360/api/wims/ws/GetPVPrint?req_no=" + Req_No + "&ws=" + ws_name + "&project=" + ProjectId;
                                 var result = client.DownloadString(URL);
                                 JObject parsed = JObject.Parse(result);
                                 var Items = parsed["CSubTypes"];
@@ -2799,10 +2799,15 @@ namespace EApproval.Utility
                                 dt.Columns.Add("AddedBy", typeof(string));
                                 dt.Columns.Add("CreatedDate", typeof(string));
 
+                                dt.Columns.Add("IncomeTax", typeof(decimal));
+                                dt.Columns.Add("SalesTax", typeof(decimal));
+                                dt.Columns.Add("IncomeTaxAmount", typeof(decimal));
+                                dt.Columns.Add("SalesTaxAmount", typeof(decimal));
+
                                 foreach (var list in Items)
                                 {
                                     dt.Rows.Add(list["PaymentApprovalId"], list["RefNo"], list["GLCode"], list["CompanyName"], list["Division"], list["DEPARTMENT"], list["TypeName"], list["Amount"], list["Description"], list["AddedBy"],
-                                                list["CreatedDate"]);
+                                                list["CreatedDate"], list["IncomeTax"], list["SalesTax"], list["IncomeTaxAmount"], list["SalesTaxAmount"]);
                                     RefNo = list["RefNo"].ToString();
                                 }
                                 dtApprovalAuth = FetchStatus(Mode, RefNo);
@@ -3052,8 +3057,8 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                                 {
-                                    //apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                                    apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
+                                    apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                    //apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
                                 }
                                 string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                                 using (HttpClient client = new HttpClient())
@@ -3087,8 +3092,8 @@ namespace EApproval.Utility
                             }
                             else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                             {
-                                //apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                                apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                //apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
                             }
                             string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                             using (HttpClient client = new HttpClient())
@@ -3145,8 +3150,8 @@ namespace EApproval.Utility
                                                     }
                                                     else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                                                     {
-                                                        //apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                                                        apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
+                                                        apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                                        //apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
                                                     }
                                                     string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                                                     using (HttpClient client = new HttpClient())
@@ -3220,8 +3225,8 @@ namespace EApproval.Utility
                                 }
                                 else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                                 {
-                                    //apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                                    apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
+                                    apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                    //apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
                                 }
                                 string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                                 using (HttpClient client = new HttpClient())
@@ -3251,8 +3256,8 @@ namespace EApproval.Utility
                             }
                             else if (Convert.ToInt32(HttpContext.Current.Session["PROJECTID"]) == 61)
                             {
-                                //apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
-                                apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
+                                apiUrl = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/UpdateWimsWsStatus";
+                                //apiUrl = "https://localhost:44360/api/wims/ws/UpdateWimsWsStatus";
                             }
                             string fullUrl = $"{apiUrl}?req_no={model.REQNO}&status={status}&viewType={Convert.ToInt32(model.FLOWDETAILID)}";
                             using (HttpClient client = new HttpClient())
@@ -3428,8 +3433,8 @@ namespace EApproval.Utility
                 {
                     client.Headers.Add("Content-Type:application/json");
                     client.Headers.Add("Accept:application/json");
-                    //string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/GetAdmDbStatus";
-                    string URL = "https://localhost:44360/api/wims/adm/GetAdmDbStatus";
+                    string URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/adm/GetAdmDbStatus";
+                    //string URL = "https://localhost:44360/api/wims/adm/GetAdmDbStatus";
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
                     var Items = parsed["CSubTypes"];
@@ -3485,8 +3490,8 @@ namespace EApproval.Utility
                     //WIMS-WORKSHOP
                     else if (project_id == "61")
                     {
-                        // URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbStatus";
-                        URL = "https://localhost:44360/api/wims/ws/GetWsDbStatus";
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbStatus";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWsDbStatus";
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
@@ -3592,8 +3597,8 @@ namespace EApproval.Utility
                     //WIMS-WORKSHOP
                     else if (project_id == "61")
                     {
-                        //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + "";
-                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + ""; ;
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWsDbPoAmt?tenor=" + tenor + "";
                     }
 
                     var result = client.DownloadString(URL);
@@ -3648,8 +3653,8 @@ namespace EApproval.Utility
                     //WIMS-WORKSHOP
                     else if (project_id == "61")
                     {
-                        //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";";
-                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWsDbPVStatusDT?tenor=" + tenor + "";
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
@@ -3706,8 +3711,8 @@ namespace EApproval.Utility
                     //WIMS-WORKSHOP
                     else if (project_id == "61")
                     {
-                        //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
-                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWsDbPVGraph?tenor=" + tenor + "";
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
@@ -3763,8 +3768,8 @@ namespace EApproval.Utility
                     //WIMS-WORKSHOP
                     else if (project_id == "61")
                     {
-                        //URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoPending";
-                        URL = "https://localhost:44360/api/wims/ws/GetWsDbPoPending";
+                        URL = "https://eapprovalapi.daewoo.net.pk:7867/api/wims/ws/GetWsDbPoPending";
+                        //URL = "https://localhost:44360/api/wims/ws/GetWsDbPoPending";
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);
