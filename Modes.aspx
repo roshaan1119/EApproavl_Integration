@@ -23,6 +23,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    
     <div class="content-body">
         <div class="offcanvas-body" id="a">
             <div class="container-fluid">
@@ -46,7 +47,6 @@
                         </select>
                     </div>
                     <div class="col-xl-2 mb-2" style="padding-top: 30px;"> 
-                        <%--GetContentList();--%>
                         <button type="button" style="display: inline-block;" class="btn btn-sm btn-info" id="btnGetContent" onclick="GetListByStatus();"> <span class="fa fa-search"> </span> </button> 
                         <button type="button" class="btn btn-sm btn-warning" id="btnClearContent" onclick="ClearContent();"> <span class="fa fa-refresh"> </span> </button>
                         <button class="btn btn-sm btn-dark dropdown-toggle" id="btnStatus" type="button" style="display: none;" data-bs-toggle="dropdown"> <span class="fa fa-eye-slash"> </span> Action</button>
@@ -459,12 +459,11 @@
                     </div>
                 </div>
             </div>
-            <%--WIMS-ADMIN => TAKE-IN --%>
-
+            <%--ECS => Payment Approval --%>
 
         </div>
-        <%--<CR:CrystalReportViewer ID="dtlViewer" runat="server" AutoDataBind="true" />--%>
     </div>
+
     <div class="modal fade bd-example-modal-lg" id="RejectedReasonModel" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -1316,7 +1315,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5 || item.StatusId == 7  || item.StatusId == 8) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5 || item.StatusId == 6 || item.StatusId == 7 || item.StatusId == 8 || item.StatusId == 10 ) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1324,7 +1323,7 @@
                                                 }
                                             }
                                             else if (UserType == 1) { //Approver-1
-                                                if ((item.StatusId == 1 || item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
+                                                if ((item.StatusId == 1 || item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3 || item.StatusId == 9 || item.StatusId == 10)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1332,7 +1331,7 @@
                                                 }
                                             }
                                             else if (UserType == 22) { //Approver-2
-                                                if ((item.StatusId == 1 || item.StatusId == 2 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
+                                                if ((item.StatusId == 1 || item.StatusId == 2 || item.StatusId == 6 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3 || item.StatusId == 9 || item.StatusId == 10)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.PO_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1361,15 +1360,15 @@
                                                 $span.addClass('badge badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "2") { //Authorizer Approval
+                                            else if ($value === "2" || $value === "6") { //Authorizer-1,2 Approval
                                                 $span.addClass('badge light badge-success');
                                                 $check.addClass('checkbox-success');
                                             }
-                                            else if ($value === "3" || $value === "6") { //Authorizer Rejection
+                                            else if ($value === "3" || $value === "10") { //Authorizer-1,2 Rejection
                                                 $span.addClass('badge light badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "1") { //Initiator Approval
+                                            else if ($value === "1" || $value === "9") { //Initiator-1,2 Approval
                                                 $span.addClass('badge light badge-info');
                                                 $check.addClass('checkbox-info');
                                             }
@@ -1432,7 +1431,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 6 || item.StatusId == 10) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.GRN_NO + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1460,15 +1459,15 @@
                                                 $span.addClass('badge badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "2") { //Authorizer Approval
+                                            else if ($value === "2" || $value === "6") { //Authorizer-1,2 Approval
                                                 $span.addClass('badge light badge-success');
                                                 $check.addClass('checkbox-success');
                                             }
-                                            else if ($value === "3" || $value === "6") { //Authorizer Rejection
+                                            else if ($value === "3" || $value === "10") { //Authorizer-1,2 Rejection
                                                 $span.addClass('badge light badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "1") { //Initiator Approval
+                                            else if ($value === "1" || $value === "9") { //Initiator-1,2 Approval
                                                 $span.addClass('badge light badge-info');
                                                 $check.addClass('checkbox-info');
                                             }
@@ -1531,7 +1530,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 6 || item.StatusId == 10) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Req_No + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1559,15 +1558,15 @@
                                                 $span.addClass('badge badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "2") { //Authorizer Approval
+                                            else if ($value === "2" || $value === "6") { //Authorizer-1,2 Approval
                                                 $span.addClass('badge light badge-success');
                                                 $check.addClass('checkbox-success');
                                             }
-                                            else if ($value === "3" || $value === "6") { //Authorizer Rejection
+                                            else if ($value === "3" || $value === "10") { //Authorizer-1,2 Rejection
                                                 $span.addClass('badge light badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "1") { //Initiator Approval
+                                            else if ($value === "1" || $value === "9") { //Initiator-1,2 Approval
                                                 $span.addClass('badge light badge-info');
                                                 $check.addClass('checkbox-info');
                                             }
@@ -1629,7 +1628,7 @@
                                                 }
                                             }
                                             else if (UserType == 2 || UserType == 3) { //Authorizer-1, Authorizer-2
-                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5  || item.StatusId == 7 || item.StatusId == 8) {
+                                                if (item.StatusId == 2 || item.StatusId == 3 || item.StatusId == 4 || item.StatusId == 5 || item.StatusId == 6 || item.StatusId == 7 || item.StatusId == 8 || item.StatusId == 10) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1637,7 +1636,7 @@
                                                 }
                                             }
                                             else if (UserType == 1) { //Approver 1
-                                                if ((item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3)) {
+                                                if ((item.StatusId == 1 || item.StatusId == 9 || item.StatusId == 4 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3 || item.StatusId == 10)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1645,7 +1644,7 @@
                                                 }
                                             }
                                             else if (UserType == 22) { //Approver 2
-                                                if ((item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3 || item.StatusId == 2)) {
+                                                if ((item.StatusId == 1 || item.StatusId == 9 || item.StatusId == 7) || (item.StatusId == 5 || item.StatusId == 8 || item.StatusId == 3 || item.StatusId == 2 || item.StatusId == 6 || item.StatusId == 10)) {
                                                     cbList = '<div class="form-check custom-checkbox cbSelected"><input type="checkbox" checked disabled onchange="GetSelectedValues(' + "'" + item.Payment_Voucher + "'" + ',' + iRowNum + ');" class="form-check-input" id="cblist' + iRowNum + '"></div>';
                                                 }
                                                 else {
@@ -1675,15 +1674,15 @@
                                                 $span.addClass('badge badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "2") { //Authorizer Approval
+                                            else if ($value === "2" || $value === "6") { //Authorizer-1,2 Approval
                                                 $span.addClass('badge light badge-success');
                                                 $check.addClass('checkbox-success');
                                             }
-                                            else if ($value === "3" || $value === "6") { //Authorizer Rejection
+                                            else if ($value === "3" || $value === "10") { //Authorizer-1,2 Rejection
                                                 $span.addClass('badge light badge-danger');
                                                 $check.addClass('checkbox-danger');
                                             }
-                                            else if ($value === "1") { //Initiator Approval
+                                            else if ($value === "1" || $value === "9") { //Initiator-1,2 Approval
                                                 $span.addClass('badge light badge-info');
                                                 $check.addClass('checkbox-info');
                                             }
@@ -1845,11 +1844,11 @@
         }
 
         function ClearContent() {
-            var EndDate = '<%= DateTime.Today.ToString("yyyy-MM-dd") %>';
-            var StartDate = '<%= DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd") %>';
-            $('#StartDate').val(StartDate);
-            $('#EndDate').val(EndDate);
-            $('#ddlProjects').val(1000);
+            //var EndDate = '<%= DateTime.Today.ToString("yyyy-MM-dd") %>';
+            //var StartDate = '<%= DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd") %>';
+            //$('#StartDate').val(StartDate);
+            //$('#EndDate').val(EndDate);
+            $('#ddlProjects').val($('#ddlProjects').val());
             $('#ddlStatus').val(-1);
             $('#WIMSAdmin_Request').hide();
             $('#WIMSAdmin_PO').hide();
@@ -1909,7 +1908,7 @@
                             }
                             else {
                                 sweetAlert(" ", "Status rejected", "success");
-                            }
+                            }                           
                             ClearContent();
                         }
                         else {
@@ -1921,6 +1920,7 @@
                 });
             }
             else if (status == "Reject") {
+
                 $("#RejectedReasonModel").modal('show');
             }
             else {

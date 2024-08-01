@@ -21,5 +21,15 @@ namespace EApproval.Controller
             OracaleManager serviceController = new OracaleManager();
             return await Task.FromResult(serviceController.UpdateStatus(model, Status)).Result;
         }
+
+        [Route("UpdatePassword")]
+        [HttpPost]
+        [Obsolete]
+        public async Task<Object> UpdatePassword(string old_password, string new_password)
+        {
+            OracaleManager serviceController = new OracaleManager();
+            return await Task.FromResult(serviceController.updatePassword(old_password, new_password)).Result;
+
+        }
     }
 }

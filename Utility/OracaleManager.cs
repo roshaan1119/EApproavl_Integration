@@ -3358,9 +3358,55 @@ namespace EApproval.Utility
             }
             finally
             {
-
+                oracleConnection.Close();
             }
+        }
 
+        [Obsolete]
+        public async Task<Object> updatePassword(string old_password, string new_password)
+        {
+            try
+            {
+                Oracle.ManagedDataAccess.Client.OracleCommand oracleCommand = new Oracle.ManagedDataAccess.Client.OracleCommand();
+                OracleDataAdapter adapter = new OracleDataAdapter();
+                string @sql = "SP_UPDATE_PASSWORD";
+                oracleCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                oracleCommand.Connection = this.oracleConnection;
+                if (this.oracleConnection.State == ConnectionState.Closed)
+                {
+                    oracleConnection.Open();
+                }
+                oracleCommand.CommandText = sql;
+                adapter.SelectCommand = oracleCommand;
+                oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_USERID", OracleDbType = OracleDbType.Int32, Direction = ParameterDirection.Input, Value = Convert.ToInt32(HttpContext.Current.Session["USERID"]) });
+                oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_OLD_PASSOWRD", OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input, Value = old_password });
+                oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "P_NEW_PASSOWRD", OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input, Value = new_password });
+                oracleCommand.Parameters.Add(new Oracle.ManagedDataAccess.Client.OracleParameter() { ParameterName = "dtl_Out", OracleDbType = OracleDbType.RefCursor, Direction = ParameterDirection.Output, Value = null });
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    string message = dt.Rows[0]["MESSAGE"].ToString();
+                    if (message == "Old Password is Invalid")
+                    {
+                        return await Task.FromResult(new { Success = false, Response = dt, Message = message });
+                    }
+                    return await Task.FromResult(new { Success = true, Response = dt, Message = message });
+                }
+                else
+                {
+                    return await Task.FromResult(new { Success = false, Response = "No Record Found.", Message = "No Record Found." });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                oracleConnection.Close();
+            }
         }
 
         [Obsolete]
