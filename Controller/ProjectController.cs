@@ -2,10 +2,12 @@
 using EApproval.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace EApproval.Controller
@@ -91,7 +93,12 @@ namespace EApproval.Controller
         public async Task<Object> loadSubProjectByProjectName(string ProjectName)
         {
             OracaleManager serviceController = new OracaleManager();
-            return await Task.FromResult(serviceController.loadSubProjectByProjectName(ProjectName)).Result;
+            DataTable dt = new DataTable();
+            var data = serviceController.loadSubProjectByProjectName(ProjectName);
+            var res = data.Result;
+            dt = ((dynamic)res).Data as DataTable;
+            HttpContext.Current.Session["PROJECT_CODE"] = dt.Rows[0]["PROJECT_CODE"].ToString();
+            return await Task.FromResult(data).Result;
         }
         [Route("LoadWIMS_ADMIN_Request")]
         [HttpGet]
@@ -99,6 +106,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_ADMIN_Request(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_ADMIN_PO")]
@@ -107,6 +119,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_ADMIN_PO(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_ADMIN_GRN")]
@@ -115,6 +132,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_ADMIN_GRN(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_ADMIN_TakeIn")]
@@ -123,6 +145,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_ADMIN_TakeIn(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_ADMIN_PV")]
@@ -131,6 +158,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_ADMIN_PV(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("GetDetailByRequestNo")]
@@ -179,6 +211,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_Request(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_WS_PO")]
@@ -187,6 +224,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_PO(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_WS_GRN")]
@@ -195,6 +237,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_GRN(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_WS_TakeIn")]
@@ -203,6 +250,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_TakeIn(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_WS_PV")]
@@ -211,6 +263,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_PV(int ProjectId, string fromDate, string toDate, int Mode, int status)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, project_code, Mode, status)).Result;
+            }
             return await Task.FromResult(serviceController.LoadContentByProjectId(fromDate, toDate, ProjectId, Mode, status)).Result;
         }
         [Route("LoadWIMS_WS_PO_TakeIn")]
@@ -219,6 +276,11 @@ namespace EApproval.Controller
         public async Task<Object> LoadWIMS_WS_PO_TakeIn(string Req_No, string Ws, int ProjectId, string fromDate, string toDate)
         {
             OracaleManager serviceController = new OracaleManager();
+            int project_code = Convert.ToInt32(HttpContext.Current.Session["PROJECT_CODE"]);
+            if (ProjectId == 0)
+            {
+                return await Task.FromResult(serviceController.LoadWIMSWSPOTakeIn(Req_No, Ws, project_code, fromDate, toDate)).Result;
+            }
             return await Task.FromResult(serviceController.LoadWIMSWSPOTakeIn(Req_No, Ws, ProjectId, fromDate, toDate)).Result;
         }
         [Route("GetWSPOAmount")]

@@ -687,6 +687,7 @@ namespace EApproval.Utility
             {
                 DataTable dt = new DataTable();
                 string URL = "";
+                
                 using (var client = new WebClient())
                 {
                     client.Headers.Add("Content-Type:application/json");
@@ -697,8 +698,8 @@ namespace EApproval.Utility
                     }
                     else if (ProjectName == "WIMS-WORKSHOP")
                     {
-                        URL = "https://e-approvalapi.daewoo.net.pk:443/api/wims/ws/GetWSProject";
-                        //URL = "https://localhost:44360/api/wims/ws/GetWSProject";
+                        URL = "https://e-approvalapi.daewoo.net.pk:443/api/wims/ws/GetWSProject?userlogin=" + HttpContext.Current.Session["LOGIN_NAME"];
+                        //URL = "https://localhost:44360/api/wims/ws/GetWSProject?userlogin=" + HttpContext.Current.Session["LOGIN_NAME"];
                     }
                     var result = client.DownloadString(URL);
                     JObject parsed = JObject.Parse(result);

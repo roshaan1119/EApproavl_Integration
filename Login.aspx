@@ -67,34 +67,21 @@
                                         <p>Continue your E-Approval journey with Daewoo</p>
 
                                         <div  class="form-outline mb-4">
-                                           <%-- <input type="email" id="form2Example11" class="form-control"
-                                                placeholder="Phone number or email address" />
-                                            <label class="form-label" for="form2Example11">Username</label>--%>
-                                             <input type="text" id="txtEmail" class="form-control" placeholder="abc@gmail.com" >
-
+                                             <input type="text" id="txtLogin" class="form-control" placeholder="Login ID" >
                                         </div>
 
                                         <div class="form-outline mb-4">
                                             <input type="password" id="dz-password" placeholder="Password..." class="form-control" />
-                                            <%--<label class="form-label" for="form2Example22">Password</label>--%>
                                         </div>
 
                                         <div class="form-outline mb-4">
                                             <select id="ddlProjects" class="form-control">
-                                                <%--<option value="" disabled selected>Select Project</option>--%>
                                             </select>
-
                                         </div>
 
                                         <div class="text-center pt-1 mb-5 pb-1">
                                             <button type="button" onclick="Login();" style="background: #0095DA" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</button>
-                                           <%-- <a class="text-muted" href="#!">Forgot password?</a>--%>
                                         </div>
-
-                                       <%-- <div class="d-flex align-items-center justify-content-center pb-4">
-                                            <p class="mb-0 me-2">Don't have an account?</p>
-                                            <button type="button" class="btn btn-outline-danger">Create new</button>
-                                        </div>--%>
                                     </form>
                                 </div>
                             </div>
@@ -147,7 +134,7 @@
             });
         }
         function Login() {
-            if ($("#txtEmail").val() == "admin") {
+            if ($("#txtLogin").val() == "admin") {
                 $.ajax({
                     type: "POST",
                     contentType: 'application/json; charset=utf-8',
@@ -213,7 +200,7 @@
         }
         function PostDataJson() {
             return JSON.stringify({
-                "EMAIL": $("#txtEmail").val(),
+                "EMAIL": $("#txtLogin").val(),
                 "PASSOWRD": $("#dz-password").val(),
                 "PROJECTID": $("#ddlProjects").val()
             });

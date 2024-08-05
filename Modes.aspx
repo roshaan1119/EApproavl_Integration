@@ -563,7 +563,7 @@
     </div>
 
 
-    <script type="text/javascript">
+    <script type="text/javascript">        
         var QueryString_PT = '<%= Request.QueryString["ProjectType"].ToString() %>';
         var QueryString_Mode = '<%= Request.QueryString["Mode"].ToString() %>';
         var UserType = '<%= Convert.ToInt32(Session["USERTYPEID"]) %>';
